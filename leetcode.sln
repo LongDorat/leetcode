@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Problems", "Problems", "{BE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00001-00100", "00001-00100", "{485D1401-5DD6-0FD9-DBA8-4E87E45562BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two Sum", "Problems\00001-00100\[00001] Two Sum\Two Sum.csproj", "{2228D145-522D-A169-2AD7-6432AF57A077}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two Sum", "Problems\00001-00100\00001. Two Sum\Two Sum.csproj", "{2228D145-522D-A169-2AD7-6432AF57A077}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
