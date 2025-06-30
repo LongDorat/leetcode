@@ -11,7 +11,7 @@ on:
       - '!**.md'
   workflow_dispatch:
 jobs:
-  build:
+  restore-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
