@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00001-00100", "00001-00100"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00001 Two Sum", "00001 Two Sum", "{5E6D220B-F944-3789-D2B6-24CD6C49178C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two_Sum", "Problems\00001-00100\00001-Two_Sum\Two_Sum.csproj", "{8140B399-FDA8-42C9-93D0-A772429E3E52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two_Sum", "Problems\00001-00100\00001 Two Sum\Two_Sum.csproj", "{8140B399-FDA8-42C9-93D0-A772429E3E52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
