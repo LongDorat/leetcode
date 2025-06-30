@@ -31,5 +31,5 @@ jobs:
         working-directory: "Problems/00001-00100/00001-Two_Sum"
 
       - name: Run tests
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build
         working-directory: "Problems/00001-00100/00001-Two_Sum"
