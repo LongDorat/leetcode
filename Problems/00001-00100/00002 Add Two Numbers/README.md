@@ -147,24 +147,12 @@ Position 2: 3 + 4 + 1 = 8, carry = 0
 - Output linked list requires O(max(m,n)) or O(max(m,n)+1) space
 - Only O(1) extra space needed for variables (carry, sum, pointers)
 
-## 🔍 Edge Cases & Test Scenarios
-
-### Test Case Coverage:
-
-1. **Basic Addition**: [2,4,3] + [5,6,4] = [7,0,8]
-2. **Carry Propagation**: [9,9,9,9,9,9,9] + [9,9,9,9] = [8,9,9,9,0,0,0,1]
-3. **Single Digits (No Carry)**: [2] + [3] = [5]
-4. **Single Digits (With Carry)**: [5] + [5] = [0,1]
-5. **Different Lengths**: [1,2,3] + [4,5] = [5,7,3]
-6. **Zero Cases**: [0] + [0] = [0]
-7. **One List Empty**: [1,2] + [0] = [1,2]
-
 ## 💻 Current Status
 
 - [X] Algorithm implementation completed
 - [X] Unit tests implemented
 - [X] Edge cases covered
-- [X] Performance optimized
+- [ ] Performance optimized
 
 ## 🏷️ Metadata
 
