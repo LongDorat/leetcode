@@ -129,14 +129,8 @@ public int[] TwoSum(int[] nums, int target)
 - [X] Unit tests pending
 - [X] Performance optimization pending
 
-## 📋 Metadata
+## 🏷️ Metadata
 
-- **Data Structures**: Array, Hash Table
-- **Algorithms**: Hash Map lookup, Two pointers (alternative approach)
-- **Concepts**: Time/Space complexity trade-offs
 - **Difficulty**: Easy
-- **Company Tags**: Amazon, Google, Microsoft, Facebook, Apple
-
----
-
-**LeetCode Link:** [1. Two Sum](https://leetcode.com/problems/two-sum/)
+- **Tags**: Array, Hash Table
+- **Source**: [1. Two Sum](https://leetcode.com/problems/two-sum/)

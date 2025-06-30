@@ -74,58 +74,14 @@ leetcode/
    dotnet test
    ```
 
-## 📝 Problem Template
+### Problem.md
 
-Each problem follows a consistent structure:
+Each problem folder includes a detailed Problem.md with:
 
-### Solution.cs
-
-```csharp
-namespace ProblemName;
-
-public class Solution
-{
-    /// <summary>
-    /// Problem description and approach
-    /// Time Complexity: O(?)
-    /// Space Complexity: O(?)
-    /// </summary>
-    public ReturnType MethodName(Parameters parameters)
-    {
-        // Implementation here
-    }
-}
-```
-
-### UnitTest.cs
-
-```csharp
-namespace ProblemName;
-
-public class UnitTests
-{
-    [Fact]
-    public void TestCase1()
-    {
-        // Arrange
-        var solution = new Solution();
-      
-        // Act
-        var result = solution.MethodName(input);
-      
-        // Assert
-        Assert.Equal(expected, result);
-    }
-}
-```
-
-### README.md
-Each problem folder includes a detailed README with:
 - Problem description and examples
 - Multiple solution approaches with complexity analysis
 - Step-by-step algorithm explanation
 - Test cases and edge cases
-- Related problems and learning points
 
 ## 📊 Progress Tracking
 
