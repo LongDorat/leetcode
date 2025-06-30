@@ -65,7 +65,7 @@ leetcode/
 3. **Run tests for a specific problem**
 
    ```bash
-   cd "Problems/00001-00100/[00001] Two Sum"
+   cd "Problems/00001-00100/00001 Two Sum"
    dotnet test
    ```
 4. **Run all tests**
@@ -123,7 +123,7 @@ dotnet test
 dotnet test --verbosity normal
 
 # Run tests for specific problem
-dotnet test "Problems/00001-00100/[00001] Two Sum"
+dotnet test "Problems/00001-00100/00001 Two Sum"
 ```
 
 ## 🎨 Code Style Guidelines
