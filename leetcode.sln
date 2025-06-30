@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Problems", "Problems", "{BEC6521A-F901-2BBF-F273-35A4FDC6E8A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00001-00100", "00001-00100", "{485D1401-5DD6-0FD9-DBA8-4E87E45562BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two Sum", "Problems\00001-00100\[00001] Two Sum\Two Sum.csproj", "{2228D145-522D-A169-2AD7-6432AF57A077}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2228D145-522D-A169-2AD7-6432AF57A077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2228D145-522D-A169-2AD7-6432AF57A077}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2228D145-522D-A169-2AD7-6432AF57A077}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2228D145-522D-A169-2AD7-6432AF57A077}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{485D1401-5DD6-0FD9-DBA8-4E87E45562BC} = {BEC6521A-F901-2BBF-F273-35A4FDC6E8A1}
+		{2228D145-522D-A169-2AD7-6432AF57A077} = {485D1401-5DD6-0FD9-DBA8-4E87E45562BC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9B10647F-46EA-4DB5-AA5F-5015BED21DA2}
+	EndGlobalSection
+EndGlobal
