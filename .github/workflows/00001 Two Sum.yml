@@ -24,12 +24,12 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: 'Problems/00001-00100/00001 Two Sum'
+        working-directory: "Problems/00001-00100/00001 Two Sum"
 
       - name: Build the project
         run: dotnet build --configuration Release --no-restore
-        working-directory: 'Problems/00001-00100/00001 Two Sum'
+        working-directory: "Problems/00001-00100/00001 Two Sum"
 
       - name: Run tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: 'Problems/00001-00100/00001 Two Sum'
+        working-directory: "Problems/00001-00100/00001 Two Sum"
