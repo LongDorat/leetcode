@@ -3,11 +3,11 @@ name: Two Sum
 on:
   push:
     paths:
-      - 'Problems/00001-00100/00001-Two_Sum/**'
+      - 'Problems/00001-00100/00001 Two Sum/**'
       - '!**.md'
   pull_request:
     paths:
-      - 'Problems/00001-00100/00001-Two_Sum/**'
+      - 'Problems/00001-00100/00001 Two Sum/**'
       - '!**.md'
   workflow_dispatch:
 jobs:
@@ -24,8 +24,8 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: "Problems/00001-00100/00001-Two_Sum"
+        working-directory: "Problems/00001-00100/00001 Two Sum"
 
       - name: Run tests
         run: dotnet test
-        working-directory: "Problems/00001-00100/00001-Two_Sum"
+        working-directory: "Problems/00001-00100/00001 Two Sum"
