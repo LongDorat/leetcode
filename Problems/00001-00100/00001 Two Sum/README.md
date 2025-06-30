@@ -126,8 +126,8 @@ public int[] TwoSum(int[] nums, int target)
 
 - [X] Basic structure created
 - [X] Algorithm implementation pending
-- [ ] Unit tests pending
-- [ ] Performance optimization pending
+- [X] Unit tests pending
+- [X] Performance optimization pending
 
 ## 📋 Metadata
 
