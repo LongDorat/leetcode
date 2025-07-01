@@ -13,7 +13,7 @@ public interface ISolution
     /// Return the length of the longest substring without repeating characters.
     /// If the input string is empty, return 0.
     /// </returns>
-    /// <remarks>Time Complexity: O(n), Space Complexity: O(n)</remarks>
+    /// <remarks>Time Complexity: O(n), Space Complexity: O(min(m, n))</remarks>
     int LengthOfLongestSubstring(string s);
 }
 
