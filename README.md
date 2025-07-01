@@ -25,7 +25,7 @@ leetcode/
     │   │   ├── Solution.cs         # Solution implementation
     │   │   ├── UnitTest.cs         # Unit tests
     │   │   ├── Two_Sum.csproj      # Project file
-    │   │   └── README.md          # Problem-specific documentation
+    │   │   └── README.md           # Problem-specific documentation
     │   └── [00002] Add Two Number/
     └── 00101-00200/                # Problems 101-200 and more
 ```
@@ -74,9 +74,9 @@ leetcode/
    dotnet test
    ```
 
-### Problem.md
+### Problems
 
-Each problem folder includes a detailed Problem.md with:
+Each problem folder includes a detailed README.md with:
 
 - Problem description and examples
 - Multiple solution approaches with complexity analysis
