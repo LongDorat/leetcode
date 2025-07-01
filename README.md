@@ -87,9 +87,9 @@ Each problem folder includes a detailed Problem.md with:
 
 | Range           | Completed   | Total         | Progress     |
 | --------------- | ----------- | ------------- | ------------ |
-| 1-100           | 2           | 100           | 2%           |
+| 1-100           | 3           | 100           | 3%           |
 | 101-200         | 0           | 100           | 0%           |
-| **Total** | **2** | **200** | **1%** |
+| **Total** | **3** | **200** | **1.5%** |
 
 ## 🎯 Solved Problems
 
@@ -99,7 +99,8 @@ Each problem folder includes a detailed Problem.md with:
 
 ### Medium Problems
 
-- [X] [2. Add Two Numbers](Problems/00001-00100/00002%20Add%20Two%20Numbers/) - Linked List, Math
+- [X] [2. Add Two Numbers](Problems/00001-00100/[00002]%20Add%20Two%20Number/) - Linked List, Math
+- [X] [3. Longest Substring Without Repeating Characters](Problems/00001-00100/[00003]%20Longest%20Substring%20Without%20Repeating%20Characters/) - Hash Table, String, Sliding Window
 
 ### Hard Problems
 
