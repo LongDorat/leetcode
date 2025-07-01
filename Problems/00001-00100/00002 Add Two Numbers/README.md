@@ -147,12 +147,41 @@ Position 2: 3 + 4 + 1 = 8, carry = 0
 - Output linked list requires O(max(m,n)) or O(max(m,n)+1) space
 - Only O(1) extra space needed for variables (carry, sum, pointers)
 
+## 🧪 Test Cases Covered
+
+### Edge Cases:
+- Single digit each: `[5]` + `[5]` → `[0,1]` (with carry)
+- Zero values: `[0]` + `[0]` → `[0]`
+- One list longer: `[9,9]` + `[1]` → `[0,0,1]`
+- Maximum carry propagation: `[9,9,9,9,9,9,9]` + `[9,9,9,9]` → `[8,9,9,9,0,0,0,1]`
+
+### Normal Cases:
+- Example 1: `[2,4,3]` + `[5,6,4]` → `[7,0,8]` (342 + 465 = 807)
+- Example 2: `[0]` + `[0]` → `[0]`
+- Example 3: `[9,9,9,9,9,9,9]` + `[9,9,9,9]` → `[8,9,9,9,0,0,0,1]`
+
+### Carry Scenarios:
+- No carry: `[1,2,3]` + `[4,5,6]` → `[5,7,9]`
+- Carry in middle: `[2,4,3]` + `[5,6,4]` → `[7,0,8]`
+- Final carry: `[5]` + `[5]` → `[0,1]`
+- Multiple carries: `[9,9]` + `[9,9,9]` → `[8,9,0,1]`
+
+### Length Variations:
+- Equal length: `[1,2]` + `[3,4]` → `[4,6]`
+- First longer: `[1,2,3]` + `[4,5]` → `[5,7,3]`
+- Second longer: `[1,2]` + `[3,4,5]` → `[4,6,5]`
+
+### Special Values:
+- All nines: `[9,9,9]` + `[9,9,9]` → `[8,9,9,1]`
+- Leading zeros result: `[1]` + `[9,9,9]` → `[0,0,0,1]`
+- Single nodes: `[2]` + `[8]` → `[0,1]`
+
 ## 💻 Current Status
 
 - [X] Algorithm implementation completed
 - [X] Unit tests implemented
 - [X] Edge cases covered
-- [ ] Performance optimized
+- [X] Performance optimized
 
 ## 🏷️ Metadata
 

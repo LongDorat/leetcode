@@ -122,6 +122,29 @@ public int[] TwoSum(int[] nums, int target)
 | Brute Force | O(n²)          | O(1)             | O(1)      | O(n²)     |
 | Hash Map    | O(n)            | O(n)             | O(1)      | O(n)       |
 
+## 🧪 Test Cases Covered
+
+### Edge Cases:
+- Minimum array size: `[3,3]`, target `6` → `[0,1]`
+- Negative numbers: `[-1,-2,-3,-4,-5]`, target `-8` → `[2,4]`
+- Zero target: `[-1,1]`, target `0` → `[0,1]`
+- Large numbers: `[1000000000, 999999999]`, target `1999999999` → `[0,1]`
+
+### Normal Cases:
+- Example 1: `[2,7,11,15]`, target `9` → `[0,1]`
+- Example 2: `[3,2,4]`, target `6` → `[1,2]`
+- Example 3: `[3,3]`, target `6` → `[0,1]`
+
+### Position Variations:
+- Solution at beginning: `[2,7,11,15]`, target `9` → `[0,1]`
+- Solution at end: `[11,15,2,7]`, target `9` → `[2,3]`
+- Solution in middle: `[1,2,7,11,15]`, target `9` → `[1,2]`
+
+### Different Target Values:
+- Small target: `[1,2]`, target `3` → `[0,1]`
+- Large target: `[999999999, 1000000000]`, target `1999999999` → `[0,1]`
+- Zero values: `[0,4,3,0]`, target `0` → `[0,3]`
+
 ## 💻 Current Status
 
 - [X] Basic structure created
