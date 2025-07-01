@@ -20,14 +20,14 @@ leetcode/
 ├── README.md                       # This file
 ├── LICENSE                         # Project license
 └── Problems/                       # All problem solutions
-    ├── 00001-00100/               # Problems 1-100
+    ├── 00001-00100/                # Problems 1-100
     │   ├── [00001] Two Sum/
     │   │   ├── Solution.cs         # Solution implementation
     │   │   ├── UnitTest.cs         # Unit tests
     │   │   ├── Two_Sum.csproj      # Project file
-    │   │   └── README.md           # Problem-specific documentation
+    │   │   └── README.md          # Problem-specific documentation
     │   └── [00002] Add Two Number/
-    └── 00101-00200/               # Problems 101-200 and more
+    └── 00101-00200/                # Problems 101-200 and more
 ```
 
 ## 🛠️ Technology Stack
@@ -65,7 +65,7 @@ leetcode/
 3. **Run tests for a specific problem**
 
    ```bash
-   cd "Problems/00001-00100/[00001] Two Sum"
+   cd "Problems/00001-00100/00001 Two Sum"
    dotnet test
    ```
 4. **Run all tests**
@@ -95,7 +95,7 @@ Each problem folder includes a detailed Problem.md with:
 
 ### Easy Problems
 
-- [X] [1. Two Sum](Problems/00001-00100/[00001]%20Two%20Sum/) - Array, Hash Table
+- [X] [1. Two Sum](Problems/00001-00100/00001%20Two%20Sum/) - Array, Hash Table
 
 ### Medium Problems
 
@@ -124,7 +124,7 @@ dotnet test
 dotnet test --verbosity normal
 
 # Run tests for specific problem
-dotnet test "Problems/00001-00100/[00001] Two Sum"
+dotnet test "Problems/00001-00100/00001 Two Sum"
 ```
 
 ## 🎨 Code Style Guidelines
