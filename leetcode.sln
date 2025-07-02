@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00003 Longest Substring Wit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Longest Substring Without Repeating Characters", "Problems\00001-00100\00003 Longest Substring Without Repeating Characters\Longest Substring Without Repeating Characters.csproj", "{CBC32C30-EB7E-40FC-8EA3-3610C3F786F7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00004 Median of Two Sorted Arrays", "00004 Median of Two Sorted Arrays", "{EBA57C09-1BA8-1E5E-4875-98BD44F964F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Median of Two Sorted Arrays", "Problems\00001-00100\00004 Median of Two Sorted Arrays\Median of Two Sorted Arrays.csproj", "{F6A42834-4613-442D-BE3D-D5F5089645AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,18 @@ Global
 		{CBC32C30-EB7E-40FC-8EA3-3610C3F786F7}.Release|x64.Build.0 = Release|Any CPU
 		{CBC32C30-EB7E-40FC-8EA3-3610C3F786F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{CBC32C30-EB7E-40FC-8EA3-3610C3F786F7}.Release|x86.Build.0 = Release|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Debug|x64.Build.0 = Debug|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Release|x64.Build.0 = Release|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6A42834-4613-442D-BE3D-D5F5089645AF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +93,8 @@ Global
 		{3C0B0432-E6CC-4C74-871E-B2124AE461F4} = {201039B3-E9B6-DC77-B271-A055CEED4758}
 		{72D62C4C-97F8-4F31-9914-2D05D6AC3EC5} = {485D1401-5DD6-0FD9-DBA8-4E87E45562BC}
 		{CBC32C30-EB7E-40FC-8EA3-3610C3F786F7} = {72D62C4C-97F8-4F31-9914-2D05D6AC3EC5}
+		{EBA57C09-1BA8-1E5E-4875-98BD44F964F1} = {485D1401-5DD6-0FD9-DBA8-4E87E45562BC}
+		{F6A42834-4613-442D-BE3D-D5F5089645AF} = {EBA57C09-1BA8-1E5E-4875-98BD44F964F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B10647F-46EA-4DB5-AA5F-5015BED21DA2}
