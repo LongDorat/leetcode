@@ -8,7 +8,6 @@ public class UnitTest
 
     public UnitTest()
     {
-        // Simple DI container setup
         var services = new ServiceCollection();
         services.AddTransient<ISolution, Solution>();
 
