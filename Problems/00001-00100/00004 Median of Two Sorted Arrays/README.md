@@ -175,31 +175,50 @@ Instead of creating a merged array, we can use two pointers and stop when we rea
 public double FindMedianSortedArray(int[] nums1, int[] nums2)
 {
     int m = nums1.Length, n = nums2.Length;
-    int total = m + n;
-    int target = total / 2;
-    
-    int i = 0, j = 0, current = 0, previous = 0;
-    
-    for (int count = 0; count <= target; count++)
+    int totalSize = m + n;
+
+    if (m + n == 0)
     {
-        previous = current;
-        
-        if (i < m && (j >= n || nums1[i] <= nums2[j]))
+        return 0.0;
+    }
+
+    if (m == 0)
+    {
+        if (n % 2 == 0)
+            return (nums2[n / 2] + nums2[n / 2 - 1]) / 2.0;
+        else
+            return nums2[n / 2];
+    }
+    else if (n == 0)
+        return FindMedianSortedArray_TwoPointers(nums2, nums1);
+
+    int i = 0, j = 0;
+    int prev = 0, curr = 0;
+
+    for (int count = 0; count <= totalSize / 2; count++)
+    {
+        prev = curr;
+
+        if (i < m && (j >= n || nums1[i] < nums2[j]))
         {
-            current = nums1[i];
+            curr = nums1[i];
             i++;
         }
         else
         {
-            current = nums2[j];
+            curr = nums2[j];
             j++;
         }
     }
-    
-    if (total % 2 == 0)
-        return (previous + current) / 2.0;
+
+    if (totalSize % 2 == 0)
+    {
+        return (prev + curr) / 2.0;
+    }
     else
-        return current;
+    {
+        return curr;
+    }
 }
 ```
 
