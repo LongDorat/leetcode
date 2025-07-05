@@ -87,9 +87,9 @@ Each problem folder includes a detailed README.md with:
 
 | Range           | Completed   | Total         | Progress     |
 | --------------- | ----------- | ------------- | ------------ |
-| 1-100           | 3           | 100           | 3%           |
+| 1-100           | 4           | 100           | 4%           |
 | 101-200         | 0           | 100           | 0%           |
-| **Total** | **3** | **200** | **1.5%** |
+| **Total** | **4** | **200** | **2%** |
 
 ## 🎯 Solved Problems
 
@@ -104,7 +104,7 @@ Each problem folder includes a detailed README.md with:
 
 ### Hard Problems
 
-*Coming soon...*
+- [X] [4. Median of Two Sorted Arrays](Problems/00001-00100/00004%20Median%20of%20Two%20Sorted%20Arrays/) - Array, Binary Search, Divide and Conquer
 
 ## 🧪 Testing
 

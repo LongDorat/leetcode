@@ -1,0 +1,31 @@
+name: Median of Two Sorted Arrays
+
+on:
+  push:
+    paths:
+      - 'Problems/00001-00100/00004 Median of Two Sorted Arrays/**'
+      - '!**.md'
+  pull_request:
+    paths:
+      - 'Problems/00001-00100/00004 Median of Two Sorted Arrays/**'
+      - '!**.md'
+  workflow_dispatch:
+jobs:
+  restore-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: "Problems/00001-00100/00004 Median of Two Sorted Arrays"
+
+      - name: Run tests
+        run: dotnet test
+        working-directory: "Problems/00001-00100/00004 Median of Two Sorted Arrays"
