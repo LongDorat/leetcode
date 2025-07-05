@@ -19,6 +19,7 @@ public class UnitTest
     #region Merging Arrays - Tests
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_BothArraysEmpty_ReturnsZero()
     {
         // Arrange
@@ -33,6 +34,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_OneArrayEmpty_ReturnsMedianOfOtherArray()
     {
         // Arrange
@@ -47,6 +49,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_SecondArrayEmpty_ReturnsMedianOfFirstArray()
     {
         // Arrange
@@ -61,6 +64,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_EvenTotalLength_ReturnsAverageOfMiddleElements()
     {
         // Arrange
@@ -75,6 +79,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_OddTotalLength_ReturnsMiddleElement()
     {
         // Arrange
@@ -89,6 +94,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_AllElementsInFirstArray_ReturnsCorrectMedian()
     {
         // Arrange
@@ -103,6 +109,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_AllElementsInSecondArray_ReturnsCorrectMedian()
     {
         // Arrange
@@ -117,6 +124,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_InterleavedArrays_ReturnsCorrectMedian()
     {
         // Arrange
@@ -131,6 +139,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_DuplicateElements_ReturnsCorrectMedian()
     {
         // Arrange
@@ -145,6 +154,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_NegativeNumbers_ReturnsCorrectMedian()
     {
         // Arrange
@@ -159,6 +169,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_SingleElementArrays_ReturnsAverage()
     {
         // Arrange
@@ -173,6 +184,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_LargeArrays_ReturnsCorrectMedian()
     {
         // Arrange
@@ -187,6 +199,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "MergeArray")]
     public void FindMedianSortedArray_DifferentSizes_ReturnsCorrectMedian()
     {
         // Arrange
@@ -205,6 +218,7 @@ public class UnitTest
     #region Binary Search Tests
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_BothArraysEmpty_ReturnsZero()
     {
         // Arrange
@@ -219,6 +233,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_OneArrayEmpty_ReturnsMedianOfOtherArray()
     {
         // Arrange
@@ -233,6 +248,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_SecondArrayEmpty_ReturnsMedianOfFirstArray()
     {
         // Arrange
@@ -247,6 +263,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_EvenTotalLength_ReturnsAverageOfMiddleElements()
     {
         // Arrange
@@ -261,6 +278,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_OddTotalLength_ReturnsMiddleElement()
     {
         // Arrange
@@ -275,6 +293,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_LargeArrays_ReturnsCorrectMedian()
     {
         // Arrange
@@ -289,6 +308,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_NegativeNumbers_ReturnsCorrectMedian()
     {
         // Arrange
@@ -303,6 +323,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "BinarySearch")]
     public void FindMedianSortedArrayBinarySearch_SingleElementArrays_ReturnsAverage()
     {
         // Arrange
@@ -321,6 +342,7 @@ public class UnitTest
     #region Two Pointers Tests
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_BothArraysEmpty_ReturnsZero()
     {
         // Arrange
@@ -335,6 +357,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_OneArrayEmpty_ReturnsMedianOfOtherArray()
     {
         // Arrange
@@ -349,6 +372,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_SecondArrayEmpty_ReturnsMedianOfFirstArray()
     {
         // Arrange
@@ -363,6 +387,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_EvenTotalLength_ReturnsAverageOfMiddleElements()
     {
         // Arrange
@@ -377,6 +402,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_OddTotalLength_ReturnsMiddleElement()
     {
         // Arrange
@@ -391,6 +417,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_LargeArrays_ReturnsCorrectMedian()
     {
         // Arrange
@@ -405,6 +432,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_NegativeNumbers_ReturnsCorrectMedian()
     {
         // Arrange
@@ -419,6 +447,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_SingleElementArrays_ReturnsAverage()
     {
         // Arrange
@@ -433,6 +462,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_InterleavedArrays_ReturnsCorrectMedian()
     {
         // Arrange
@@ -447,6 +477,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "TwoPointers")]
     public void FindMedianSortedArrayTwoPointers_DuplicateElements_ReturnsCorrectMedian()
     {
         // Arrange
@@ -465,6 +496,7 @@ public class UnitTest
     #region Cross-Method Validation Tests
 
     [Fact]
+    [Trait("Category", "CrossValidation")]
     public void AllMethods_SameInput_ReturnSameResult_Test1()
     {
         // Arrange
@@ -483,6 +515,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "CrossValidation")]
     public void AllMethods_SameInput_ReturnSameResult_Test2()
     {
         // Arrange
@@ -501,6 +534,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait("Category", "CrossValidation")]
     public void AllMethods_SameInput_ReturnSameResult_Test3()
     {
         // Arrange
