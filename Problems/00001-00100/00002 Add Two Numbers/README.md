@@ -100,41 +100,6 @@ public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
 **Pros:** Conceptually simpler
 **Cons:** Integer overflow for large numbers, inefficient
 
-## 🧠 Algorithm Explanation
-
-### Simulation Approach (Step by Step):
-
-1. **Initialize**: Create a dummy head node and a current pointer, set carry to 0
-2. **Iterate**: While there are nodes in either list OR carry exists:
-   - Start with the carry value from the previous iteration
-   - Add the value from l1 if it exists, then move l1 to next
-   - Add the value from l2 if it exists, then move l2 to next
-   - Calculate new carry: `carry = sum / 10`
-   - Create new node with: `sum % 10`
-   - Move current pointer forward
-3. **Return**: Return `head.next` (skip dummy node)
-
-### Key Insights:
-
-- **Reverse order storage**: The least significant digit comes first, making addition natural
-- **Carry handling**: Essential for cases like 5 + 5 = 10 (need to carry 1 to next position)
-- **Different lengths**: Continue processing until both lists are exhausted AND no carry remains
-- **Dummy head**: Simplifies edge case handling and list construction
-
-### Visual Example:
-
-```
-  2 → 4 → 3     (represents 342)
-+ 5 → 6 → 4     (represents 465)
------------
-  7 → 0 → 8     (represents 807)
-
-Step by step:
-Position 0: 2 + 5 = 7, carry = 0
-Position 1: 4 + 6 + 0 = 10, digit = 0, carry = 1  
-Position 2: 3 + 4 + 1 = 8, carry = 0
-```
-
 ## ⚡ Performance Analysis
 
 | Approach    | Time Complexity | Space Complexity | Best Case   | Worst Case  |

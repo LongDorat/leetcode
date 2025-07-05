@@ -97,24 +97,6 @@ public int[] TwoSum(int[] nums, int target)
 **Pros:** Optimal time complexity
 **Cons:** Uses extra space
 
-## 🧠 Algorithm Explanation
-
-### Hash Map Approach (Step by Step):
-
-1. **Initialize**: Create an empty hash map to store `value -> index` mappings
-2. **Iterate**: For each number in the array:
-   - Calculate the complement: `complement = target - current_number`
-   - Check if the complement exists in our hash map
-   - If found: return the indices `[map[complement], current_index]`
-   - If not found: store the current number and its index in the map
-3. **Return**: The problem guarantees a solution exists, so we'll always find it
-
-### Why This Works:
-
-- We're looking for two numbers that sum to the target
-- If we know one number, we can calculate what the other must be
-- The hash map allows us to check if we've seen the required complement in O(1) time
-
 ## ⚡ Performance Analysis
 
 | Approach    | Time Complexity | Space Complexity | Best Case | Worst Case |

@@ -225,25 +225,6 @@ public double FindMedianSortedArray(int[] nums1, int[] nums2)
 **Pros:** No extra space for merged array
 **Cons:** Still O(m + n) time complexity
 
-## 🧠 Algorithm Explanation
-
-### Merge Approach (Step by Step):
-
-1. **Handle Edge Cases**: Check for empty arrays
-2. **Initialize**: Create pointers for both arrays and a merged list
-3. **Merge**: Compare elements from both arrays and add smaller one to merged list
-4. **Add Remaining**: Add any remaining elements from either array
-5. **Find Median**: 
-   - If total length is even: average of two middle elements
-   - If total length is odd: middle element
-
-### Why This Works:
-
-- Merging two sorted arrays maintains the sorted order
-- The median is always at the center of the sorted combined array
-- For even length: median = (middle1 + middle2) / 2
-- For odd length: median = middle element
-
 ## ⚡ Performance Analysis
 
 | Approach | Time Complexity | Space Complexity | Best Case | Worst Case |

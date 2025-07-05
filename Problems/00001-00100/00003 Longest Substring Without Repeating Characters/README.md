@@ -149,43 +149,6 @@ public int LengthOfLongestSubstring(string s)
 **Pros:** Optimal time complexity with single pass
 **Cons:** Uses extra space for the HashMap
 
-## 🧠 Algorithm Explanation
-
-### Optimized Sliding Window Approach (Step by Step):
-
-1. **Initialize**: 
-   - Two pointers: `left` and `right` both starting at 0
-   - A dictionary `charIndex` to store character → last seen index mappings
-   - `longestSubstring` to track the maximum length found
-
-2. **Expand Window**: 
-   - Move `right` pointer through the string
-   - For each character at `right`:
-
-3. **Handle Duplicates**:
-   - Check if the current character exists in our dictionary and its index >= `left`
-   - If yes: move `left` to `lastSeenIndex + 1` (skip the duplicate)
-   - Update the character's index in the dictionary
-
-4. **Update Maximum**:
-   - Calculate current window size: `right - left + 1`
-   - Update `longestSubstring` if current window is larger
-
-5. **Continue**: Move to the next character and repeat
-
-### Why This Works:
-
-- The sliding window technique maintains a valid substring without duplicates
-- When we encounter a duplicate, we efficiently jump the left pointer instead of incrementing by 1
-- The HashMap allows us to find the last occurrence of any character in O(1) time
-- We only need to traverse the string once
-
-### Key Insights:
-
-- **Sliding Window**: Maintain a window `[left, right]` that represents a valid substring
-- **HashMap Optimization**: Skip unnecessary iterations by jumping directly to the position after the duplicate
-- **Single Pass**: Each character is visited at most twice (once by right, once by left)
-
 ## ⚡ Performance Analysis
 
 | Approach                    | Time Complexity | Space Complexity | Best Case | Worst Case |
