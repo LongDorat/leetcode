@@ -1,4 +1,4 @@
-name: Median of Two Sorted Arrays
+name: 00004 Median of Two Sorted Arrays
 
 on:
   push:
