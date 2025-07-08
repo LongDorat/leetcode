@@ -21,7 +21,7 @@ public interface ISolution
     /// Time Complexity: O(m + n),
     /// Space Complexity: O(m + n), where m and n are the lengths of the two arrays.
     /// </remarks>
-    double FindMedianSortedArray_MergeArray(int[] num1, int[] num2);
+    double FindMedianSortedArrays_MergeArray(int[] num1, int[] num2);
 
     /// <summary>
     /// Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
@@ -40,7 +40,7 @@ public interface ISolution
     /// Time Complexity: O(log(min(m, n))),
     /// Space Complexity: O(1), where m and n are the lengths of the two arrays.
     /// </remarks>
-    double FindMedianSortedArray_BinarySearch(int[] nums1, int[] nums2);
+    double FindMedianSortedArrays_BinarySearch(int[] nums1, int[] nums2);
 
     /// <summary>
     /// Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
@@ -59,12 +59,12 @@ public interface ISolution
     /// Time Complexity: O(m + n),
     /// Space Complexity: O(1), where m and n are the lengths of the two arrays.
     /// </remarks>
-    double FindMedianSortedArray_TwoPointers(int[] nums1, int[] nums2);
+    double FindMedianSortedArrays_TwoPointers(int[] nums1, int[] nums2);
 }
 
 public class Solution : ISolution
 {
-    public double FindMedianSortedArray_MergeArray(int[] nums1, int[] nums2)
+    public double FindMedianSortedArrays_MergeArray(int[] nums1, int[] nums2)
     {
         List<int> merged = [];
 
@@ -119,7 +119,7 @@ public class Solution : ISolution
         }
     }
 
-    public double FindMedianSortedArray_BinarySearch(int[] nums1, int[] nums2)
+    public double FindMedianSortedArrays_BinarySearch(int[] nums1, int[] nums2)
     {
         int m = nums1.Length, n = nums2.Length;
 
@@ -148,7 +148,7 @@ public class Solution : ISolution
         // Ensure nums1 is the smaller array
         if (m > n)
         {
-            return FindMedianSortedArray_BinarySearch(nums2, nums1);
+            return FindMedianSortedArrays_BinarySearch(nums2, nums1);
         }
 
         int low = 0, high = m;
@@ -189,7 +189,7 @@ public class Solution : ISolution
         return 0.0; // This line should never be reached if inputs are valid
     }
 
-    public double FindMedianSortedArray_TwoPointers(int[] nums1, int[] nums2)
+    public double FindMedianSortedArrays_TwoPointers(int[] nums1, int[] nums2)
     {
         int m = nums1.Length, n = nums2.Length;
         int totalSize = m + n;
@@ -207,7 +207,7 @@ public class Solution : ISolution
                 return nums2[n / 2];
         }
         else if (n == 0)
-            return FindMedianSortedArray_TwoPointers(nums2, nums1);
+            return FindMedianSortedArrays_TwoPointers(nums2, nums1);
 
         int i = 0, j = 0;
         int prev = 0, curr = 0;
