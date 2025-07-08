@@ -1,8 +1,6 @@
-using Xunit;
+namespace Median_of_Two_Sorted_Arrays.Tests;
 
-namespace Median_of_Two_Sorted_Arrays;
-
-public class CrossValidationTests : BaseUnitTest
+public class CrossValidationTests : TestBase
 {
     [Fact]
     public void AllMethods_SameInput_ReturnSameResult_Test1()

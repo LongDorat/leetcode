@@ -1,8 +1,6 @@
-using Xunit;
+namespace Median_of_Two_Sorted_Arrays.Tests.Unit;
 
-namespace Median_of_Two_Sorted_Arrays;
-
-public class MergeArrayTests : BaseUnitTest
+public class MergeArrayTests : TestBase
 {
     [Fact]
     public void FindMedianSortedArray_BothArraysEmpty_ReturnsZero()
