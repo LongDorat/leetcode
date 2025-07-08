@@ -19,14 +19,25 @@ leetcode/
 ├── leetcode.sln                    # Visual Studio solution file
 ├── README.md                       # This file
 ├── LICENSE                         # Project license
+├── SOLVED.md                       # List of solved problems
 └── Problems/                       # All problem solutions
     ├── 00001-00100/                # Problems 1-100
-    │   ├── [00001] Two Sum/
+    │   ├── 00001 Two Sum/          # Problem structure
     │   │   ├── Solution.cs         # Solution implementation
-    │   │   ├── UnitTest.cs         # Unit tests
     │   │   ├── Two_Sum.csproj      # Project file
-    │   │   └── README.md           # Problem-specific documentation
-    │   └── [00002] Add Two Number/
+    │   │   ├── README.md           # Problem-specific documentation
+    │   │   └── Tests/              # Organized test structure
+    │   │       ├── TestBase.cs     # Base class for tests
+    │   │       ├── CrossValidationTests.cs  # Cross-validation tests
+    │   │       └── Unit/           # Individual implementation tests
+    │   │           ├── BruteForceTests.cs
+    │   │           └── HashMapTests.cs
+    │   ├── 00002 Add Two Numbers/   # Additional problems follow same pattern
+    │   ├── 00003 Longest Substring Without Repeating Characters/
+    │   ├── 00004 Median of Two Sorted Arrays/
+    │   └── Template/               # Template for new problems
+    │       ├── Solution.cs
+    │       └── TestBase.cs
     └── 00101-00200/                # Problems 101-200 and more
 ```
 
@@ -80,7 +91,6 @@ Each problem folder includes a detailed README.md with:
 
 - Problem description and examples
 - Multiple solution approaches with complexity analysis
-- Step-by-step algorithm explanation
 - Test cases and edge cases
 
 ## 📊 Progress Tracking
@@ -100,11 +110,16 @@ For a complete list of solved problems, see **[SOLVED.md](SOLVED.md)**.
 
 ## 🧪 Testing
 
-All solutions include comprehensive unit tests with multiple test cases:
+All solutions include comprehensive unit tests organized in a structured format:
 
-- **Edge cases**: Empty inputs, single elements, boundary values
-- **Normal cases**: Typical problem scenarios
-- **Performance tests**: Large input validation (where applicable)
+### Test Organization
+- **TestBase.cs**: Base class with dependency injection setup for all test classes
+- **CrossValidationTests.cs**: Tests that validate multiple implementations return identical results (for problems with multiple approaches)
+- **Unit/**: Individual test files for each implementation method
+  - Separate test files for different approaches (e.g., BruteForceTests.cs, HashMapTests.cs)
+  - **Edge cases**: Empty inputs, single elements, boundary values
+  - **Normal cases**: Typical problem scenarios
+  - **Performance tests**: Large input validation (where applicable)
 
 ### Running Tests
 
@@ -117,6 +132,12 @@ dotnet test --verbosity normal
 
 # Run tests for specific problem
 dotnet test "Problems/00001-00100/00001 Two Sum"
+
+# Run specific test class (e.g., only BruteForce tests)
+dotnet test --filter "FullyQualifiedName~BruteForceTests"
+
+# Run cross-validation tests only
+dotnet test --filter "FullyQualifiedName~CrossValidationTests"
 ```
 
 ## 🎨 Code Style Guidelines

@@ -1,12 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Median_of_Two_Sorted_Arrays;
+namespace Two_Sum.Tests;
 
-public abstract class BaseUnitTest
+public abstract class TestBase
 {
     protected readonly ISolution _solution;
 
-    protected BaseUnitTest()
+    protected TestBase()
     {
         var services = new ServiceCollection();
         services.AddTransient<ISolution, Solution>();
