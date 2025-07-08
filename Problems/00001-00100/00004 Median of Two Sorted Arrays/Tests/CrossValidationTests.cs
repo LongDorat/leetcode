@@ -10,9 +10,9 @@ public class CrossValidationTests : TestBase
         int[] nums2 = [2, 4];
 
         // Act
-        double mergeResult = _solution.FindMedianSortedArray_MergeArray(nums1, nums2);
-        double binarySearchResult = _solution.FindMedianSortedArray_BinarySearch(nums1, nums2);
-        double twoPointersResult = _solution.FindMedianSortedArray_TwoPointers(nums1, nums2);
+        double mergeResult = _solution.FindMedianSortedArrays_MergeArray(nums1, nums2);
+        double binarySearchResult = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double twoPointersResult = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(mergeResult, binarySearchResult);
@@ -28,9 +28,9 @@ public class CrossValidationTests : TestBase
         int[] nums2 = [6, 7, 8, 9, 10];
 
         // Act
-        double mergeResult = _solution.FindMedianSortedArray_MergeArray(nums1, nums2);
-        double binarySearchResult = _solution.FindMedianSortedArray_BinarySearch(nums1, nums2);
-        double twoPointersResult = _solution.FindMedianSortedArray_TwoPointers(nums1, nums2);
+        double mergeResult = _solution.FindMedianSortedArrays_MergeArray(nums1, nums2);
+        double binarySearchResult = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double twoPointersResult = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(mergeResult, binarySearchResult);
@@ -46,9 +46,9 @@ public class CrossValidationTests : TestBase
         int[] nums2 = [1, 2, 3];
 
         // Act
-        double mergeResult = _solution.FindMedianSortedArray_MergeArray(nums1, nums2);
-        double binarySearchResult = _solution.FindMedianSortedArray_BinarySearch(nums1, nums2);
-        double twoPointersResult = _solution.FindMedianSortedArray_TwoPointers(nums1, nums2);
+        double mergeResult = _solution.FindMedianSortedArrays_MergeArray(nums1, nums2);
+        double binarySearchResult = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double twoPointersResult = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(mergeResult, binarySearchResult);
