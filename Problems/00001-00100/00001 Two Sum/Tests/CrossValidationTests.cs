@@ -11,8 +11,8 @@ public class CrossValidationTests : TestBase
     public void AllMethods_SameInput_ReturnSameResult(int[] nums, int target, int[] expected)
     {
         // Act
-        var bruteForceResult = _solution.BruteForceSolution(nums, target);
-        var hashMapResult = _solution.HashMapSolution(nums, target);
+        var bruteForceResult = _solution.TwoSum_BruteForce(nums, target);
+        var hashMapResult = _solution.TwoSum_Hashmap(nums, target);
 
         // Assert
         Assert.Equal(expected, bruteForceResult);
