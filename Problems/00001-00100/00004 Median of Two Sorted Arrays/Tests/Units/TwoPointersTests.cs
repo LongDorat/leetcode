@@ -1,6 +1,6 @@
-namespace Median_of_Two_Sorted_Arrays.Tests.Unit;
+namespace Median_of_Two_Sorted_Arrays.Tests.Units;
 
-public class BinarySearchTests : TestBase
+public class TwoPointersTests : TestBase
 {
     [Fact]
     public void FindMedianSortedArray_BothArraysEmpty_ReturnsZero()
@@ -10,7 +10,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(0, result);
@@ -24,7 +24,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [1, 2, 3];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(2, result);
@@ -38,7 +38,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(2.5, result);
@@ -52,7 +52,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [2, 4];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(2.5, result);
@@ -66,7 +66,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [3, 4, 5];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(3, result);
@@ -80,7 +80,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [6, 7, 8, 9, 10];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(5.5, result);
@@ -94,7 +94,7 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [-3, 2, 4];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(-0.5, result);
@@ -108,9 +108,37 @@ public class BinarySearchTests : TestBase
         int[] nums2 = [2];
 
         // Act
-        double result = _solution.FindMedianSortedArrays_BinarySearch(nums1, nums2);
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
 
         // Assert
         Assert.Equal(1.5, result);
+    }
+
+    [Fact]
+    public void FindMedianSortedArray_InterleavedArrays_ReturnsCorrectMedian()
+    {
+        // Arrange
+        int[] nums1 = [1, 3, 5];
+        int[] nums2 = [2, 4, 6];
+
+        // Act
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
+
+        // Assert
+        Assert.Equal(3.5, result);
+    }
+
+    [Fact]
+    public void FindMedianSortedArray_DuplicateElements_ReturnsCorrectMedian()
+    {
+        // Arrange
+        int[] nums1 = [1, 2, 2];
+        int[] nums2 = [2, 3, 4];
+
+        // Act
+        double result = _solution.FindMedianSortedArrays_TwoPointers(nums1, nums2);
+
+        // Assert
+        Assert.Equal(2, result);
     }
 }

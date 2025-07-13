@@ -1,4 +1,4 @@
-namespace Median_of_Two_Sorted_Arrays.Tests.Unit;
+namespace Median_of_Two_Sorted_Arrays.Tests.Units;
 
 public class MergeArrayTests : TestBase
 {

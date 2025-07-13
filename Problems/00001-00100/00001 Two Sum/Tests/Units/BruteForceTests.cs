@@ -1,4 +1,4 @@
-namespace Two_Sum.Tests.Unit;
+namespace Two_Sum.Tests.Units;
 
 public class BruteForceTests : TestBase
 {

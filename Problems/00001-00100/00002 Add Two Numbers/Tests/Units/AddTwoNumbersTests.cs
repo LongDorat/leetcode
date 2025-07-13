@@ -1,4 +1,4 @@
-namespace Add_Two_Numbers.Tests.Unit;
+namespace Add_Two_Numbers.Tests.Units;
 
 public class AddTwoNumbersTests : TestBase
 {
