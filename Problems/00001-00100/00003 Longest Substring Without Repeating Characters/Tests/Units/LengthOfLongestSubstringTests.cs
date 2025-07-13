@@ -1,4 +1,4 @@
-namespace Longest_Substring_Without_Repeating_Characters.Tests.Unit;
+namespace Longest_Substring_Without_Repeating_Characters.Tests.Units;
 
 public class LengthOfLongestSubstringTests : TestBase
 {
