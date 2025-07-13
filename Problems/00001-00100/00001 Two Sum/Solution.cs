@@ -9,7 +9,7 @@ public interface ISolution
     /// <param name="target">Target sum</param>
     /// <returns>Indices of the two numbers that sum to target</returns>
     /// <remarks>Time: O(n²), Space: O(1)</remarks>
-    int[] BruteForceSolution(int[] num, int target);
+    int[] TwoSum_BruteForce(int[] num, int target);
     /// <summary>
     /// Finds two numbers that add up to target using hash map for O(n) time complexity.
     /// </summary>
@@ -17,12 +17,12 @@ public interface ISolution
     /// <param name="target">Target sum</param>
     /// <returns>Indices of the two numbers that sum to target</returns>
     /// <remarks>Time: O(n), Space: O(n)</remarks>
-    int[] HashMapSolution(int[] num, int target);
+    int[] TwoSum_Hashmap(int[] num, int target);
 }
 
 public class Solution : ISolution
 {
-    public int[] BruteForceSolution(int[] num, int target)
+    public int[] TwoSum_BruteForce(int[] num, int target)
     {
         for (int i = 0; i < num.Length; i++)
         {
@@ -37,7 +37,7 @@ public class Solution : ISolution
         return [];
     }
 
-    public int[] HashMapSolution(int[] num, int target)
+    public int[] TwoSum_Hashmap(int[] num, int target)
     {
         var map = new Dictionary<int, int>();
         for (int i = 0; i < num.Length; i++)

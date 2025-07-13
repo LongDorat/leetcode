@@ -11,7 +11,7 @@ public class HashMapTests : TestBase
     public void HashMapSolution_ValidInput_ReturnsCorrectIndices(int[] nums, int target, int[] expected)
     {
         // Act
-        var result = _solution.HashMapSolution(nums, target);
+        var result = _solution.TwoSum_Hashmap(nums, target);
 
         // Assert
         Assert.Equal(expected, result);
@@ -25,7 +25,7 @@ public class HashMapTests : TestBase
         int target = 10;
 
         // Act
-        var result = _solution.HashMapSolution(nums, target);
+        var result = _solution.TwoSum_Hashmap(nums, target);
 
         // Assert
         Assert.Empty(result);
@@ -39,7 +39,7 @@ public class HashMapTests : TestBase
         int target = 5;
 
         // Act
-        var result = _solution.HashMapSolution(nums, target);
+        var result = _solution.TwoSum_Hashmap(nums, target);
 
         // Assert
         Assert.Empty(result);
@@ -53,7 +53,7 @@ public class HashMapTests : TestBase
         int target = 5;
 
         // Act
-        var result = _solution.HashMapSolution(nums, target);
+        var result = _solution.TwoSum_Hashmap(nums, target);
 
         // Assert
         Assert.Empty(result);

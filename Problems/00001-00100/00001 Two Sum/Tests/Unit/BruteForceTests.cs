@@ -11,7 +11,7 @@ public class BruteForceTests : TestBase
     public void BruteForceSolution_ValidInput_ReturnsCorrectIndices(int[] nums, int target, int[] expected)
     {
         // Act
-        var result = _solution.BruteForceSolution(nums, target);
+        var result = _solution.TwoSum_BruteForce(nums, target);
 
         // Assert
         Assert.Equal(expected, result);
@@ -25,7 +25,7 @@ public class BruteForceTests : TestBase
         int target = 10;
 
         // Act
-        var result = _solution.BruteForceSolution(nums, target);
+        var result = _solution.TwoSum_BruteForce(nums, target);
 
         // Assert
         Assert.Empty(result);
@@ -39,7 +39,7 @@ public class BruteForceTests : TestBase
         int target = 5;
 
         // Act
-        var result = _solution.BruteForceSolution(nums, target);
+        var result = _solution.TwoSum_BruteForce(nums, target);
 
         // Assert
         Assert.Empty(result);
@@ -53,7 +53,7 @@ public class BruteForceTests : TestBase
         int target = 5;
 
         // Act
-        var result = _solution.BruteForceSolution(nums, target);
+        var result = _solution.TwoSum_BruteForce(nums, target);
 
         // Assert
         Assert.Empty(result);
