@@ -1,0 +1,27 @@
+{
+    "name": "LeetCode .NET 9.0",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csharp",
+                "ms-dotnettools.csdevkit",
+                "Github.copilot",
+                "Github.copilot-chat"
+            ],
+            "settings": {
+                "dotnet.defaultSolution": "leetcode.sln"
+            }
+        }
+    },
+    "postCreateCommand": "dotnet restore",
+    "remoteUser": "vscode",
+    "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ]
+}
