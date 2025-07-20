@@ -1,6 +1,7 @@
 {
-    "name": "LeetCode .NET 9.0",
+    "name": "LeetCode Devcontainer",
     "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-bookworm",
+    "runArgs": ["--name", "${localWorkspaceFolderBasename}-devcontainer"],
     "features": {
         "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/github-cli:1": {}
@@ -10,8 +11,21 @@
             "extensions": [
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.csdevkit",
-                "Github.copilot",
-                "Github.copilot-chat"
+                "aaron-bond.better-comments",
+                "streetsidesoftware.code-spell-checker",
+                "adpyke.codesnap",
+                "usernamehw.errorlens",
+                "ms-vscode.cpptools",
+                "ms-azuretools.vscode-docker",
+                "docker.docker",
+                "jmkrivocapich.drawfolderstructure",
+                "EditorConfig.EditorConfig",
+                "github.vscode-github-actions",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "eamodio.gitlens",
+                "christian-kohler.path-intellisense",
+                "esbenp.prettier-vscode"
             ],
             "settings": {
                 "dotnet.defaultSolution": "leetcode.sln"
