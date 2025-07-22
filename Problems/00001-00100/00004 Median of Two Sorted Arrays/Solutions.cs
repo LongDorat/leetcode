@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Median_of_Two_Sorted_Arrays;
 
-public interface ISolution
+public interface ISolutions
 {
     /// <summary>
     /// Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
@@ -62,7 +62,7 @@ public interface ISolution
     double FindMedianSortedArrays_TwoPointers(int[] nums1, int[] nums2);
 }
 
-public class Solution : ISolution
+public class Solutions : ISolutions
 {
     public double FindMedianSortedArrays_MergeArray(int[] nums1, int[] nums2)
     {
@@ -185,7 +185,7 @@ public class Solution : ISolution
                 low = cut1 + 1;
             }
         }
-        
+
         return 0.0; // This line should never be reached if inputs are valid
     }
 

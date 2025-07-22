@@ -4,14 +4,14 @@ namespace Median_of_Two_Sorted_Arrays.Tests;
 
 public abstract class TestBase
 {
-    protected readonly ISolution _solution;
+    protected readonly ISolutions _solution;
 
     protected TestBase()
     {
         var services = new ServiceCollection();
-        services.AddTransient<ISolution, Solution>();
+        services.AddTransient<ISolutions, Solutions>();
 
         var serviceProvider = services.BuildServiceProvider();
-        _solution = serviceProvider.GetRequiredService<ISolution>();
+        _solution = serviceProvider.GetRequiredService<ISolutions>();
     }
 }

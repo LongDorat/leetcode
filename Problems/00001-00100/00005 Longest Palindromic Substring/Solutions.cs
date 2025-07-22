@@ -1,6 +1,6 @@
 namespace Longest_Palindromic_Substring;
 
-public interface ISolution
+public interface ISolutions
 {
     /// <summary>
     /// Problem description
@@ -14,7 +14,7 @@ public interface ISolution
     string LongestPalindrome_Manacher(string s);
 }
 
-public class Solution : ISolution
+public class Solutions : ISolutions
 {
     public string LongestPalindrome_BruteForce(String s)
     {
@@ -100,7 +100,7 @@ public class Solution : ISolution
             return "";
 
         int start = 0, maxLength = 1;
-        
+
         for (int i = 0; i < s.Length; i++)
         {
             for (int j = 0; j <= 1; j++)

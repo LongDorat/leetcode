@@ -1,6 +1,6 @@
 namespace Longest_Substring_Without_Repeating_Characters;
 
-public interface ISolution
+public interface ISolutions
 {
     /// <summary>
     /// Finds the length of the longest substring without repeating characters.
@@ -17,7 +17,7 @@ public interface ISolution
     int LengthOfLongestSubstring(string s);
 }
 
-public class Solution : ISolution
+public class Solutions : ISolutions
 {
     public int LengthOfLongestSubstring(string s)
     {

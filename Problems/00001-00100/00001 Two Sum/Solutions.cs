@@ -1,6 +1,6 @@
 namespace Two_Sum;
 
-public interface ISolution
+public interface ISolutions
 {
     /// <summary>
     /// Finds two numbers in the array that add up to target using brute force approach.
@@ -20,7 +20,7 @@ public interface ISolution
     int[] TwoSum_Hashmap(int[] num, int target);
 }
 
-public class Solution : ISolution
+public class Solutions : ISolutions
 {
     public int[] TwoSum_BruteForce(int[] num, int target)
     {

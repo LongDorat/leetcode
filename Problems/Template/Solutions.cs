@@ -1,6 +1,6 @@
 namespace ProblemName;
 
-public interface ISolution
+public interface ISolutions
 {
     /// <summary>
     /// Problem description
@@ -11,7 +11,7 @@ public interface ISolution
     ReturnType MethodName(Parameters parameters);
 }
 
-public class Solution
+public class Solutions
 {
     public ReturnType MethodName(Parameters parameters)
     {

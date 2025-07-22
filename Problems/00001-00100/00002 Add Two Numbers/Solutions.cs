@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Add_Two_Numbers;
 
-public interface ISolution
+public interface ISolutions
 {
     /// <summary>
     /// Given two non-empty linked lists representing two non-negative integers, where each node contains a single digit, this method adds the two numbers and returns the sum as a linked list.
@@ -16,13 +16,13 @@ public interface ISolution
     ListNode AddTwoNumbers(ListNode l1, ListNode l2);
 }
 
-public class ListNode(int val = 0, ListNode ?next = null)
+public class ListNode(int val = 0, ListNode? next = null)
 {
     public int val = val;
-    public ListNode ?next = next;
+    public ListNode? next = next;
 }
 
-public class Solution : ISolution
+public class Solutions : ISolutions
 {
     public ListNode AddTwoNumbers(ListNode? l1, ListNode? l2)
     {
