@@ -26,35 +26,42 @@ public class Solutions : ISolutions
 {
     public ListNode AddTwoNumbers(ListNode? l1, ListNode? l2)
     {
+        // Create dummy head to simplify list construction
         ListNode head = new(0);
         ListNode current = head;
-        int carry = 0;
+        int carry = 0; // Track carry-over from addition
 
+        // Continue while there are digits to process or carry exists
         while (l1 != null || l2 != null || carry > 0)
         {
-            int sum = carry;
+            int sum = carry; // Start with any carry from previous addition
 
+            // Add digit from first number if available
             if (l1 != null)
             {
                 sum += l1.val;
-                l1 = l1.next;
+                l1 = l1.next; // Move to next digit
             }
 
+            // Add digit from second number if available
             if (l2 != null)
             {
                 sum += l2.val;
-                l2 = l2.next;
+                l2 = l2.next; // Move to next digit
             }
 
+            // Calculate new carry (1 if sum >= 10, 0 otherwise)
             carry = sum / 10;
+            // Create new node with the ones digit of sum
             current.next = new ListNode(sum % 10);
-            current = current.next;
+            current = current.next; // Move to next position in result
         }
 
+        // Handle edge case where result would be empty (should not happen with valid input)
         if (head.next == null)
         {
             return new ListNode(0);
         }
-        return head.next;
+        return head.next; // Return actual result, skip dummy head
     }
 }
