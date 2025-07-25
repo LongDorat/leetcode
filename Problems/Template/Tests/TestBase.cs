@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Median_of_Two_Sorted_Arrays.Tests;
+namespace ProblemNamespace.Tests;
 
 public abstract class TestBase
 {
