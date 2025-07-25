@@ -6,9 +6,9 @@ This document contains all the LeetCode problems that have been solved in this r
 
 | Range           | Completed   | Total         | Progress     |
 | --------------- | ----------- | ------------- | ------------ |
-| 1-100           | 4           | 100           | 4%           |
-| 101-200         | 0           | 100           | 0%           |
-| **Total** | **4** | **200** | **2%** |
+| 1-100           | 5           | 100           | 5.0% ▓░░░░░░░░░░░░░░░░░░░ |
+| 101-200         | 0           | 100           | 0.0% ░░░░░░░░░░░░░░░░░░░░ |
+| **Total** | **5** | **200** | **2.5% ▓░░░░░░░░░░░░░░░░░░░** |
 
 ## Problems 1-100
 
@@ -19,6 +19,7 @@ This document contains all the LeetCode problems that have been solved in this r
 | 3 | [Longest Substring Without Repeating Characters](Problems/00001-00100/00003%20Longest%20Substring%20Without%20Repeating%20Characters/) | Hash Table, String, Sliding Window | Medium | ✅ Solved |
 | 4 | [Median of Two Sorted Arrays](Problems/00001-00100/00004%20Median%20of%20Two%20Sorted%20Arrays/) | Array, Binary Search, Divide and Conquer | Hard | ✅ Solved |
 | 5 | [Longest Palindromic Substring](Problems/00001-00100/00005%20Longest%20Palindromic%20Substring/) | String, Dynamic Programming | Medium | 🔄 In Progress |
+| 6 | [Zigzag Conversion](Problems/00001-00100/00006%20Zigzag%20Conversion/) | String | Medium | ✅ Solved |
 
 ## Problems 101-200
 
