@@ -36,8 +36,6 @@ leetcode/
     │   ├── 00003 Longest Substring Without Repeating Characters/
     │   ├── 00004 Median of Two Sorted Arrays/
     │   └── Template/               # Template for new problems
-    │       ├── Solution.cs
-    │       └── TestBase.cs
     └── 00101-00200/                # Problems 101-200 and more
 ```
 
