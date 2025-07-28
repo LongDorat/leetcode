@@ -83,14 +83,6 @@ leetcode/
    dotnet test
    ```
 
-### Problems
-
-Each problem folder includes a detailed README.md with:
-
-- Problem description and examples
-- Multiple solution approaches with complexity analysis
-- Test cases and edge cases
-
 ## 🎯 Solved Problems
 
 For a complete list of solved problems, see **[SOLVED.md](SOLVED.md)**.
