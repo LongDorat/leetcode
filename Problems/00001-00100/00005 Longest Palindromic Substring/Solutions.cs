@@ -9,7 +9,7 @@ public interface ISolutions
     /// <param name="s">The input string to search for palindromes</param>
     /// <returns>The longest palindromic substring found</returns>
     /// <remarks>Time Complexity: O(n³), Space Complexity: O(1)</remarks>
-    string LongestPalindrome_BruteForce(String s);
+    string LongestPalindrome_BruteForce(string s);
 
     /// <summary>
     /// Finds the longest palindromic substring using dynamic programming.
@@ -34,7 +34,7 @@ public interface ISolutions
 
 public class Solutions : ISolutions
 {
-    public string LongestPalindrome_BruteForce(String s)
+    public string LongestPalindrome_BruteForce(string s)
     {
         // Handle empty string edge case
         if (String.IsNullOrEmpty(s))
