@@ -129,9 +129,8 @@ public class Solutions : ISolutions
                 // Expand outwards while characters match and indices are valid
                 while (low >= 0 && high < s.Length && s[low] == s[high])
                 {
-                    // TODO: fix the small bug where the condition is checked twice
                     // If current palindrome is longer than previous max
-                    if (s[low] == s[high] && high - low + 1 > maxLength)
+                    if (high - low + 1 > maxLength)
                     {
                         start = low;
                         maxLength = high - low + 1;
