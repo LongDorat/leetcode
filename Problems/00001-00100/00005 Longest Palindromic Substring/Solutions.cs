@@ -3,14 +3,32 @@ namespace Longest_Palindromic_Substring;
 public interface ISolutions
 {
     /// <summary>
-    /// Problem description
+    /// Finds the longest palindromic substring using brute force approach.
+    /// Checks all possible substrings and validates each one for palindrome property.
     /// </summary>
-    /// <param name="parameters">Parameters for the method</param>
-    /// <returns>Return type description</returns>
-    /// <remarks>Time Complexity: O(?), Space Complexity: O(?)</remarks>
+    /// <param name="s">The input string to search for palindromes</param>
+    /// <returns>The longest palindromic substring found</returns>
+    /// <remarks>Time Complexity: O(n³), Space Complexity: O(1)</remarks>
     string LongestPalindrome_BruteForce(String s);
+
+    /// <summary>
+    /// Finds the longest palindromic substring using dynamic programming.
+    /// Uses a 2D table to store palindrome information and builds solution bottom-up.
+    /// </summary>
+    /// <param name="s">The input string to search for palindromes</param>
+    /// <returns>The longest palindromic substring found</returns>
+    /// <remarks>Time Complexity: O(n²), Space Complexity: O(n²)</remarks>
     string LongestPalindrome_Dynamic(string s);
+
+    /// <summary>
+    /// Finds the longest palindromic substring by expanding around centers.
+    /// For each possible center, expands outwards while characters match.
+    /// </summary>
+    /// <param name="s">The input string to search for palindromes</param>
+    /// <returns>The longest palindromic substring found</returns>
+    /// <remarks>Time Complexity: O(n²), Space Complexity: O(1)</remarks>
     string LongestPalindrome_Expansion(string s);
+
     string LongestPalindrome_Manacher(string s);
 }
 
