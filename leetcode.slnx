@@ -1,0 +1,27 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Problems/" />
+  <Folder Name="/Problems/00001-00100/" />
+  <Folder Name="/Problems/00001-00100/00001 Two Sum/">
+    <Project Path="Problems/00001-00100/00001 Two Sum/Two_Sum.csproj" />
+  </Folder>
+  <Folder Name="/Problems/00001-00100/00002 Add Two Numbers/">
+    <Project Path="Problems/00001-00100/00002 Add Two Numbers/Add_Two_Numbers.csproj" />
+  </Folder>
+  <Folder Name="/Problems/00001-00100/00003 Longest Substring Without Repeating Characters/">
+    <Project Path="Problems/00001-00100/00003 Longest Substring Without Repeating Characters/Longest Substring Without Repeating Characters.csproj" />
+  </Folder>
+  <Folder Name="/Problems/00001-00100/00004 Median of Two Sorted Arrays/">
+    <Project Path="Problems/00001-00100/00004 Median of Two Sorted Arrays/Median of Two Sorted Arrays.csproj" />
+  </Folder>
+  <Folder Name="/Problems/00001-00100/00005 Longest Palindromic Substring/">
+    <Project Path="Problems/00001-00100/00005 Longest Palindromic Substring/Longest Palindromic Substring.csproj" />
+  </Folder>
+  <Folder Name="/Problems/00001-00100/00006 Zigzag Conversion/">
+    <Project Path="Problems/00001-00100/00006 Zigzag Conversion/Zigzag Conversion.csproj" />
+  </Folder>
+</Solution>
