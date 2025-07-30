@@ -24,4 +24,7 @@
   <Folder Name="/Problems/00001-00100/00006 Zigzag Conversion/">
     <Project Path="Problems/00001-00100/00006 Zigzag Conversion/Zigzag Conversion.csproj" />
   </Folder>
+  <Folder Name="/Problems/00001-00100/00007 Reverse Integer/">
+    <Project Path="Problems/00001-00100/00007 Reverse Integer/Reverse Integer.csproj" />
+  </Folder>
 </Solution>
