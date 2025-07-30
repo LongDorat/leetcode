@@ -78,4 +78,4 @@ public ReturnType MethodName(Parameters parameters)
 
 - **Difficulty:** [Difficulty Level]
 - **Tags:** [Tags, e.g., Array, Hash Table]
-- **Source:** [Source of the problem]
+- **Source:** [Problem Number. Problem Name](https://leetcode.com/problems/problem-name/)
