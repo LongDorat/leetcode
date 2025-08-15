@@ -39,22 +39,22 @@ public class Solutions : ISolutions
             index += 1;
 
         int result = 0;
-        while (index < s.Length && s[index] >= '0' && s[index] <= '9' &&
-        result <= int.MaxValue & -result >= int.MinValue)
+        while (index < s.Length && s[index] >= '0' && s[index] <= '9')
         {
-            if (result > int.MaxValue / 10 ||
-            result == int.MaxValue / 10 && s[index] - '7' > 0)
+            int digit = s[index] - '0';
+
+            if (!isNegative && (result > int.MaxValue / 10 ||
+            result == int.MaxValue / 10 && digit > 7))
             {
                 return int.MaxValue;
             }
-            else if (isNegative && -result > int.MinValue / 10 ||
-            -result == int.MinValue / 10 && s[index] - '8' > 0)
+            else if (isNegative && (result > -(int.MinValue / 10) ||
+            result == -(int.MinValue / 10) && digit > 8))
             {
                 return int.MinValue;
             }
 
-            result = result * 10 + (s[index] - '0');
-
+            result = result * 10 + digit;
             index++;
         }
 

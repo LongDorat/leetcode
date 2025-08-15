@@ -40,7 +40,8 @@ public class MyAtoiTests : TestBase
     }
 
     [Theory]
-    [InlineData("2147483647", int.MaxValue)]
+    [InlineData("2147483647", int.MaxValue)] // Max int value
+    [InlineData("2147483648", int.MaxValue)] // Overflow
     [InlineData("99999999999999999999", int.MaxValue)] // Large overflow
     public void MyAtoi_PositiveOverflow_ReturnsMaxValue(string input, int expected)
     {
