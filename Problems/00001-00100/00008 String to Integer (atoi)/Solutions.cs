@@ -1,8 +1,3 @@
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
-
 namespace String_to_Integer;
 
 public interface ISolutions
