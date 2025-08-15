@@ -30,6 +30,7 @@ public class Solutions : ISolutions
 
         int index = 0;
         bool isNegative = false;
+
         if (s[index] == '-')
         {
             isNegative = true;
@@ -58,6 +59,6 @@ public class Solutions : ISolutions
             index++;
         }
 
-        return result *= isNegative ? -1 : 1;
+        return isNegative ? -result : result;
     }
 }
