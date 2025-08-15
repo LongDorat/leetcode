@@ -1,34 +1,52 @@
 {
-    "name": "LeetCode Devcontainer",
-    "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-bookworm",
-    "runArgs": [
-        "--name",
-        "${localWorkspaceFolderBasename}-devcontainer"
-    ],
-    "features": {
-        "ghcr.io/devcontainers/features/git:1": {},
-        "ghcr.io/devcontainers/features/github-cli:1": {}
-    },
+    "name": "LeetCode Solutions Development",
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "runArgs": ["--name=leetcode-dev"],
+    
     "customizations": {
         "vscode": {
             "extensions": [
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.csdevkit",
-                "GitHub.copilot",
-                "GitHub.copilot-chat",
-                "EditorConfig.EditorConfig",
-                "yzhang.markdown-all-in-one"
+                "ms-dotnettools.vscode-dotnet-runtime",
+                "ms-vscode.vscode-json",
+                "formulahendry.code-runner",
+                "ms-vscode.powershell",
+                "streetsidesoftware.code-spell-checker"
             ],
+            
+            // Configure VS Code settings
             "settings": {
-                "dotnet.defaultSolution": "leetcode.sln",
-                "editor.formatOnSave": true,
-                "editor.tabSize": 4,
-                "editor.insertSpaces": true,
-                "settingsSync.enabled": true,
-                "settingsSync.keybindingsPerPlatform": false
+                "dotnet.defaultSolution": "disable",
+                "omnisharp.enableEditorConfigSupport": true,
+                "omnisharp.enableRoslynAnalyzers": true,
+                "files.exclude": {
+                    "**/bin": true,
+                    "**/obj": true
+                },
+                "terminal.integrated.defaultProfile.linux": "bash"
             }
         }
     },
-    "postCreateCommand": "dotnet restore",
-    "remoteUser": "vscode"
+
+    "features": {
+        "ghcr.io/devcontainers/features/dotnet:latest": {
+            "version": "9.0",
+            "additionalVersions": "8.0"
+        }
+    },
+
+    "forwardPorts": [
+        5000,
+        5001
+    ],
+
+    "postCreateCommand": "dotnet --version && echo 'Development environment is ready!'",
+
+    "remoteUser": "codespace",
+
+    "containerEnv": {
+        "DOTNET_ROOT": "/usr/share/dotnet",
+        "PATH": "${containerEnv:PATH}:/usr/share/dotnet"
+    }
 }
