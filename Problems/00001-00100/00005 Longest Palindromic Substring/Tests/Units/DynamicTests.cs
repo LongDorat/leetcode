@@ -170,7 +170,7 @@ public class DynamicTests : TestBase
     private static bool IsPalindrome(string s)
     {
         if (string.IsNullOrEmpty(s)) return true;
-        
+
         int left = 0, right = s.Length - 1;
         while (left < right)
         {

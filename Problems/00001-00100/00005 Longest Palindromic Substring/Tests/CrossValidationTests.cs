@@ -18,7 +18,7 @@ public class CrossValidationTests : TestBase
         Assert.Equal(bruteForceResult.Length, dynamicResult.Length);
         Assert.Equal(bruteForceResult.Length, expansionResult.Length);
         Assert.Equal(bruteForceResult.Length, manacherResult.Length);
-        
+
         // All results should be valid palindromes of the same length
         Assert.True(IsPalindrome(bruteForceResult));
         Assert.True(IsPalindrome(dynamicResult));
@@ -42,7 +42,7 @@ public class CrossValidationTests : TestBase
         Assert.Equal(bruteForceResult.Length, dynamicResult.Length);
         Assert.Equal(bruteForceResult.Length, expansionResult.Length);
         Assert.Equal(bruteForceResult.Length, manacherResult.Length);
-        
+
         // All results should be valid palindromes of the same length
         Assert.True(IsPalindrome(bruteForceResult));
         Assert.True(IsPalindrome(dynamicResult));
@@ -105,7 +105,7 @@ public class CrossValidationTests : TestBase
         Assert.Equal(bruteForceResult.Length, expansionResult.Length);
         Assert.Equal(bruteForceResult.Length, manacherResult.Length);
         Assert.Equal(1, bruteForceResult.Length); // Should be single character
-        
+
         // All results should be valid palindromes of the same length
         Assert.True(IsPalindrome(bruteForceResult));
         Assert.True(IsPalindrome(dynamicResult));
@@ -116,7 +116,7 @@ public class CrossValidationTests : TestBase
     private static bool IsPalindrome(string s)
     {
         if (string.IsNullOrEmpty(s)) return false;
-        
+
         int left = 0, right = s.Length - 1;
         while (left < right)
         {

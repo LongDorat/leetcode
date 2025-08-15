@@ -53,7 +53,7 @@ public class Solutions : ISolutions
 
         return result.ToString();
     }
-    
+
     public string Convert_Calculate(string s, int numRows)
     {
         if (numRows == 1 || string.IsNullOrEmpty(s)) return s;
