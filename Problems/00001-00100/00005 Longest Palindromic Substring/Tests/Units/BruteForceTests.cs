@@ -143,7 +143,7 @@ public class BruteForceTests : TestBase
     private static bool IsPalindrome(string s)
     {
         if (string.IsNullOrEmpty(s)) return false;
-        
+
         int left = 0, right = s.Length - 1;
         while (left < right)
         {
