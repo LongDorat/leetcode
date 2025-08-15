@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TemplateProject.Tests;
+namespace TwoSum.Tests;
 
 public abstract class Test
 {
@@ -11,7 +11,7 @@ public abstract class Test
         var serviceCollection = new ServiceCollection();
 
         serviceCollection.AddScoped<ISolutions, Solutions>();
-        
+
         var serviceProvider = serviceCollection.BuildServiceProvider();
         _solutions = serviceProvider.GetRequiredService<ISolutions>();
     }

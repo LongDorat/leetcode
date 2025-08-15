@@ -20,7 +20,7 @@ This repository contains my solutions to various LeetCode problems, organized by
 
 | Language | Status | Solutions Count | Template Available |
 |----------|--------|----------------|-------------------|
-| ![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=c-sharp&logoColor=white) | ✅ Active | Coming Soon | ✅ |
+| ![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=c-sharp&logoColor=white) | ✅ Active | 1 | ✅ |
 | ![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white) | ❌ Not Available | - | ❌ |
 | ![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white) | ❌ Not Available | - | ❌ |
 
@@ -29,6 +29,7 @@ This repository contains my solutions to various LeetCode problems, organized by
 ```
 📦 leetcode
 ├── 📂 src/                    # Solution implementations
+│   └── 📂 csharp/             # C# solutions
 ├── 📂 templates/              # Project templates for each language
 ├── 📄 README.md               # This file
 └── 📄 LICENSE                 # Project license
@@ -110,17 +111,22 @@ Once your environment is set up, you can quickly create a new problem solution:
 
 2. **Copy the template to a new problem directory:**
    ```bash
-   # Create new problem directory in src
-   mkdir -p ../../src/csharp/00001-two-sum
-   cp -r . ../../src/csharp/00001-two-sum/
-   cd ../../src/csharp/00001-two-sum/
+   # Create new problem directory in src (example: problem 26)
+   mkdir -p ../../src/csharp/00026-remove-duplicates
+   cp -r . ../../src/csharp/00026-remove-duplicates/
+   cd ../../src/csharp/00026-remove-duplicates/
    ```
 
-3. **Restore dependencies and run initial tests:**
+3. **Initialize a new xUnit project and adding dependency**
    ```bash
-   dotnet restore
-   dotnet build
-   dotnet test
+   dotnet new xunit -o ".\" -n "ProblemName" -f net9.0
+   dotnet add package Microsoft.Extensions.DependencyInjection
+   ```
+
+4. **Add the new project into the solution file**
+   ```bash
+   cd src/csharp
+   dotnet sln add /00001-two-sum/TwoSum.csproj
    ```
 
 4. **Start coding:**
@@ -174,16 +180,13 @@ dotnet test --verbosity normal
 dotnet test --filter "TestMethodName"
 ```
 
-## 📊 Problem Categories
+## 📊 Solutions Overview
 
-| Category | Count | Difficulty Breakdown |
-|----------|-------|---------------------|
-| 🔢 **Array** | Coming Soon | Easy: 0, Medium: 0, Hard: 0 |
-| 🔗 **Linked List** | Coming Soon | Easy: 0, Medium: 0, Hard: 0 |
-| 🌳 **Tree** | Coming Soon | Easy: 0, Medium: 0, Hard: 0 |
-| 📈 **Dynamic Programming** | Coming Soon | Easy: 0, Medium: 0, Hard: 0 |
-| 🔍 **Two Pointers** | Coming Soon | Easy: 0, Medium: 0, Hard: 0 |
-| 📊 **Graph** | Coming Soon | Easy: 0, Medium: 0, Hard: 0 |
+📋 **[View All Solutions →](SOLUTIONS.md)**
+
+**Quick Info:**
+- 🎯 **Total Problems Solved:** 1
+- 🟢 **Easy:** 1 | 🟡 **Medium:** 0 | 🔴 **Hard:** 0
 
 ## 🤝 Contributing
 
