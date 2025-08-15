@@ -4,7 +4,7 @@ namespace TemplateProject.Tests;
 
 public abstract class Test
 {
-    private readonly ISolutions _solutions;
+    protected readonly ISolutions _solutions;
 
     public Test()
     {
