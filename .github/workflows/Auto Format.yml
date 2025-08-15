@@ -1,0 +1,55 @@
+name: Auto Format
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  format-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git line endings
+        run: |
+          git config core.autocrlf true
+          git config core.eol crlf
+          
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          
+      - name: Install dotnet format
+        run: dotnet tool install -g dotnet-format
+        
+      - name: Format code
+        run: dotnet format --no-restore --verbosity normal
+        
+      - name: Commit and push changes if any
+        id: commit_changes
+        run: |
+          if [[ $(git status --porcelain) ]]; then
+            echo "Changes detected after formatting. Committing..."
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git add .
+            git commit -m "chore: Auto format code"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+            echo "pushed=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes after formatting."
+            echo "pushed=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Fail if changes were pushed
+        if: steps.commit_changes.outputs.pushed == 'true'
+        run: |
+          echo "Code was not formatted correctly. Please rebase your branch to include the changes."
+          exit 1
