@@ -3,14 +3,10 @@ name: Changed Problems Check
 on:
   push:
     branches: [main, feature/problem/**]
-    paths:
-      - "src/csharp/**"
-      - "!**.md"
+    paths:  ["src/csharp/**", "!**.md", "!.gitignore", "!.editorconfig" ]
   pull_request:
     branches: [main]
-    paths:
-      - "src/csharp/**"
-      - "!**.md"
+    paths:  ["src/csharp/**", "!**.md", "!.gitignore", "!.editorconfig" ]
   workflow_dispatch:
 
 jobs:

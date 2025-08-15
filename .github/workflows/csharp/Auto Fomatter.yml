@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
-    paths: [ "src/csharp/**", "!**.md" ]
+    paths: [ "src/csharp/**", "!**.md", "!.gitignore", "!.editorconfig" ]
   workflow_dispatch:
 
 permissions:
