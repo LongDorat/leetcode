@@ -50,7 +50,7 @@ public class Solutions : ISolutions
                 return int.MaxValue;
             }
             else if (isNegative && (result > -(int.MinValue / 10) ||
-            result == -(int.MinValue / 10) && digit > 8))
+            result == -(int.MinValue / 10) && digit >= 8))
             {
                 return int.MinValue;
             }

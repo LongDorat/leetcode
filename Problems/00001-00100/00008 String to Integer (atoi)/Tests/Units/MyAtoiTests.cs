@@ -54,7 +54,7 @@ public class MyAtoiTests : TestBase
 
     [Theory]
     [InlineData("-2147483648", int.MinValue)] // Min int value
-    [InlineData("-2147483649", int.MinValue)] // Underflow to min
+    [InlineData("-21474836482", int.MinValue)] // Underflow to min
     [InlineData("-99999999999999999999", int.MinValue)] // Large underflow
     public void MyAtoi_NegativeUnderflow_ReturnsMinValue(string input, int expected)
     {
