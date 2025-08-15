@@ -1,0 +1,6 @@
+# Universal ignore
+
+# Secrets
+*.env
+*.key
+*.secrets
