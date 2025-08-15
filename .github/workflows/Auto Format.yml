@@ -39,17 +39,17 @@ jobs:
       - name: Commit and push changes if any
         id: commit_changes
         run: |
-          if [[ $(git status --porcelain) ]]; then
-            echo "Changes detected after formatting. Committing..."
+          git add -- '*.cs' '*.csproj' '*.sln' '*.json'
+          if git diff --cached --quiet; then
+            echo "No formatting changes detected."
+            echo "pushed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Formatting changes detected. Committing..."
             git config --global user.name 'github-actions[bot]'
             git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-            git add .
             git commit -m "chore: auto format code"
             git push origin HEAD:${{ github.event.pull_request.head.ref }}
             echo "pushed=true" >> $GITHUB_OUTPUT
-          else
-            echo "No changes after formatting."
-            echo "pushed=false" >> $GITHUB_OUTPUT
           fi
           
       - name: Fail if changes were pushed
