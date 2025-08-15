@@ -195,12 +195,12 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ### Contributing Guidelines
 
 1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/problem/language/...`)
+2. **Create a feature branch** (`git checkout -b feature/problem number/language (e.g feature/00001/cs)`)
 3. **Follow the existing code style** and template structure
 4. **Add comprehensive tests** for your solution
 5. **Update documentation** if necessary
 6. **Commit your changes** (`git commit -am 'feat: add solution for problem...'`)
-7. **Push to the branch** (`git push origin feature/problem/language/...`)
+7. **Push to the branch** (`git push origin feature/problem number/language`)
 8. **Create a Pull Request**
 
 ### Code Style Guidelines
