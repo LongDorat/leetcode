@@ -39,7 +39,7 @@ jobs:
       - name: Commit and push changes if any
         id: commit_changes
         run: |
-          git add -- '*.cs' '*.csproj' '*.sln' '*.json'
+          git add -- '*.cs' '*.csproj' '*.slnx'
           if git diff --cached --quiet; then
             echo "No formatting changes detected."
             echo "pushed=false" >> $GITHUB_OUTPUT
