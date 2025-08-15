@@ -1,4 +1,4 @@
-name: Changed Problems Check
+name: C# Solutions Test
 
 on:
   push:
