@@ -44,7 +44,7 @@ jobs:
             git config --global user.name 'github-actions[bot]'
             git config --global user.email 'github-actions[bot]@users.noreply.github.com'
             git add .
-            git commit -m "chore: Auto format code"
+            git commit -m "chore: auto format code"
             git push origin HEAD:${{ github.event.pull_request.head.ref }}
             echo "pushed=true" >> $GITHUB_OUTPUT
           else
