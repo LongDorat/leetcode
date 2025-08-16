@@ -46,7 +46,7 @@ jobs:
           AllowAllParametersOfDeclarationOnNextLine: false
           AllowShortBlocksOnASingleLine: false
           AllowShortCaseLabelsOnASingleLine: false
-          AllowShortFunctionsOnASingleLine: Inline
+          AllowShortFunctionsOnASingleLine: None
           AllowShortIfStatementsOnASingleLine: false
           AllowShortLoopsOnASingleLine: false
           AlwaysBreakAfterReturnType: None
@@ -55,7 +55,7 @@ jobs:
           BinPackArguments: false
           BinPackParameters: false
           BreakBeforeBinaryOperators: None
-          BreakBeforeBraces: Attach
+          BreakBeforeBraces: Allman
           BreakBeforeTernaryOperators: true
           BreakConstructorInitializers: BeforeColon
           BreakStringLiterals: true
