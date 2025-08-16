@@ -2,7 +2,7 @@ name: C++ Solutions Test
 
 on:
   push:
-    branches: [main, feature/**/cpp, feature/**/cpp/**]
+    branches: [main, problem/**/cpp, problem/**/cpp/**]
     paths: ["src/cpp/**", "!**.md", "!.gitignore", "!.editorconfig"]
   pull_request:
     branches: [main]

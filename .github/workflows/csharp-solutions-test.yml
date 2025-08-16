@@ -2,7 +2,7 @@ name: C# Solutions Test
 
 on:
   push:
-    branches: [main, feature/**/cs, feature/**/cs/**]
+    branches: [main, problem/**/cs, problem/**/cs/**]
     paths:  ["src/csharp/**", "!**.md", "!.gitignore", "!.editorconfig" ]
   pull_request:
     branches: [main]
