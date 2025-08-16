@@ -1,4 +1,4 @@
-#include <iostream>
+#include "Solutions.hpp"
 
 int SolutionName(int args)
 {
