@@ -16,4 +16,4 @@
 
 | # | Problem | Difficulty | Topics | Availability |
 |---|---------|------------|--------|-------------|
-| 1 | [Two Sum](https://leetcode.com/problems/two-sum/) | 🟢 Easy | Array, Hash Table | [C#](src/csharp/00001-two-sum/) |
+| 1 | [Two Sum](https://leetcode.com/problems/two-sum/) | 🟢 Easy | Array, Hash Table | [C#](src/csharp/00001-two-sum/), [C++](src/cpp/00001-two-sum/) |

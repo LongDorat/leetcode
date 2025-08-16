@@ -1,0 +1,79 @@
+name: C++ Solutions Test
+
+on:
+  push:
+    branches: [main, feature/**/cpp, feature/**/cpp/**]
+    paths: ["src/cpp/**", "!**.md", "!.gitignore", "!.editorconfig"]
+  pull_request:
+    branches: [main]
+    paths: ["src/cpp/**", "!**.md", "!.gitignore", "!.editorconfig"]
+  workflow_dispatch:
+
+jobs:
+  get-changed-paths:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD^..HEAD src/cpp/ | grep -E '.*\.(cpp|hpp|h|cc|cxx|c\+\+)|.*CMakeLists\.txt')
+          echo "Changed files: $CHANGED_FILES"
+          {
+            echo "changed_files<<EOF"
+            echo "$CHANGED_FILES"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create problem paths matrix
+        id: set-matrix
+        run: |
+          if [ -n "${{ steps.changed-files.outputs.changed_files }}" ]; then
+            PROBLEM_PATHS=$(echo "${{ steps.changed-files.outputs.changed_files }}" | while IFS= read -r file; do
+              if [ -n "$file" ]; then
+                problem_dir=$(echo "$file" | sed -n 's|^\(src/cpp/[^/]*\)/.*|\1|p')
+                if [ -n "$problem_dir" ] && [ "$problem_dir" != "src/cpp/common" ]; then
+                  echo "$problem_dir"
+                fi
+              fi
+            done | sort | uniq | jq -R -s -c 'split("\n") | map(select(. != ""))')
+          else
+            PROBLEM_PATHS="[]"
+          fi
+          echo "Problem paths: $PROBLEM_PATHS"
+          echo "matrix={\"problem_paths\":${PROBLEM_PATHS}}" >> $GITHUB_OUTPUT
+
+  build-and-test:
+    needs: get-changed-paths
+    runs-on: ubuntu-latest
+    if: ${{ needs.get-changed-paths.outputs.matrix != '{"problem_paths":[]}' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.get-changed-paths.outputs.matrix) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+        working-directory: ${{ matrix.problem_paths }}
+
+      - name: Build
+        run: cmake --build build --config Release
+        working-directory: ${{ matrix.problem_paths }}
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure -C Release
+        working-directory: ${{ matrix.problem_paths }}

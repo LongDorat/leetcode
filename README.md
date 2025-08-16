@@ -21,16 +21,19 @@ This repository contains my solutions to various LeetCode problems, organized by
 | Language | Status | Solutions Count | Template Available |
 |----------|--------|----------------|-------------------|
 | ![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=c-sharp&logoColor=white) | ✅ Active | 1 | ✅ |
+| ![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white) | ✅ Active | 1 | ✅ |
 | ![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white) | ❌ Not Available | - | ❌ |
-| ![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white) | ❌ Not Available | - | ❌ |
 
 ## 📁 Project Structure
 
 ```
 📦 leetcode
 ├── 📂 src/                    # Solution implementations
-│   └── 📂 csharp/             # C# solutions
+│   ├── 📂 csharp/             # C# solutions
+│   └── 📂 cpp/                # C++ solutions
 ├── 📂 templates/              # Project templates for each language
+│   ├── 📂 csharp/             # C# project template
+│   └── 📂 cpp/                # C++ project template
 ├── 📄 README.md               # This file
 └── 📄 LICENSE                 # Project license
 ```
@@ -52,6 +55,14 @@ Choose one of the following setup methods:
 **For C# Development:**
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or later
 - Visual Studio 2022 / VS Code with C# extension
+
+**For C++ Development:**
+- **CMake 3.14** or later
+- **C++17 compatible compiler:**
+  - **Windows:** Visual Studio 2019+ or MinGW-w64
+  - **Linux:** GCC 7+ or Clang 5+
+  - **macOS:** Xcode 10+ or Clang 5+
+- **clang-format** (optional, for code formatting)
 
 ### 🔧 Setup Instructions
 
@@ -87,7 +98,7 @@ This method provides a consistent, pre-configured development environment with a
    cd leetcode
    ```
 
-2. **Navigate to the C# directory:**
+2. **Navigate to a language's directory:**
    ```bash
    cd src/csharp/
    ```
@@ -96,6 +107,10 @@ This method provides a consistent, pre-configured development environment with a
    ```bash
    # For C#
    dotnet --version
+   
+   # For C++
+   cmake --version
+   g++ --version  # or clang++ --version on macOS
    ```
 
 ### 🚀 Quick Start - Creating Your First Solution
@@ -120,6 +135,8 @@ Once your environment is set up, you can quickly create a new problem solution:
 3. **Initialize a new xUnit project and adding dependency**
    ```bash
    dotnet new xunit -o ".\" -n "ProblemName" -f net9.0
+   ```
+   ```bash
    dotnet add package Microsoft.Extensions.DependencyInjection
    ```
 
@@ -129,9 +146,40 @@ Once your environment is set up, you can quickly create a new problem solution:
    dotnet sln add /00001-two-sum/TwoSum.csproj
    ```
 
-4. **Start coding:**
+5. **Start coding:**
    - Edit `Solutions.cs` to implement your solution
    - Update `Tests/SolutionMethodTest.cs` to add test cases
+   - Modify `README.md` with problem details
+
+#### Using C++ Template
+
+1. **Navigate to the C++ templates directory:**
+   ```bash
+   cd templates/cpp/
+   ```
+
+2. **Copy the template to a new problem directory:**
+   ```bash
+   # Create new problem directory in src (example: problem 26)
+   mkdir -p ../../src/cpp/00026-remove-duplicates
+   cp -r . ../../src/cpp/00026-remove-duplicates/
+   cd ../../src/cpp/00026-remove-duplicates/
+   ```
+
+3. **Configure and build the project:**
+   ```bash
+   # Configure CMake (creates build directory)
+   cmake -B build -DCMAKE_BUILD_TYPE=Debug
+   
+   # Build the project
+   cmake --build build
+   ```
+
+4. **Start coding:**
+   - Edit `Solutions.hpp` to declare your solution functions
+   - Edit `Solutions.cpp` to implement your solutions
+   - Update test files in `Tests/` directory to add test cases
+   - Modify `CMakeLists.txt` at the `add_executable` section to include your new test files
    - Modify `README.md` with problem details
 
 ## 📝 Solution Template Usage
@@ -164,8 +212,51 @@ public class Solutions : ISolutions
 }
 ```
 
+### C++ Template
+
+Each C++ solution follows this structure:
+
+**Solutions.hpp:**
+```cpp
+#ifndef SOLUTIONS_HPP
+#define SOLUTIONS_HPP
+
+#include "IncludeLib.hpp"
+
+/**
+ * @brief Problem description summary
+ * @param input Input parameter description
+ * @return Return value description
+ * @note Time Complexity: O(n) | Space Complexity: O(1)
+ */
+int SolutionName(int args);
+
+#endif
+```
+
+**Solutions.cpp:**
+```cpp
+#include "Solutions.hpp"
+
+int SolutionName(int args) {
+    // Implementation here
+    return true;
+}
+```
+
+**Test Structure:**
+```cpp
+#include <gtest/gtest.h>
+#include "../Solutions.hpp"
+
+TEST(SolutionNameTest, BasicFunctionality) {
+    EXPECT_EQ(expected_result, SolutionName(input));
+}
+```
+
 ### Running Tests
 
+#### C# Tests
 ```bash
 # Navigate to solution directory
 cd src/csharp/problem-name/
@@ -178,6 +269,24 @@ dotnet test --verbosity normal
 
 # Run specific test
 dotnet test --filter "TestMethodName"
+```
+
+#### C++ Tests
+```bash
+# Navigate to solution directory
+cd src/cpp/problem-name/
+
+# Build the project (if not already built)
+cmake --build build
+
+# Run all tests
+ctest --test-dir build --output-on-failure
+
+# Run specific test
+ctest --test-dir build -R "TestName" --output-on-failure
+
+# Run tests with verbose output
+ctest --test-dir build --output-on-failure --verbose
 ```
 
 ## 📊 Solutions Overview
@@ -206,7 +315,9 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ### Code Style Guidelines
 
 - **Use meaningful variable names** and add comments for complex logic
-- **Follow C# formatting conventions** (There is a check workflow for C# formatting)
+- **Follow language-specific formatting conventions:**
+  - **C#:** There is an automated formatting workflow
+  - **C++:** There is an automated clang-format workflow
 - **Include time and space complexity analysis** in code comments
 - **Write comprehensive unit tests** covering edge cases
 - **Document your approach** in the README template
@@ -216,6 +327,9 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 - [LeetCode Official Website](https://leetcode.com/)
 - [Algorithm Complexity Cheat Sheet](https://www.bigocheatsheet.com/)
 - [C# Documentation](https://docs.microsoft.com/en-us/dotnet/csharp/)
+- [C++ Reference](https://en.cppreference.com/)
+- [GoogleTest Documentation](https://google.github.io/googletest/)
+- [CMake Documentation](https://cmake.org/documentation/)
 
 ## 📄 License
 
