@@ -83,7 +83,7 @@ jobs:
           SpacesInCStyleCastParentheses: false
           SpacesInParentheses: false
           SpacesInSquareBrackets: false
-          Standard: Cpp17
+          Standard: c++17
           EOF
           
       - name: Format C++ code
