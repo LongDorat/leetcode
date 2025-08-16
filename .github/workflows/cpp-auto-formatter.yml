@@ -1,0 +1,116 @@
+name: C++ Auto Formatter
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+    paths: ["src/cpp/**", "!**.md", "!.gitignore", "!.editorconfig"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+          
+      - name: Create .clang-format config
+        run: |
+          cat > .clang-format << 'EOF'
+          ---
+          Language: Cpp
+          BasedOnStyle: Google
+          IndentWidth: 4
+          TabWidth: 4
+          UseTab: Never
+          ColumnLimit: 100
+          AccessModifierOffset: -2
+          AlignAfterOpenBracket: Align
+          AlignConsecutiveAssignments: false
+          AlignConsecutiveDeclarations: false
+          AlignOperands: true
+          AlignTrailingComments: true
+          AllowAllParametersOfDeclarationOnNextLine: false
+          AllowShortBlocksOnASingleLine: false
+          AllowShortCaseLabelsOnASingleLine: false
+          AllowShortFunctionsOnASingleLine: Inline
+          AllowShortIfStatementsOnASingleLine: false
+          AllowShortLoopsOnASingleLine: false
+          AlwaysBreakAfterReturnType: None
+          AlwaysBreakBeforeMultilineStrings: false
+          AlwaysBreakTemplateDeclarations: true
+          BinPackArguments: false
+          BinPackParameters: false
+          BreakBeforeBinaryOperators: None
+          BreakBeforeBraces: Attach
+          BreakBeforeTernaryOperators: true
+          BreakConstructorInitializers: BeforeColon
+          BreakStringLiterals: true
+          Cpp11BracedListStyle: true
+          DerivePointerAlignment: false
+          DisableFormat: false
+          ForEachMacros: ['foreach', 'Q_FOREACH', 'BOOST_FOREACH']
+          IncludeBlocks: Preserve
+          IndentCaseLabels: true
+          IndentWrappedFunctionNames: false
+          KeepEmptyLinesAtTheStartOfBlocks: false
+          MaxEmptyLinesToKeep: 1
+          NamespaceIndentation: None
+          PointerAlignment: Left
+          ReflowComments: true
+          SortIncludes: true
+          SpaceAfterCStyleCast: false
+          SpaceAfterTemplateKeyword: true
+          SpaceBeforeAssignmentOperators: true
+          SpaceBeforeParens: ControlStatements
+          SpaceInEmptyParentheses: false
+          SpacesBeforeTrailingComments: 2
+          SpacesInAngles: false
+          SpacesInContainerLiterals: true
+          SpacesInCStyleCastParentheses: false
+          SpacesInParentheses: false
+          SpacesInSquareBrackets: false
+          Standard: Cpp17
+          EOF
+          
+      - name: Format C++ code
+        run: |
+          find src/cpp -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" -o -name "*.cxx" -o -name "*.c++" | \
+          while read file; do
+            echo "Formatting $file"
+            clang-format -i "$file"
+          done
+        
+      - name: Commit and push changes if any
+        id: commit_changes
+        run: |
+          git add src/cpp/
+          if git diff --cached --quiet; then
+            echo "No formatting changes detected."
+            echo "pushed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Formatting changes detected. Committing..."
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git commit -m "chore: auto format C++ code"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+            echo "pushed=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Warning if changes were pushed
+        if: steps.commit_changes.outputs.pushed == 'true'
+        run: |
+          echo "::warning::C++ code was not formatted correctly. Auto-formatting has been applied. Please rebase your branch to include the changes."
