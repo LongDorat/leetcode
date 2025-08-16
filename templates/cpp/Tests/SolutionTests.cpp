@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-TEST(ProblemName, SolutionName)
+TEST(ProblemName_CaseType, SolutionName)
 {
     EXPECT_TRUE(true);
 }
