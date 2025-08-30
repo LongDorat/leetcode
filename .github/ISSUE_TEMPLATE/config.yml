@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/longdorat/leetcode/blob/main/README.md
+    about: Check our comprehensive documentation and setup guide
+  - name: 🤝 Contributing Guidelines
+    url: https://github.com/longdorat/leetcode/blob/main/docs/CONTRIBUTING.md
+    about: Learn how to contribute to this project
+  - name: 💬 Discussions
+    url: https://github.com/longdorat/leetcode/discussions
+    about: Join community discussions about algorithms, solutions, and best practices
