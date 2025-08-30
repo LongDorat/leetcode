@@ -27,7 +27,7 @@ Before contributing, ensure you have:
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/longdorat/leetcode.git
+   git clone https://github.com/YOUR_USERNAME/leetcode.git
    cd leetcode
    ```
 3. **Run the setup script**:
@@ -46,18 +46,6 @@ Before contributing, ensure you have:
 
 ### Language-Specific Standards
 
-#### Python
-- Follow [PEP 8](https://pep8.org/) style guidelines
-- Use type hints where appropriate
-- Maximum line length: 88 characters (Black formatter standard)
-- Use descriptive variable names: `left_pointer` instead of `l`
-
-#### Java
-- Follow [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
-- Use camelCase for variables and methods
-- Use PascalCase for class names
-- Include proper access modifiers
-
 #### C/C++
 - Follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
 - Use snake_case for variables and functions
@@ -70,152 +58,13 @@ Before contributing, ensure you have:
 - Use camelCase for private fields and local variables
 - Use meaningful names and avoid abbreviations
 
-### Naming Conventions
-
-Follow language-specific naming conventions with these examples:
-
-#### Python
-```python
-# Variables and functions: snake_case
-target_sum = 9
-left_pointer = 0
-right_pointer = len(nums) - 1
-
-def two_sum(nums, target):
-    pass
-
-def find_longest_substring(s):
-    pass
-
-# Classes: PascalCase
-class ListNode:
-    pass
-
-class TreeNode:
-    pass
-
-# Constants: SCREAMING_SNAKE_CASE
-MAX_INT_VALUE = 2**31 - 1
-DEFAULT_CAPACITY = 16
-```
-
-#### Java
-```java
-// Variables and methods: camelCase
-int targetSum = 9;
-int leftPointer = 0;
-int rightPointer = nums.length - 1;
-
-public int[] twoSum(int[] nums, int target) {
-    // Implementation
-}
-
-public String findLongestSubstring(String s) {
-    // Implementation
-}
-
-// Classes: PascalCase
-public class ListNode {
-    int val;
-    ListNode next;
-}
-
-public class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-}
-
-// Constants: SCREAMING_SNAKE_CASE
-public static final int MAX_INT_VALUE = Integer.MAX_VALUE;
-public static final int DEFAULT_CAPACITY = 16;
-```
-
-#### C/C++
-```cpp
-// Variables and functions: snake_case
-int target_sum = 9;
-int left_pointer = 0;
-int right_pointer = nums.size() - 1;
-
-std::vector<int> two_sum(std::vector<int>& nums, int target) {
-    // Implementation
-}
-
-std::string find_longest_substring(std::string s) {
-    // Implementation
-}
-
-// Structs/Classes: PascalCase
-struct ListNode {
-    int val;
-    ListNode* next;
-};
-
-class TreeNode {
-public:
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-};
-
-// Constants: SCREAMING_SNAKE_CASE or kConstantName
-const int MAX_INT_VALUE = INT_MAX;
-const int DEFAULT_CAPACITY = 16;
-```
-
-#### C#
-```csharp
-// Local variables and parameters: camelCase
-int targetSum = 9;
-int leftPointer = 0;
-int rightPointer = nums.Length - 1;
-
-// Public methods: PascalCase
-public int[] TwoSum(int[] nums, int target) 
-{
-    // Implementation
-}
-
-public string FindLongestSubstring(string s) 
-{
-    // Implementation
-}
-
-// Classes: PascalCase
-public class ListNode 
-{
-    public int Val { get; set; }
-    public ListNode Next { get; set; }
-}
-
-public class TreeNode 
-{
-    public int Val { get; set; }
-    public TreeNode Left { get; set; }
-    public TreeNode Right { get; set; }
-}
-
-// Constants: PascalCase
-public const int MaxIntValue = int.MaxValue;
-public const int DefaultCapacity = 16;
-
-// Private fields: camelCase with underscore prefix
-private int _targetSum;
-private readonly List<int> _results;
-```
-
-#### File Naming Conventions
+### File Naming Conventions
 
 - **Problem directories**: Use kebab-case: `0001-two-sum`, `0042-trapping-rain-water`
 - **Solution files**: 
-  - Python: `solution.py`
-  - Java: `Solution.java`
   - C++: `solution.cpp`
   - C#: `Solution.cs`
 - **Test files**: 
-  - Python: `solution_test.py`
-  - Java: `SolutionTest.java`
   - C++: `solution_test.cpp`
   - C#: `SolutionTest.cs`
 
@@ -251,7 +100,7 @@ problems/<language>/<number>-<name>/
 
 ## 🧪 Testing Requirements
 
-### Comprehensive Test Coverage
+### Test Coverage
 
 Your solution must include:
 
