@@ -18,8 +18,8 @@ Welcome to the LeetCode Solutions Collection! We appreciate your interest in con
 ### Prerequisites
 
 Before contributing, ensure you have:
-- Completed the [Quick Start setup](../README.md#quick-start) from the main README
-- Familiarized yourself with the [project structure](../README.md#project-structure)
+- Completed the [Quick Start setup](../README.md#-quick-start) from the main README
+- Familiarized yourself with the [project structure](../README.md#-project-structure)
 - Read through existing solutions to understand our standards
 
 ### Setting Up Your Development Environment

@@ -24,4 +24,4 @@ Total   ░░░░░░░░░░░░░░░░░░░░ 0%    (0/31
 
 ## 🚀 Want to Contribute?
 
-Found a better solution or want to add a new problem? Check out our [Contributing Guidelines](contributing.md)!
+Found a better solution or want to add a new problem? Check out our [Contributing Guidelines](CONTRIBUTING.md)!

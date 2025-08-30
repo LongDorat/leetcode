@@ -162,7 +162,7 @@ leetcode/
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](docs/contributing.md) for details on:
+Contributions are welcome! Please read our [Contributing Guidelines](docs/CONTRIBUTING.md) for details on:
 
 - Code style and standards
 - How to submit solutions
