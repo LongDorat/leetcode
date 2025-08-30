@@ -204,7 +204,7 @@ We welcome requests for:
 
 ## 🎯 Quality Standards
 
-> **Before your code is merged**, it will be reviewed by automatic workflows to ensure compliance with quality standards, including testing and formatting.
+**Before your code is merged**, it will be reviewed by automatic workflows to ensure compliance with quality standards, including testing and formatting.  
 
 Thank you for contributing to the LeetCode Solutions Collection! Your efforts help create a valuable resource for the programming community. 🎉
 
