@@ -1,6 +1,7 @@
 namespace Template.Tests;
 
-// Declare the tests for one method in the Solution class. Other methods will have their own test file that are similarly structured.
+// Declare the tests for one method in the Solution class. 
+// Other methods will have their own test file that are similarly structured.
 public class ExampleMethodTests
 {
     private readonly Solution _solution = new Solution();
