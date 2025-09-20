@@ -9,6 +9,7 @@ on:
     branches: [ main ]
     paths:
       - 'problems/csharp/**'
+  workflow_dispatch:
 
 jobs:
   detect-changes:
