@@ -45,6 +45,32 @@ function PascalCaseConverter {
     return $pascalCase
 }
 
+function Update-Template {
+    param([string]$destinationPath, [string]$projectName)
+
+    try {
+        # Get all files in the destination path recursively
+        $files = Get-ChildItem -Path $destinationPath -File -Recurse
+
+        foreach ($file in $files) {
+            # Read the file content
+            $content = Get-Content -Path $file.FullName -Raw -ErrorAction SilentlyContinue
+            
+            if ($content -and $content.Contains("Template")) {
+                # Replace all occurrences of "Template" with the project name
+                $updatedContent = $content -replace "Template", $projectName
+                
+                # Write the updated content back to the file
+                Set-Content -Path $file.FullName -Value $updatedContent -NoNewline
+                Write-Host "[SUCCESS] Updated template placeholders in $($file.Name)" -ForegroundColor Green
+            }
+        }
+    }
+    catch {
+        Write-Host "[ERROR] Failed to update template placeholders: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
 #endregion
 
 #region Cache Management Functions
@@ -121,6 +147,9 @@ function CSharpOperations{
 
     # Create a new xUnit project
     dotnet new xunit -n $projectName -o $destinationPath -f net9.0 | Out-Null
+
+    # Update template placeholders in copied files
+    Update-Template -destinationPath $destinationPath -projectName $projectName
 
     # Add the project into the solution
     $solutionPath = "$PSScriptRoot\..\problems\CSharp\LeetCode.slnx"
