@@ -14,7 +14,7 @@ function Get-PaddedProblemId {
     return $problemNumber.PadLeft($paddingLength, '0')
 }
 
-function Normalize-PathForRegistry {
+function Convert-PathForRegistry {
     param([string]$path)
     # Convert to forward slashes for cross-platform registry storage
     return $path -replace '\\', '/'
@@ -352,7 +352,7 @@ function Main {
         $problemData.stat.question__title 
     }
 
-    Add-ProblemToRegistry -problemNumber $problemNumber -language $language -titleSlug $titleSlug -questionTitle $problemData.stat.question__title -projectName $projectName -folderPath (Normalize-PathForRegistry -path $destinationPath)
+    Add-ProblemToRegistry -problemNumber $problemNumber -language $language -titleSlug $titleSlug -questionTitle $problemData.stat.question__title -projectName $projectName -folderPath (Convert-PathForRegistry -path $destinationPath)
 
     Write-Host "`n[SUCCESS] Problem $problemNumber ($($problemData.stat.question__title)) has been successfully created for $language!" -ForegroundColor Green
 }
