@@ -244,6 +244,7 @@ function CSharpOperations{
 
     # Update template placeholders in copied files
     Update-Template -destinationPath $destinationPath -projectName $projectName
+    Remove-Item -Path (Join-Path $destinationPath "UnitTest1.cs") -ErrorAction SilentlyContinue
 
     # Add the project into the solution
     $solutionPath = Join-Path $PSScriptRoot ".." "problems" "csharp" "LeetCode.slnx"
