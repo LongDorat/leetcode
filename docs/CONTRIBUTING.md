@@ -77,8 +77,8 @@ Optional compilers/runtimes based on the languages you plan to contribute in:
 The easiest way to add a new problem is using the provided PowerShell script:
 
 ```powershell
-cd scripts
-.\new-problem.ps1
+cd leetcode
+.\scripts\new-problem.ps1
 ```
 
 **The script will:**
