@@ -1,0 +1,12 @@
+name: Checks
+
+on:
+  push:
+    branches: [ main, develop, problem/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  csharp-tests:
+    name: C# tests
+    uses: ./.github/workflows/csharp-tester.yml
