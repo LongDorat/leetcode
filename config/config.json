@@ -1,0 +1,15 @@
+{
+    "problemIdPadding":4,
+    "supportedLanguages":[
+        "csharp",
+        "java"
+    ],
+    "problemPath":{
+        "csharp":"./problems/csharp",
+        "java":"./problems/java"
+    },
+    "templatePath":{
+        "csharp":"./templates/csharp",
+        "java":"./templates/java"
+    }
+}
