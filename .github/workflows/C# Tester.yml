@@ -1,0 +1,108 @@
+name: C# Tester
+
+on:
+  push:
+    branches: [ main, problem/* ]
+    paths:
+      - 'problems/csharp/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'problems/csharp/**'
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed-projects: ${{ steps.changes.outputs.changed-projects }}
+      has-changes: ${{ steps.changes.outputs.has-changes }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Detect changed problem directories
+      id: changes
+      run: |
+        # Get the list of changed files
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+        else
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})
+        fi
+        
+        echo "Changed files:"
+        echo "$CHANGED_FILES"
+        
+        # Filter for C# problem directories and extract unique project directories
+        CHANGED_PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/csharp/" | sed 's|^problems/csharp/||' | cut -d'/' -f1 | sort -u | grep -v "^$" | grep -v "^LeetCode.slnx$" | grep -v "^\.gitignore$" || true)
+        
+        echo "Changed projects:"
+        echo "$CHANGED_PROJECTS"
+        
+        if [ -n "$CHANGED_PROJECTS" ]; then
+          # Convert to JSON array format
+          PROJECTS_JSON=$(echo "$CHANGED_PROJECTS" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "changed-projects=$PROJECTS_JSON" >> $GITHUB_OUTPUT
+          echo "has-changes=true" >> $GITHUB_OUTPUT
+          echo "Projects to test: $PROJECTS_JSON"
+        else
+          echo "changed-projects=[]" >> $GITHUB_OUTPUT
+          echo "has-changes=false" >> $GITHUB_OUTPUT
+          echo "No C# projects changed"
+        fi
+
+  test-changed-projects:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-changes == 'true'
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.detect-changes.outputs.changed-projects) }}
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    
+    - name: Restore dependencies for ${{ matrix.project }}
+      run: dotnet restore problems/csharp/${{ matrix.project }}/*.csproj
+    
+    - name: Build ${{ matrix.project }}
+      run: dotnet build problems/csharp/${{ matrix.project }}/*.csproj --no-restore
+    
+    - name: Test ${{ matrix.project }}
+      run: dotnet test problems/csharp/${{ matrix.project }}/*.csproj --no-build --verbosity normal --logger trx --results-directory TestResults
+    
+    - name: Upload test results for ${{ matrix.project }}
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.project }}
+        path: TestResults/*.trx
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: [detect-changes, test-changed-projects]
+    if: always()
+    steps:
+    - name: Test Summary
+      run: |
+        if [ "${{ needs.detect-changes.outputs.has-changes }}" == "true" ]; then
+          echo "✅ Tests completed for changed C# projects"
+          echo "Projects tested: ${{ needs.detect-changes.outputs.changed-projects }}"
+          if [ "${{ needs.test-changed-projects.result }}" == "success" ]; then
+            echo "🎉 All tests passed!"
+          elif [ "${{ needs.test-changed-projects.result }}" == "failure" ]; then
+            echo "❌ Some tests failed"
+            exit 1
+          else
+            echo "⚠️ Tests were skipped or cancelled"
+          fi
+        else
+          echo "ℹ️ No C# projects were changed - skipping tests"
+        fi
