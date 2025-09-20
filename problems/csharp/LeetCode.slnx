@@ -1,1 +1,5 @@
-<Solution />
+<Solution>
+  <Folder Name="/0001-two-sum/">
+    <Project Path="0001-two-sum/TwoSum.csproj" />
+  </Folder>
+</Solution>
