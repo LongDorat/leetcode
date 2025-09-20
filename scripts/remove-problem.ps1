@@ -1,8 +1,8 @@
 # Global Variables
-$configPath = "$PSScriptRoot\..\config\config.json"
+$configPath = Join-Path $PSScriptRoot ".." "config" "config.json"
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $API_URL = "https://leetcode.com/api/problems/all/"
-$cacheFile = "$PSScriptRoot\..\cache\problems.json"
+$cacheFile = Join-Path $PSScriptRoot ".." "cache" "problems.json"
 
 #region Helper Functions
 
@@ -147,7 +147,7 @@ function CSharpRemovalOperations {
     $csprojPath = Join-Path $problemFolderPath "$projectName.csproj"
 
     # Remove the project from the solution if it exists
-    $solutionPath = "$PSScriptRoot\..\problems\CSharp\LeetCode.slnx"
+    $solutionPath = Join-Path $PSScriptRoot ".." "problems" "CSharp" "LeetCode.slnx"
     
     if ((Test-Path $csprojPath) -and (Test-Path $solutionPath)) {
         try {
@@ -198,7 +198,7 @@ function Main {
 
     # Prompt user for programming language
     while ($true) {
-        $language = Read-Host "Enter the programming language (e.g., 'csharp', 'java')"
+        $language = Read-Host "Enter the programming language (e.g., 'csharp')"
         if ($language) {
             $languageFound = $false
             foreach ($lang in $config.supportedLanguages) {
@@ -253,7 +253,6 @@ function Main {
         Write-Host "[WORKING] Performing language-specific cleanup for $language..." -ForegroundColor Yellow
         switch ($language.ToLower()) {
             'csharp' { CSharpRemovalOperations -problemFolderPath $problemFolderPath -questionTitle $problemData.stat.question__title }
-            'java'   { Write-Host "[INFO] Java removal operations not yet implemented." -ForegroundColor Blue }
             default  { Write-Host "[INFO] No specific cleanup operations defined for language $language." -ForegroundColor Blue }
         }
     }

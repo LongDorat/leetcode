@@ -1,8 +1,8 @@
 # Global Variables
-$configPath = "$PSScriptRoot\..\config\config.json"
+$configPath = Join-Path $PSScriptRoot ".." "config" "config.json"
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $API_URL = "https://leetcode.com/api/problems/all/"
-$cacheFile = "$PSScriptRoot\..\cache\problems.json"
+$cacheFile = Join-Path $PSScriptRoot ".." "cache" "problems.json"
 
 #region Helper Functions
 
@@ -152,7 +152,7 @@ function CSharpOperations{
     Update-Template -destinationPath $destinationPath -projectName $projectName
 
     # Add the project into the solution
-    $solutionPath = "$PSScriptRoot\..\problems\CSharp\LeetCode.slnx"
+    $solutionPath = Join-Path $PSScriptRoot ".." "problems" "CSharp" "LeetCode.slnx"
     dotnet sln $solutionPath add $csprojPath | Out-Null
 
     Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
@@ -182,7 +182,7 @@ function Main {
 
     # Prompt user for programming language
     while ($true) {
-        $language = Read-Host "Enter the programming language (e.g., 'csharp', 'java')"
+        $language = Read-Host "Enter the programming language (e.g., 'csharp')"
         if ($language) {
             $languageFound = $false
             foreach ($lang in $config.supportedLanguages) {
@@ -230,7 +230,6 @@ function Main {
     Write-Host "[WORKING] Performing language-specific operations for $language..." -ForegroundColor Yellow
     switch ($language.ToLower()) {
         'csharp' { CSharpOperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
-        'java'   { Write-Host "[INFO] Java operations not yet implemented." -ForegroundColor Blue }
         default  { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
     }
 }
