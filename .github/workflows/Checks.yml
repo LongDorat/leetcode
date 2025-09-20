@@ -8,4 +8,5 @@ on:
 
 jobs:
   csharp-tests:
-    uses: ./.github/workflows/C# Tester.yml
+    name: C# tests
+    uses: ./.github/workflows/csharp-tester.yml
