@@ -227,7 +227,7 @@ public class SolutionTests
     [Theory]
     [InlineData(new int[] {2, 7, 11, 15}, 9, new int[] {0, 1})]
     [InlineData(new int[] {3, 2, 4}, 6, new int[] {1, 2})]
-    public void TwoSum_ValidInputs_ReturnsCorrectIndices(int[] nums, int target, int[] expected)
+    public void ValidInputs_ReturnsCorrectIndices(int[] nums, int target, int[] expected)
     {
         // Act
         var result = _solution.TwoSum(nums, target);
@@ -262,8 +262,6 @@ dotnet format
 ---
 
 ## 🧪 Testing Guidelines
-
-### Universal Testing Principles
 
 ### Universal Testing Principles
 
