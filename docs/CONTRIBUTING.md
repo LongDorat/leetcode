@@ -133,11 +133,10 @@ public class Solution
 {
     /// <summary>
     /// Brief description of what the method does.
-    /// Time Complexity: O(...)
-    /// Space Complexity: O(...)
     /// </summary>
     /// <param name="paramName">Parameter description</param>
     /// <returns>Return value description</returns>
+    /// <remarks> Time Complexity: O(n), Space Complexity: O(1) </remarks>
     public ReturnType MethodName(ParameterType paramName)
     {
         // Implementation here
