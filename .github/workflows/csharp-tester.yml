@@ -1,14 +1,10 @@
 name: C# Tester
 
 on:
-  push:
-    branches: [ main, problem/* ]
-    paths:
-      - 'problems/csharp/**'
   pull_request:
-    branches: [ main ]
-    paths:
-      - 'problems/csharp/**'
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop, problem/* ]
   workflow_dispatch:
 
 jobs:

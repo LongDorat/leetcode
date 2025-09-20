@@ -4,9 +4,9 @@
         "csharp"
     ],
     "problemPath":{
-        "csharp":"./problems/csharp"
+        "csharp":"problems/csharp"
     },
     "templatePath":{
-        "csharp":"./templates/csharp"
+        "csharp":"templates/csharp"
     }
 }
