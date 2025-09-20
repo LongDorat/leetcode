@@ -125,6 +125,8 @@ function CSharpOperations{
     # Add the project into the solution
     $solutionPath = "$PSScriptRoot\..\problems\CSharp\LeetCode.slnx"
     dotnet sln $solutionPath add $csprojPath | Out-Null
+
+    Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
 }
 
 #endregion
