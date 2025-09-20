@@ -240,16 +240,21 @@ function CSharpOperations{
     $csprojPath = Join-Path $destinationPath "$projectName.csproj"
 
     # Create a new xUnit project
+    Write-Host "[WORKING] Setting up C# project..." -ForegroundColor Yellow
     dotnet new xunit -n $projectName -o $destinationPath -f net9.0 | Out-Null
+    Remove-Item -Path (Join-Path $destinationPath "UnitTest1.cs") -ErrorAction SilentlyContinue
+    Write-Host "[SUCCESS] Created C# xUnit project $projectName" -ForegroundColor Green
 
     # Update template placeholders in copied files
+    Write-Host "[WORKING] Updating template placeholders..." -ForegroundColor Yellow
     Update-Template -destinationPath $destinationPath -projectName $projectName
-    Remove-Item -Path (Join-Path $destinationPath "UnitTest1.cs") -ErrorAction SilentlyContinue
+    Write-Host "[SUCCESS] Updated template placeholders." -ForegroundColor Green
 
     # Add the project into the solution
+    Write-Host "[WORKING] Adding project to solution..." -ForegroundColor Yellow
     $solutionPath = Join-Path $PSScriptRoot ".." "problems" "csharp" "LeetCode.slnx"
     dotnet sln $solutionPath add $csprojPath | Out-Null
-
+    Write-Host "[SUCCESS] Added project $projectName to solution." -ForegroundColor Green
     Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
 }
 
@@ -258,7 +263,7 @@ function CSharpOperations{
 function Main {
     Write-Host "[WORKING] Creating new problem..." -ForegroundColor Yellow
     Update-ProblemCache
-    Write-Host "[SUCCESS] Problem cache is ready.`n" -ForegroundColor Green
+    Write-Host "[SUCCESS] Problem cache is ready." -ForegroundColor Green
 
     # Prompt user for problem number
     while ($true) {
@@ -321,14 +326,14 @@ function Main {
     $titleSlug = $problemData.stat.question__title_slug
     $problemFolderName = Build-ProblemFolderName -problemNumber $problemNumber -titleSlug $titleSlug
 
-    $destinationPath = Join-Path $config.problemPath.$language $problemFolderName
+    $destinationPath = Join-Path $PSScriptRoot ".." $config.problemPath.$language $problemFolderName
     if (Test-Path $destinationPath) {
         Write-Host "[ERROR] Problem folder already exists at $destinationPath" -ForegroundColor Red
         return
     }
     else {
         New-Item -ItemType Directory -Path $destinationPath | Out-Null
-        Copy-TemplateFiles -templatePath $config.templatePath.$language -destinationPath $destinationPath
+        Copy-TemplateFiles -templatePath (Join-Path $PSScriptRoot ".." $config.templatePath.$language) -destinationPath $destinationPath
         Write-Host "[SUCCESS] Created problem at $destinationPath" -ForegroundColor Green
     }
 
