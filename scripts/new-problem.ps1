@@ -3,6 +3,7 @@ $configPath = Join-Path $PSScriptRoot ".." "config" "config.json"
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $API_URL = "https://leetcode.com/api/problems/all/"
 $cacheFile = Join-Path $PSScriptRoot ".." "cache" "problems.json"
+$registryFile = Join-Path $PSScriptRoot ".." "config" "problems.json"
 
 #region Helper Functions
 
@@ -11,6 +12,12 @@ function Get-PaddedProblemId {
     
     $paddingLength = $config.problemIdPadding ?? 4  # Default to 4 digits
     return $problemNumber.PadLeft($paddingLength, '0')
+}
+
+function Normalize-PathForRegistry {
+    param([string]$path)
+    # Convert to forward slashes for cross-platform registry storage
+    return $path -replace '\\', '/'
 }
 
 function Build-ProblemFolderName {
@@ -68,6 +75,93 @@ function Update-Template {
     }
     catch {
         Write-Host "[ERROR] Failed to update template placeholders: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+#endregion
+
+#region Registry Management Functions
+
+function Initialize-ProblemRegistry {
+    if (-not (Test-Path $registryFile)) {
+        Write-Host "[INFO] Creating problem registry file..." -ForegroundColor Blue
+        $initialRegistry = @{}
+        foreach ($lang in $config.supportedLanguages) {
+            $initialRegistry[$lang] = @()
+        }
+        $initialRegistry | ConvertTo-Json -Depth 10 | Set-Content $registryFile
+    }
+}
+
+function Add-ProblemToRegistry {
+    param(
+        [string]$problemNumber,
+        [string]$language,
+        [string]$titleSlug,
+        [string]$questionTitle,
+        [string]$projectName,
+        [string]$folderPath
+    )
+
+    try {
+        Initialize-ProblemRegistry
+        $registry = Get-Content $registryFile -Raw | ConvertFrom-Json
+
+        # Ensure the language array exists
+        if (-not $registry.$language) {
+            $registry.$language = @()
+        }
+
+        # Create problem entry
+        $problemEntry = @{
+            problemNumber = $problemNumber
+            titleSlug = $titleSlug
+            questionTitle = $questionTitle
+            projectName = $projectName
+            folderPath = $folderPath
+            createdDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+        }
+
+        # Convert to array if it's not already
+        $problemArray = @($registry.$language)
+        $problemArray += $problemEntry
+        $registry.$language = $problemArray
+
+        # Save back to file
+        $registry | ConvertTo-Json -Depth 10 | Set-Content $registryFile
+        Write-Host "[SUCCESS] Added problem to registry." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "[ERROR] Failed to add problem to registry: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+function Get-ProblemFromRegistry {
+    param(
+        [string]$problemNumber,
+        [string]$language
+    )
+
+    try {
+        if (-not (Test-Path $registryFile)) {
+            return $null
+        }
+
+        $registry = Get-Content $registryFile -Raw | ConvertFrom-Json
+        
+        if ($registry.$language) {
+            foreach ($problem in $registry.$language) {
+                if ($problem.problemNumber -eq $problemNumber) {
+                    return $problem
+                }
+            }
+        }
+        
+        return $null
+    }
+    catch {
+        Write-Host "[ERROR] Failed to read from registry: $($_.Exception.Message)" -ForegroundColor Red
+        return $null
     }
 }
 
@@ -152,7 +246,7 @@ function CSharpOperations{
     Update-Template -destinationPath $destinationPath -projectName $projectName
 
     # Add the project into the solution
-    $solutionPath = Join-Path $PSScriptRoot ".." "problems" "CSharp" "LeetCode.slnx"
+    $solutionPath = Join-Path $PSScriptRoot ".." "problems" "csharp" "LeetCode.slnx"
     dotnet sln $solutionPath add $csprojPath | Out-Null
 
     Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
@@ -212,6 +306,17 @@ function Main {
         return
     }
 
+    # Check if problem already exists in registry
+    $existingProblem = Get-ProblemFromRegistry -problemNumber $problemNumber -language $language
+    if ($existingProblem) {
+        Write-Host "[ERROR] Problem $problemNumber already exists for language $language" -ForegroundColor Red
+        Write-Host "[INFO] Existing problem details:" -ForegroundColor Blue
+        Write-Host "  Title: $($existingProblem.questionTitle)" -ForegroundColor Gray
+        Write-Host "  Folder: $($existingProblem.folderPath)" -ForegroundColor Gray
+        Write-Host "  Created: $($existingProblem.createdDate)" -ForegroundColor Gray
+        return
+    }
+
     $titleSlug = $problemData.stat.question__title_slug
     $problemFolderName = Build-ProblemFolderName -problemNumber $problemNumber -titleSlug $titleSlug
 
@@ -232,6 +337,18 @@ function Main {
         'csharp' { CSharpOperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
         default  { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
     }
+
+    # Add problem to registry
+    Write-Host "[WORKING] Adding problem to registry..." -ForegroundColor Yellow
+    $projectName = if ($language.ToLower() -eq 'csharp') { 
+        PascalCaseConverter -inputString $problemData.stat.question__title 
+    } else { 
+        $problemData.stat.question__title 
+    }
+
+    Add-ProblemToRegistry -problemNumber $problemNumber -language $language -titleSlug $titleSlug -questionTitle $problemData.stat.question__title -projectName $projectName -folderPath (Normalize-PathForRegistry -path $destinationPath)
+
+    Write-Host "`n[SUCCESS] Problem $problemNumber ($($problemData.stat.question__title)) has been successfully created for $language!" -ForegroundColor Green
 }
 
 # Invoke the main function

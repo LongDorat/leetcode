@@ -3,6 +3,7 @@ $configPath = Join-Path $PSScriptRoot ".." "config" "config.json"
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $API_URL = "https://leetcode.com/api/problems/all/"
 $cacheFile = Join-Path $PSScriptRoot ".." "cache" "problems.json"
+$registryFile = Join-Path $PSScriptRoot ".." "config" "problems.json"
 
 #region Helper Functions
 
@@ -13,36 +14,17 @@ function Get-PaddedProblemId {
     return $problemNumber.PadLeft($paddingLength, '0')
 }
 
+function Resolve-PathFromRegistry {
+    param([string]$registryPath)
+    # Convert forward slashes to platform-specific separators
+    return $registryPath -replace '/', [System.IO.Path]::DirectorySeparatorChar
+}
+
 function Build-ProblemFolderName {
     param([string]$problemNumber, [string]$titleSlug)
 
     $paddedId = Get-PaddedProblemId -problemNumber $problemNumber
     return "$paddedId-$titleSlug"
-}
-
-function Find-ProblemFolder {
-    param([string]$problemNumber, [string]$language)
-
-    $languagePath = $config.problemPath.$language
-    if (-not (Test-Path $languagePath)) {
-        Write-Host "[ERROR] Language path $languagePath does not exist." -ForegroundColor Red
-        return $null
-    }
-
-    $paddedId = Get-PaddedProblemId -problemNumber $problemNumber
-    $pattern = "$paddedId-*"
-    
-    $matchingFolders = Get-ChildItem -Path $languagePath -Directory | Where-Object { $_.Name -like $pattern }
-    
-    if ($matchingFolders.Count -eq 0) {
-        Write-Host "[ERROR] No problem folder found for problem number $problemNumber in $language." -ForegroundColor Red
-        return $null
-    }
-    elseif ($matchingFolders.Count -gt 1) {
-        Write-Host "[WARNING] Multiple folders found for problem $problemNumber. Using first match: $($matchingFolders[0].Name)" -ForegroundColor Yellow
-    }
-    
-    return $matchingFolders[0].FullName
 }
 
 function Remove-ProblemFolder {
@@ -70,6 +52,83 @@ function PascalCaseConverter {
     $words = $inputString -split '[-_ ]'
     $pascalCase = ($words | ForEach-Object { $_.Substring(0,1).ToUpper() + $_.Substring(1).ToLower() }) -join ''
     return $pascalCase
+}
+
+#endregion
+
+#region Registry Management Functions
+
+function Initialize-ProblemRegistry {
+    if (-not (Test-Path $registryFile)) {
+        Write-Host "[INFO] Creating problem registry file..." -ForegroundColor Blue
+        $initialRegistry = @{}
+        foreach ($lang in $config.supportedLanguages) {
+            $initialRegistry[$lang] = @()
+        }
+        $initialRegistry | ConvertTo-Json -Depth 10 | Set-Content $registryFile
+    }
+}
+
+function Get-ProblemFromRegistry {
+    param(
+        [string]$problemNumber,
+        [string]$language
+    )
+
+    try {
+        if (-not (Test-Path $registryFile)) {
+            return $null
+        }
+
+        $registry = Get-Content $registryFile -Raw | ConvertFrom-Json
+        
+        if ($registry.$language) {
+            foreach ($problem in $registry.$language) {
+                if ($problem.problemNumber -eq $problemNumber) {
+                    return $problem
+                }
+            }
+        }
+        
+        return $null
+    }
+    catch {
+        Write-Host "[ERROR] Failed to read from registry: $($_.Exception.Message)" -ForegroundColor Red
+        return $null
+    }
+}
+
+function Remove-ProblemFromRegistry {
+    param(
+        [string]$problemNumber,
+        [string]$language
+    )
+
+    try {
+        Initialize-ProblemRegistry
+        $registry = Get-Content $registryFile -Raw | ConvertFrom-Json
+
+        if ($registry.$language) {
+            $updatedProblems = @()
+            foreach ($problem in $registry.$language) {
+                if ($problem.problemNumber -ne $problemNumber) {
+                    $updatedProblems += $problem
+                }
+            }
+            $registry.$language = $updatedProblems
+
+            # Save back to file
+            $registry | ConvertTo-Json -Depth 10 | Set-Content $registryFile
+            Write-Host "[SUCCESS] Removed problem from registry." -ForegroundColor Green
+            return $true
+        }
+        
+        return $false
+    }
+    catch {
+        Write-Host "[ERROR] Failed to remove problem from registry: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
 }
 
 #endregion
@@ -147,7 +206,7 @@ function CSharpRemovalOperations {
     $csprojPath = Join-Path $problemFolderPath "$projectName.csproj"
 
     # Remove the project from the solution if it exists
-    $solutionPath = Join-Path $PSScriptRoot ".." "problems" "CSharp" "LeetCode.slnx"
+    $solutionPath = Join-Path $PSScriptRoot ".." "problems" "csharp" "LeetCode.slnx"
     
     if ((Test-Path $csprojPath) -and (Test-Path $solutionPath)) {
         try {
@@ -221,26 +280,36 @@ function Main {
         }
     }
 
-    # Get problem data for metadata
-    $problemData = Get-ProblemDataFromCache -problemNumber $problemNumber
-    if (-not $problemData) {
-        Write-Host "[WARNING] Problem data not found in cache, but continuing with removal..." -ForegroundColor Yellow
-    }
-
-    # Find the problem folder
-    $problemFolderPath = Find-ProblemFolder -problemNumber $problemNumber -language $language
-    if (-not $problemFolderPath) {
+    # Get problem from registry
+    Write-Host "[WORKING] Looking up problem in registry..." -ForegroundColor Yellow
+    $registryProblem = Get-ProblemFromRegistry -problemNumber $problemNumber -language $language
+    
+    if (-not $registryProblem) {
+        Write-Host "[ERROR] Problem number $problemNumber not found in registry for language $language." -ForegroundColor Red
+        Write-Host "[INFO] This problem may not have been created using the new-problem script." -ForegroundColor Blue
         return
     }
+
+    $problemFolderPath = Resolve-PathFromRegistry -registryPath $registryProblem.folderPath
+    
+    # Verify the folder still exists
+    if (-not (Test-Path $problemFolderPath)) {
+        Write-Host "[WARNING] Problem folder $problemFolderPath no longer exists on disk." -ForegroundColor Yellow
+        Write-Host "[INFO] Removing from registry anyway..." -ForegroundColor Blue
+    }
+
+    # Get problem data for metadata (fallback to registry data if cache fails)
+    $problemData = Get-ProblemDataFromCache -problemNumber $problemNumber
+    $questionTitle = if ($problemData) { $problemData.stat.question__title } else { $registryProblem.questionTitle }
 
     # Confirm removal
     Write-Host "`n[WARNING] You are about to remove the following problem:" -ForegroundColor Yellow
     Write-Host "  Problem Number: $problemNumber" -ForegroundColor White
     Write-Host "  Language: $language" -ForegroundColor White
     Write-Host "  Folder Path: $problemFolderPath" -ForegroundColor White
-    if ($problemData) {
-        Write-Host "  Problem Title: $($problemData.stat.question__title)" -ForegroundColor White
-    }
+    Write-Host "  Problem Title: $($registryProblem.questionTitle)" -ForegroundColor White
+    Write-Host "  Project Name: $($registryProblem.projectName)" -ForegroundColor White
+    Write-Host "  Created Date: $($registryProblem.createdDate)" -ForegroundColor White
     
     $confirmation = Read-Host "`nAre you sure you want to remove this problem? (y/N)"
     if ($confirmation -ne 'y' -and $confirmation -ne 'Y') {
@@ -249,21 +318,34 @@ function Main {
     }
 
     # Perform language-specific operations before removing folder
-    if ($problemData) {
-        Write-Host "[WORKING] Performing language-specific cleanup for $language..." -ForegroundColor Yellow
-        switch ($language.ToLower()) {
-            'csharp' { CSharpRemovalOperations -problemFolderPath $problemFolderPath -questionTitle $problemData.stat.question__title }
-            default  { Write-Host "[INFO] No specific cleanup operations defined for language $language." -ForegroundColor Blue }
-        }
+    Write-Host "[WORKING] Performing language-specific cleanup for $language..." -ForegroundColor Yellow
+    switch ($language.ToLower()) {
+        'csharp' { CSharpRemovalOperations -problemFolderPath $problemFolderPath -questionTitle $questionTitle }
+        default  { Write-Host "[INFO] No specific cleanup operations defined for language $language." -ForegroundColor Blue }
     }
 
-    # Remove the problem folder
-    $success = Remove-ProblemFolder -folderPath $problemFolderPath
-    if ($success) {
+    # Remove the problem folder (only if it exists)
+    $folderRemovalSuccess = $true
+    if (Test-Path $problemFolderPath) {
+        $folderRemovalSuccess = Remove-ProblemFolder -folderPath $problemFolderPath
+    }
+    
+    # Remove from registry
+    Write-Host "[WORKING] Removing problem from registry..." -ForegroundColor Yellow
+    $registryRemovalSuccess = Remove-ProblemFromRegistry -problemNumber $problemNumber -language $language
+    
+    # Final status
+    if ($folderRemovalSuccess -and $registryRemovalSuccess) {
         Write-Host "`n[SUCCESS] Problem $problemNumber ($language) has been successfully removed." -ForegroundColor Green
     }
     else {
-        Write-Host "`n[ERROR] Failed to remove problem $problemNumber ($language)." -ForegroundColor Red
+        Write-Host "`n[WARNING] Problem removal completed with some issues:" -ForegroundColor Yellow
+        if (-not $folderRemovalSuccess) {
+            Write-Host "  - Failed to remove problem folder" -ForegroundColor Red
+        }
+        if (-not $registryRemovalSuccess) {
+            Write-Host "  - Failed to remove from registry" -ForegroundColor Red
+        }
     }
 }
 
