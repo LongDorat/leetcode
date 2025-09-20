@@ -238,7 +238,7 @@ function CSharpRemovalOperations {
 function Main {
     Write-Host "[WORKING] Removing problem..." -ForegroundColor Yellow
     Update-ProblemCache
-    Write-Host "[SUCCESS] Problem cache is ready.`n" -ForegroundColor Green
+    Write-Host "[SUCCESS] Problem cache is ready." -ForegroundColor Green
 
     # Prompt user for problem number
     while ($true) {

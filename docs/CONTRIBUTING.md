@@ -56,12 +56,6 @@ Optional compilers/runtimes based on the languages you plan to contribute in:
    # Should output 9.0.0 or later
    ```
 
-3. **Test the scripts**:
-   ```powershell
-   cd scripts
-   Get-Help .\new-problem.ps1
-   ```
-
 #### Option 2: Development Container (Recommended)
 
 1. **Open in VS Code** with Dev Containers extension
@@ -77,8 +71,8 @@ Optional compilers/runtimes based on the languages you plan to contribute in:
 The easiest way to add a new problem is using the provided PowerShell script:
 
 ```powershell
-cd leetcode
-.\scripts\new-problem.ps1
+cd scripts
+.\new-problem.ps1
 ```
 
 **The script will:**
