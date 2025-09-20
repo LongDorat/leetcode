@@ -1,5 +1,14 @@
 {
-  "csharp": [],
+  "csharp": [
+    {
+      "createdDate": "2025-09-20T14:10:02Z",
+      "folderPath": "./problems/csharp/0001-two-sum",
+      "titleSlug": "two-sum",
+      "questionTitle": "Two Sum",
+      "problemNumber": "1",
+      "projectName": "TwoSum"
+    }
+  ],
   "python": [],
   "java": [],
   "javascript": []

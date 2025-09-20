@@ -91,11 +91,11 @@ Language-specific compilers and runtimes (install as needed):
 Use the automated script to create a new LeetCode problem:
 
 ```powershell
-# Navigate to the scripts directory
-cd scripts
+# Navigate to the repo directory
+cd leetcode
 
 # Run the new problem script
-.\new-problem.ps1
+.\scripts\new-problem.ps1
 ```
 
 The script will:
@@ -109,8 +109,8 @@ The script will:
 To remove an existing problem:
 
 ```powershell
-cd scripts
-.\remove-problem.ps1
+cd leetcode
+.\scripts\remove-problem.ps1
 ```
 
 The script will:

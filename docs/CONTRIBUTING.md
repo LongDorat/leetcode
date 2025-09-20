@@ -77,8 +77,8 @@ Optional compilers/runtimes based on the languages you plan to contribute in:
 The easiest way to add a new problem is using the provided PowerShell script:
 
 ```powershell
-cd scripts
-.\new-problem.ps1
+cd leetcode
+.\scripts\new-problem.ps1
 ```
 
 **The script will:**
@@ -133,11 +133,10 @@ public class Solution
 {
     /// <summary>
     /// Brief description of what the method does.
-    /// Time Complexity: O(...)
-    /// Space Complexity: O(...)
     /// </summary>
     /// <param name="paramName">Parameter description</param>
     /// <returns>Return value description</returns>
+    /// <remarks> Time Complexity: O(n), Space Complexity: O(1) </remarks>
     public ReturnType MethodName(ParameterType paramName)
     {
         // Implementation here

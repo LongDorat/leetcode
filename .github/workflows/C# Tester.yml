@@ -1,0 +1,51 @@
+name: C# Tester
+
+on:
+  push:
+    branches: [ main, problem/* ]
+    paths:
+      - 'problems/csharp/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'problems/csharp/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    
+    - name: Get changed projects
+      id: changes
+      run: |
+        # Get changed files and extract project directories
+        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || git ls-tree --name-only -r HEAD)
+        PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/csharp/" | grep -v "\.slnx$" | cut -d'/' -f3 | sort -u | grep -v "^$" || true)
+        
+        if [ -n "$PROJECTS" ]; then
+          echo "Testing projects: $PROJECTS"
+          echo "$PROJECTS" > projects.txt
+        else
+          echo "No projects to test"
+          touch projects.txt
+        fi
+    
+    - name: Test changed projects
+      run: |
+        if [ -s projects.txt ]; then
+          while read project; do
+            echo "Testing $project..."
+            dotnet test problems/csharp/$project/*.csproj --verbosity normal
+          done < projects.txt
+        else
+          echo "No projects changed - skipping tests"
+        fi
