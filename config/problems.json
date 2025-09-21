@@ -1,4 +1,17 @@
 {
+  "java": [],
+  "javascript": [],
+  "python": [],
+  "c": [
+    {
+      "problemNumber": "1",
+      "createdDate": "2025-09-21T22:03:44Z",
+      "questionTitle": "Two Sum",
+      "folderPath": "D:/repos/leetcode/scripts/../problems/c/0001-two-sum",
+      "projectName": "two_sum",
+      "titleSlug": "two-sum"
+    }
+  ],
   "csharp": [
     {
       "createdDate": "2025-09-20T14:10:02Z",
@@ -8,8 +21,5 @@
       "problemNumber": "1",
       "projectName": "TwoSum"
     }
-  ],
-  "python": [],
-  "java": [],
-  "javascript": []
+  ]
 }
