@@ -173,6 +173,7 @@ The solution should be able to solve the following test cases:
 
 - [15. 3Sum](https://leetcode.com/problems/3sum/)
 - [167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+- [170. Two Sum III - Data structure design](https://leetcode.com/problems/two-sum-iii-data-structure-design/)
 
 ---
 
