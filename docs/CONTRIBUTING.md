@@ -9,7 +9,7 @@ Welcome to the LeetCode Solutions repository! This guide will help you understan
 3. **Create** a new branch for your work
 4. **Add** your solution using the provided scripts
 5. **Test** your implementation thoroughly
-6. **Submit** a pull request
+6. **Submit** a pull request to the `develop` branch
 
 ## 📋 Table of Contents
 
@@ -35,14 +35,20 @@ Before contributing, ensure you have:
 - **Git** for version control
 - **Visual Studio Code** (recommended)
 
-Optional compilers/runtimes based on the languages you plan to contribute in:
-- **.NET 9.0 SDK** or later
+Optional compilers/runtimes based on the languages you plan to contribute in, see the supported languages below: 
+| Language       | Tool/Runtime | Version       | Supported |
+| -------------- | ------------ | ------------- | --------- |
+| **C#**         | .NET SDK     | 9.0 and above | ✅         |
+| **C/C++**      | CMake + GCC  | ...           | 🔄         |
+| **Python**     | Python       | ...           | 🔄         |
+| **Java**       | JDK          | ...           | 🔄         |
+| **JavaScript** | Node.js      | ...           | 🔄         |
   
-> **Note**: If any compiler/runtime is not installed, the problem creation scripts will display an error message when attempting to generate new projects for that specific language.
+> **Note**: If any compiler/runtime is not installed, the problem creation scripts will display an error message when attempting to generate new projects for that specific language if applied.
 
 ### Development Environment Setup
 
-#### Option 1: Local Development
+#### Step 1: Repository Setup
 
 1. **Clone the repository**:
    ```powershell
@@ -50,13 +56,24 @@ Optional compilers/runtimes based on the languages you plan to contribute in:
    cd leetcode
    ```
 
-2. **Verify .NET installation**:
+2. **Checkout the develop branch**:
    ```powershell
-   dotnet --version
-   # Should output 9.0.0 or later
+   git checkout develop
+
+   # If the local branch didn't track the remote branch
+   git branch --set-upstream-to=origin/develop develop
+   git pull
+
+   # Verify tracking
+   git branch -vv
    ```
 
-#### Option 2: Development Container (Recommended)
+3. **Create a feature branch**:
+   ```powershell
+   git checkout -b feature/your-feature-name
+   ```
+
+#### Step 2: Development Container (Optional but Recommended)
 
 1. **Open in VS Code** with Dev Containers extension
 2. **Reopen in Container** when prompted
@@ -66,7 +83,7 @@ Optional compilers/runtimes based on the languages you plan to contribute in:
 
 ## 🎯 Adding New Problems
 
-### Using the Automated Script (Recommended)
+### Using the Automated Script
 
 The easiest way to add a new problem is using the provided PowerShell script:
 
@@ -77,7 +94,7 @@ cd scripts
 
 **The script will:**
 1. Prompt for the LeetCode problem number
-2. Ask for programming language (see supported languages in `config/config.json`)
+2. Ask for programming language (see supported languages in above table)
 3. Fetch problem metadata from LeetCode API
 4. Create a standardized project structure from a template
 5. Update the problem registry
@@ -116,7 +133,8 @@ All solutions must include:
 
 ## 🔧 Language-Specific Guidelines
 
-### 🟣 C# Guidelines
+<details>
+<summary><strong>🟣 C# Guidelines</strong></summary>
 
 #### Class and Method Structure
 
@@ -160,7 +178,7 @@ public class Solution
    int[] arr = new int[2];
    ```
 
-2. **Add helpful comments for complex logic**:
+2. **Add helpful comments for complex logic** (don't over-comment):
    ```csharp
    // Use two pointers to find the target sum
    int left = 0, right = nums.Length - 1;
@@ -213,6 +231,7 @@ public class Solution
 ```csharp
 namespace ProblemName.Tests;
 
+// BruteForceTests or HashMapTests for specific approach testing
 public class SolutionTests
 {
     private readonly Solution _solution = new Solution();
@@ -234,23 +253,16 @@ public class SolutionTests
 #### C# Build and Test Commands
 
 ```powershell
-# Build project
+# Go to the problem directory
+cd problems/csharp/[problem-folder]
+
+# Build the project
 dotnet build
 
-# Run tests for specific problem
-cd problems/csharp/[problem-folder]
+# Run tests
 dotnet test
-
-# Run all C# tests
-cd problems/csharp
-dotnet test
-
-# Run tests with coverage
-dotnet test --collect:"XPlat Code Coverage"
-
-# Format code
-dotnet format
 ```
+</details>
 
 ---
 
@@ -258,25 +270,17 @@ dotnet format
 
 ### Universal Testing Principles
 
-Each problem should have comprehensive test coverage regardless of the programming language:
+Each problem should have a comprehensive test coverage regardless of the programming language:
 
 ### Test Categories
 
 1. **Normal Cases**: Typical valid inputs
 2. **Edge Cases**: Boundary conditions, empty inputs
-3. **Error Cases**: Invalid inputs that should throw exceptions
+3. **Error Cases**: Invalid inputs that should throw exceptions, though this depends on the problem constraints
 
 ### Cross-Validation Tests
 
 For problems with multiple solution approaches, create tests that verify all approaches produce the same results:
-
-```
-// Language-specific examples are shown in the Language-Specific Guidelines section
-```
-
-### Language-Specific Testing
-
-See the [Language-Specific Guidelines](#-language-specific-guidelines) section for testing frameworks and patterns specific to each language.
 
 ---
 
@@ -337,32 +341,7 @@ Each problem should have a README.md file, which is included when creating a new
    ```
 
 4. **Create a Pull Request** with:
-   - Clear title: "Add solution for problem X: Problem Title"
-   - Description of the approach used
-   - Time and space complexity analysis
-   - Any special considerations or trade-offs
-
-### Pull Request Guidelines
-
-#### Title Format
-```
-Add solution for problem [number]: [Problem Title]
-```
-
-#### Description Template
-```markdown
-## Problem Summary
-Brief description of the problem
-
-## Solution Approach
-- **Algorithm:** [Approach name]
-- **Time Complexity:** O(...)
-- **Space Complexity:** O(...)
-
-## Key Insights
-- Key insight 1
-- Key insight 2
-```
+   All problem related PRs should target the `develop` branch and follow the template provided in `.github/pull_request_template.md`. Other PRs types will not be accepted, but instead will need a new issue created first.
 
 ---
 
@@ -373,20 +352,16 @@ Brief description of the problem
 ```
 leetcode/
 ├── problems/
-│   ├── csharp/                        # C# solutions
-│   │   └── [XXXX-problem-slug]/
-│   │       ├── README.md              # Problem documentation
-│   │       ├── Solution.cs            # Main solution
-│   │       ├── [ProblemName].csproj   # Project file
-│   │       └── Tests/
-│   │           ├── SolutionTests.cs
-│   │           └── CrossValidationTests.cs
-│   ├── python/                        # Python solutions (future)
-│   ├── java/                          # Java solutions (future)
-│   └── javascript/                    # JavaScript solutions (future)
+│   └── csharp/                        # C# solutions
+│       └── [XXXX-problem-slug]/
+│           ├── README.md              # Problem documentation
+│           ├── Solution.cs            # Main solution
+│           ├── [ProblemName].csproj   # Project file
+│           └── Tests/
+│               ├── SolutionTests.cs
+│               └── CrossValidationTests.cs
 ├── templates/
 │   ├── csharp/                        # C# template files
-│   ├── python/                        # Python template files (future)
 │   └── [other-languages]/             # Additional language templates
 ├── scripts/
 │   ├── new-problem.ps1               # Automated problem creation
@@ -408,36 +383,7 @@ leetcode/
 **Language-Specific Conventions:**
 - **C#**: 
   - Project files: `[ProblemNamePascalCase].csproj` (e.g., `TwoSum.csproj`)
-  - Test files: `SolutionTests.cs`, `CrossValidationTests.cs`
-- **Future languages**: Will follow language-specific conventions
-
----
-
-## 🔮 Adding New Languages
-
-When contributing support for a new programming language:
-
-1. **Update Configuration**:
-   - Add language to `config/config.json` under `supportedLanguages`
-   - Add language paths for `problemPath` and `templatePath`
-
-2. **Create Templates**:
-   - Create template directory: `templates/[language]/`
-   - Include solution template file
-   - Include test template files
-   - Include README template with placeholders
-
-3. **Update Scripts**:
-   - Add language-specific operations to `new-problem.ps1`
-   - Add language-specific cleanup to `remove-problem.ps1`
-
-4. **Update Documentation**:
-   - Add language-specific guidelines to this CONTRIBUTING.md
-   - Update main README.md to reflect new language support
-
-5. **Test Framework**:
-   - Ensure the new language has proper testing setup
-   - Include examples in the language guidelines
+  - Test files: `SolutionTests.cs`, `BruteForceTests.cs`, `CrossValidationTests.cs`
 
 ---
 
