@@ -31,13 +31,13 @@ Requires tools to run the scripts and manage the projects:
 - **Git**
 
 Language-specific compilers and runtimes (install as needed):  
-| Language       | Tool/Runtime | Version       | Supported |
-| -------------- | ------------ | ------------- | --------- |
-| **C#**         | .NET SDK     | 9.0 and above | ✅         |
-| **C/C++**      | CMake + GCC  | ...           | 🔄         |
-| **Python**     | Python       | ...           | 🔄         |
-| **Java**       | JDK          | ...           | 🔄         |
-| **JavaScript** | Node.js      | ...           | 🔄         |
+| Language       | Tool/Runtime           | Version               | Supported |
+| -------------- | ---------------------- | --------------------- | --------- |
+| **C#**         | .NET SDK               | 9.0 and above         | ✅         |
+| **C**          | CMake + GCC/CLang/MSVC | at least 4.0 with C17 | ✅         |
+| **Python**     | Python                 | ...                   | 🔄         |
+| **Java**       | JDK                    | ...                   | 🔄         |
+| **JavaScript** | Node.js                | ...                   | 🔄         |
 
 ### Option 1: Local Development
 

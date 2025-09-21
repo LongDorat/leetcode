@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 4.0)
 project(Template C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 17)
 
 # Download Unity testing framework
 include(FetchContent)

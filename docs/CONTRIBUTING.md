@@ -36,13 +36,13 @@ Before contributing, ensure you have:
 - **Visual Studio Code** (recommended)
 
 Optional compilers/runtimes based on the languages you plan to contribute in, see the supported languages below: 
-| Language       | Tool/Runtime | Version       | Supported |
-| -------------- | ------------ | ------------- | --------- |
-| **C#**         | .NET SDK     | 9.0 and above | ✅         |
-| **C/C++**      | CMake + GCC  | ...           | 🔄         |
-| **Python**     | Python       | ...           | 🔄         |
-| **Java**       | JDK          | ...           | 🔄         |
-| **JavaScript** | Node.js      | ...           | 🔄         |
+| Language       | Tool/Runtime           | Version               | Supported |
+| -------------- | ---------------------- | --------------------- | --------- |
+| **C#**         | .NET SDK               | 9.0 and above         | ✅         |
+| **C**          | CMake + GCC/CLang/MSVC | at least 4.0 with C17 | ✅         |
+| **Python**     | Python                 | ...                   | 🔄         |
+| **Java**       | JDK                    | ...                   | 🔄         |
+| **JavaScript** | Node.js                | ...                   | 🔄         |
   
 > **Note**: If any compiler/runtime is not installed, the problem creation scripts will display an error message when attempting to generate new projects for that specific language if applied.
 
@@ -264,6 +264,220 @@ dotnet test
 ```
 </details>
 
+<details>
+<summary><strong>🔵 C Guidelines</strong></summary>
+
+#### Function Structure and Documentation
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/**
+ * @brief Brief description of what the function does.
+ * @param paramName Parameter description
+ * @returns Return value description
+ * @note Time Complexity: O(n), Space Complexity: O(1)
+ */
+int* functionName(int* nums, int numsSize, int target, int* returnSize) {
+    // Implementation here
+    *returnSize = 2; // Set return array size
+    return result;
+}
+```
+
+#### C Naming Conventions
+
+- **Functions**: snake_case (`two_sum`, `is_valid_bst`)
+- **Variables**: snake_case (`target_sum`, `left_node`)
+- **Constants**: UPPER_SNAKE_CASE (`MAX_VALUE`, `DEFAULT_SIZE`)
+- **Structs**: PascalCase (`TreeNode`, `ListNode`)
+- **Macros**: UPPER_SNAKE_CASE (`MAX`, `MIN`)
+
+#### C Code Style Guidelines
+
+1. **Use meaningful variable names**:
+   ```c
+   // ✅ Good
+   int target_sum = 9;
+   int* indices = (int*)malloc(2 * sizeof(int));
+   
+   // ❌ Avoid
+   int t = 9;
+   int* arr = (int*)malloc(2 * sizeof(int));
+   ```
+
+2. **Add helpful comments for complex logic**:
+   ```c
+   // Use two pointers to find the target sum
+   int left = 0, right = nums_size - 1;
+   
+   while (left < right) {
+       int current_sum = nums[left] + nums[right];
+       // ... logic
+   }
+   ```
+
+3. **Handle memory management explicitly**:
+   ```c
+   int* two_sum(int* nums, int nums_size, int target, int* return_size) {
+       if (nums == NULL || nums_size < 2) {
+           *return_size = 0;
+           return NULL;
+       }
+       
+       int* result = (int*)malloc(2 * sizeof(int));
+       if (result == NULL) {
+           *return_size = 0;
+           return NULL;
+       }
+       
+       // Main logic here
+       
+       *return_size = 2;
+       return result;
+   }
+   ```
+
+4. **Always check for NULL pointers and validate inputs**:
+   ```c
+   if (nums == NULL || nums_size <= 0) {
+       if (return_size) *return_size = 0;
+       return NULL;
+   }
+   ```
+
+#### C Multiple Solution Approaches
+
+```c
+/**
+ * @brief Brute force approach - check all pairs
+ * @note Time: O(n²), Space: O(1)
+ */
+int* brute_force(int* nums, int nums_size, int target, int* return_size) {
+    // Implementation
+}
+
+/**
+ * @brief Hash map approach using simple array as hash table
+ * @note Time: O(n), Space: O(n)
+ */
+int* hash_map(int* nums, int nums_size, int target, int* return_size) {
+    // Implementation
+}
+
+/**
+ * @brief Two pointer approach (for sorted arrays)
+ * @note Time: O(n), Space: O(1)
+ */
+int* two_pointer(int* nums, int nums_size, int target, int* return_size) {
+    // Implementation
+}
+```
+
+#### C Memory Management Guidelines
+
+1. **Always free allocated memory**:
+   ```c
+   int* result = (int*)malloc(size * sizeof(int));
+   // Use result...
+   free(result); // Remember to free in calling code
+   ```
+
+2. **Set pointers to NULL after freeing**:
+   ```c
+   free(ptr);
+   ptr = NULL;
+   ```
+
+3. **Use consistent allocation patterns**:
+   ```c
+   // For return arrays, caller is responsible for freeing
+   int* create_result_array(int size) {
+       int* arr = (int*)malloc(size * sizeof(int));
+       if (arr == NULL) {
+           return NULL; // Allocation failed
+       }
+       return arr;
+   }
+   ```
+
+#### C Testing with Unity Framework
+
+```c
+#include <unity.h>
+#include <stdlib.h>
+
+// Function declarations
+extern int* two_sum(int* nums, int nums_size, int target, int* return_size);
+
+void test_two_sum_valid_inputs(void) {
+    int nums1[] = {2, 7, 11, 15};
+    int return_size;
+    int* result = two_sum(nums1, 4, 9, &return_size);
+    
+    TEST_ASSERT_NOT_NULL(result);
+    TEST_ASSERT_EQUAL(2, return_size);
+    TEST_ASSERT_EQUAL(0, result[0]);
+    TEST_ASSERT_EQUAL(1, result[1]);
+    
+    free(result); // Clean up
+}
+
+void test_two_sum_edge_cases(void) {
+    int return_size;
+    
+    // Test NULL input
+    int* result = two_sum(NULL, 0, 9, &return_size);
+    TEST_ASSERT_NULL(result);
+    TEST_ASSERT_EQUAL(0, return_size);
+    
+    // Test insufficient elements
+    int nums[] = {5};
+    result = two_sum(nums, 1, 10, &return_size);
+    TEST_ASSERT_NULL(result);
+    TEST_ASSERT_EQUAL(0, return_size);
+}
+```
+```c
+// test_runner.c
+#include <unity.h>
+
+// Declare test functions
+extern void test_two_sum_valid_inputs(void);
+extern void test_two_sum_edge_cases(void);
+
+void setUp(void) {
+    // Set up code if needed
+}
+
+void tearDown(void) {
+    // Clean up code if needed
+}
+
+int main(void) {
+    UNITY_BEGIN();
+    RUN_TEST(test_two_sum_valid_inputs);
+    RUN_TEST(test_two_sum_edge_cases);
+    return UNITY_END();
+}
+```
+
+#### C Build and Test Commands
+
+```powershell
+# Go to the problem directory
+cd problems/c/[problem-folder]
+
+# Build the project using CMake
+cmake --build build
+
+# Run tests
+ctest --test-dir build --verbose
+```
+</details>
+
 ---
 
 ## 🧪 Testing Guidelines
@@ -352,14 +566,13 @@ Each problem should have a README.md file, which is included when creating a new
 ```
 leetcode/
 ├── problems/
-│   └── csharp/                        # C# solutions
+│   └── [language]/                        # C# solutions
 │       └── [XXXX-problem-slug]/
 │           ├── README.md              # Problem documentation
-│           ├── Solution.cs            # Main solution
-│           ├── [ProblemName].csproj   # Project file
+│           ├── Solution.*            # Main solution file
 │           └── Tests/
-│               ├── SolutionTests.cs
-│               └── CrossValidationTests.cs
+│               ├── SolutionTests.*
+│               └── CrossValidationTests.*
 ├── templates/
 │   ├── csharp/                        # C# template files
 │   └── [other-languages]/             # Additional language templates
