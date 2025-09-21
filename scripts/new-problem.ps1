@@ -48,7 +48,7 @@ function PascalCaseConverter {
     param([string]$inputString)
 
     $words = $inputString -split '[-_ ]'
-    $pascalCase = ($words | ForEach-Object { $_.Substring(0,1).ToUpper() + $_.Substring(1).ToLower() }) -join ''
+    $pascalCase = ($words | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1).ToLower() }) -join ''
     return $pascalCase
 }
 
@@ -115,28 +115,34 @@ function Add-ProblemToRegistry {
         Initialize-ProblemRegistry
         $registry = Get-Content $registryFile -Raw | ConvertFrom-Json
 
+        # Convert PSCustomObject to hashtable for dynamic property support
+        $registryHash = @{}
+        $registry.PSObject.Properties | ForEach-Object {
+            $registryHash[$_.Name] = $_.Value
+        }
+
         # Ensure the language array exists
-        if (-not $registry.$language) {
-            $registry.$language = @()
+        if (-not $registryHash.$language) {
+            $registryHash.$language = @()
         }
 
         # Create problem entry
         $problemEntry = @{
             problemNumber = $problemNumber
-            titleSlug = $titleSlug
+            titleSlug     = $titleSlug
             questionTitle = $questionTitle
-            projectName = $projectName
-            folderPath = $folderPath
-            createdDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+            projectName   = $projectName
+            folderPath    = $folderPath
+            createdDate   = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
         }
 
         # Convert to array if it's not already
-        $problemArray = @($registry.$language)
+        $problemArray = @($registryHash.$language)
         $problemArray += $problemEntry
-        $registry.$language = $problemArray
+        $registryHash.$language = $problemArray
 
-        # Save back to file
-        $registry | ConvertTo-Json -Depth 10 | Set-Content $registryFile
+        # Convert back to object and save
+        $registryHash | ConvertTo-Json -Depth 10 | Set-Content $registryFile
         Write-Host "[SUCCESS] Added problem to registry." -ForegroundColor Green
     }
     catch {
@@ -241,7 +247,7 @@ function Get-ProblemDataFromCache {
 
 #region Language Operations
 
-function CSharpOperations{
+function CSharpOperations {
     param([string]$destinationPath, [string]$questionTitle)
 
     $projectName = PascalCaseConverter -input $questionTitle
@@ -266,7 +272,7 @@ function CSharpOperations{
     Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
 }
 
-function COperations{
+function COperations {
     param([string]$destinationPath, [string]$questionTitle)
 
     $projectName = SnakeCaseConverter -input $questionTitle
@@ -361,15 +367,19 @@ function Main {
     switch ($language.ToLower()) {
         'csharp' { CSharpOperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
         'c' { COperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
-        default  { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
+        default { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
     }
 
     # Add problem to registry
     Write-Host "[WORKING] Adding problem to registry..." -ForegroundColor Yellow
     $projectName = if ($language.ToLower() -eq 'csharp') { 
         PascalCaseConverter -inputString $problemData.stat.question__title 
-    } else { 
-        $problemData.stat.question__title 
+    }
+    elseif ($language.ToLower() -eq 'c') {
+        SnakeCaseConverter -inputString $problemData.stat.question__title
+    }
+    else {
+        $problemData.stat.question__title
     }
 
     Add-ProblemToRegistry -problemNumber $problemNumber -language $language -titleSlug $titleSlug -questionTitle $problemData.stat.question__title -projectName $projectName -folderPath (Convert-PathForRegistry -path $destinationPath)
