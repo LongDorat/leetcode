@@ -543,10 +543,6 @@ Each problem should have a README.md file, which is included when creating a new
    ```bash
    git add .
    git commit -m "feat: add solution for problem [number]: [title]
-   
-   - Implement [approach] with O([time]) time complexity
-   - Add comprehensive unit tests
-   - Include detailed documentation"
    ```
 
 3. **Push to your fork**:
@@ -555,7 +551,8 @@ Each problem should have a README.md file, which is included when creating a new
    ```
 
 4. **Create a Pull Request** with:
-   All problem related PRs should target the `develop` branch and follow the template provided in `.github/pull_request_template.md`. Other PRs types will not be accepted, but instead will need a new issue created first.
+   - Title: `Add solution for problem [number]: [title]`  
+   - All problem related PRs should target the `develop` branch and follow the template provided in `.github/pull_request_template.md`. Other PRs types will not be accepted, but instead will need a new issue created first.
 
 ---
 
@@ -597,6 +594,9 @@ leetcode/
 - **C#**: 
   - Project files: `[ProblemNamePascalCase].csproj` (e.g., `TwoSum.csproj`)
   - Test files: `SolutionTests.cs`, `BruteForceTests.cs`, `CrossValidationTests.cs`
+- **C**:
+  - Source files: `solution.c`
+  - Test files: `solution_tests.c`, `brute_force_tests.c`, `test_runner.c`
 
 ---
 
