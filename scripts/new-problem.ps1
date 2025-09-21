@@ -48,8 +48,16 @@ function PascalCaseConverter {
     param([string]$inputString)
 
     $words = $inputString -split '[-_ ]'
-    $pascalCase = ($words | ForEach-Object { $_.Substring(0,1).ToUpper() + $_.Substring(1).ToLower() }) -join ''
+    $pascalCase = ($words | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1).ToLower() }) -join ''
     return $pascalCase
+}
+
+function SnakeCaseConverter {
+    param([string]$inputString)
+
+    $words = $inputString -split '[-_ ]'
+    $snakeCase = ($words | ForEach-Object { $_.ToLower() }) -join '_'
+    return $snakeCase
 }
 
 function Update-Template {
@@ -107,28 +115,34 @@ function Add-ProblemToRegistry {
         Initialize-ProblemRegistry
         $registry = Get-Content $registryFile -Raw | ConvertFrom-Json
 
+        # Convert PSCustomObject to hashtable for dynamic property support
+        $registryHash = @{}
+        $registry.PSObject.Properties | ForEach-Object {
+            $registryHash[$_.Name] = $_.Value
+        }
+
         # Ensure the language array exists
-        if (-not $registry.$language) {
-            $registry.$language = @()
+        if (-not $registryHash.$language) {
+            $registryHash.$language = @()
         }
 
         # Create problem entry
         $problemEntry = @{
             problemNumber = $problemNumber
-            titleSlug = $titleSlug
+            titleSlug     = $titleSlug
             questionTitle = $questionTitle
-            projectName = $projectName
-            folderPath = $folderPath
-            createdDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+            projectName   = $projectName
+            folderPath    = $folderPath
+            createdDate   = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
         }
 
         # Convert to array if it's not already
-        $problemArray = @($registry.$language)
+        $problemArray = @($registryHash.$language)
         $problemArray += $problemEntry
-        $registry.$language = $problemArray
+        $registryHash.$language = $problemArray
 
-        # Save back to file
-        $registry | ConvertTo-Json -Depth 10 | Set-Content $registryFile
+        # Convert back to object and save
+        $registryHash | ConvertTo-Json -Depth 10 | Set-Content $registryFile
         Write-Host "[SUCCESS] Added problem to registry." -ForegroundColor Green
     }
     catch {
@@ -233,7 +247,7 @@ function Get-ProblemDataFromCache {
 
 #region Language Operations
 
-function CSharpOperations{
+function CSharpOperations {
     param([string]$destinationPath, [string]$questionTitle)
 
     $projectName = PascalCaseConverter -input $questionTitle
@@ -256,6 +270,33 @@ function CSharpOperations{
     dotnet sln $solutionPath add $csprojPath | Out-Null
     Write-Host "[SUCCESS] Added project $projectName to solution." -ForegroundColor Green
     Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
+}
+
+function COperations {
+    param([string]$destinationPath, [string]$questionTitle)
+
+    $projectName = SnakeCaseConverter -input $questionTitle
+
+    # Update template placeholders in copied files
+    Write-Host "[WORKING] Updating template placeholders..." -ForegroundColor Yellow
+    Update-Template -destinationPath $destinationPath -projectName $projectName
+    Write-Host "[SUCCESS] Updated template placeholders." -ForegroundColor Green
+
+    # Run CMake to configure the project
+    Write-Host "[WORKING] Configuring C project with CMake..." -ForegroundColor Yellow
+    $buildDir = Join-Path $destinationPath "build"
+    if (-not (Test-Path $buildDir)) {
+        New-Item -ItemType Directory -Path $buildDir | Out-Null
+    }
+
+    try {
+        cmake -S $destinationPath -B $buildDir | Out-Null
+        Write-Host "[SUCCESS] CMake configuration completed." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "[ERROR] CMake configuration failed: $($_.Exception.Message)" -ForegroundColor Red
+        return
+    }
 }
 
 #endregion
@@ -341,15 +382,20 @@ function Main {
     Write-Host "[WORKING] Performing language-specific operations for $language..." -ForegroundColor Yellow
     switch ($language.ToLower()) {
         'csharp' { CSharpOperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
-        default  { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
+        'c' { COperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
+        default { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
     }
 
     # Add problem to registry
     Write-Host "[WORKING] Adding problem to registry..." -ForegroundColor Yellow
     $projectName = if ($language.ToLower() -eq 'csharp') { 
         PascalCaseConverter -inputString $problemData.stat.question__title 
-    } else { 
-        $problemData.stat.question__title 
+    }
+    elseif ($language.ToLower() -eq 'c') {
+        SnakeCaseConverter -inputString $problemData.stat.question__title
+    }
+    else {
+        $problemData.stat.question__title
     }
 
     Add-ProblemToRegistry -problemNumber $problemNumber -language $language -titleSlug $titleSlug -questionTitle $problemData.stat.question__title -projectName $projectName -folderPath (Convert-PathForRegistry -path $destinationPath)

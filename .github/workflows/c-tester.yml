@@ -1,16 +1,16 @@
-name: C# Tester
+name: C Tester
 
 on:
   pull_request:
     branches: [ main, develop ]
     paths:
-      - 'problems/csharp/**'
-      - '.github/workflows/csharp-tester.yml'
+      - 'problems/c/**'
+      - '.github/workflows/c-tester.yml'
   push:
     branches: [ main, develop, problem/* ]
     paths:
-      - 'problems/csharp/**'
-      - '.github/workflows/csharp-tester.yml'
+      - 'problems/c/**'
+      - '.github/workflows/c-tester.yml'
   workflow_dispatch:
 
 jobs:
@@ -21,17 +21,15 @@ jobs:
       with:
         fetch-depth: 2
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '9.0.x'
+    - name: Install CMake and build tools
+      uses: lukka/get-cmake@latest
     
     - name: Get changed projects
       id: changes
       run: |
         # Get changed files and extract project directories
         CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || git ls-tree --name-only -r HEAD)
-        PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/csharp/" | grep -v "\.slnx$" | cut -d'/' -f3 | sort -u | grep -v "^$" || true)
+        PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/c/" | grep -v ".gitignore" | cut -d'/' -f3 | sort -u | grep -v "^$" || true)
         
         if [ -n "$PROJECTS" ]; then
           echo "Testing projects: $PROJECTS"
@@ -46,7 +44,23 @@ jobs:
         if [ -s projects.txt ]; then
           while read project; do
             echo "Testing $project..."
-            dotnet test problems/csharp/$project/*.csproj --verbosity normal
+            cd problems/c/$project
+            
+            # Create build directory
+            mkdir -p build
+            cd build
+            
+            # Configure with CMake
+            cmake ..
+            
+            # Build the project
+            make
+            
+            # Run tests
+            ctest --verbose
+            
+            # Go back to root directory
+            cd ../../../..
           done < projects.txt
         else
           echo "No projects changed - skipping tests"
