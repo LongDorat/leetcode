@@ -3,8 +3,14 @@ name: C# Tester
 on:
   pull_request:
     branches: [ main, develop ]
+    paths:
+      - 'problems/csharp/**'
+      - '.github/workflows/csharp-tester.yml'
   push:
     branches: [ main, develop, problem/* ]
+    paths:
+      - 'problems/csharp/**'
+      - '.github/workflows/csharp-tester.yml'
   workflow_dispatch:
 
 jobs:
