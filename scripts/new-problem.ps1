@@ -52,6 +52,14 @@ function PascalCaseConverter {
     return $pascalCase
 }
 
+function SnakeCaseConverter {
+    param([string]$inputString)
+
+    $words = $inputString -split '[-_ ]'
+    $snakeCase = ($words | ForEach-Object { $_.ToLower() }) -join '_'
+    return $snakeCase
+}
+
 function Update-Template {
     param([string]$destinationPath, [string]$projectName)
 
@@ -258,6 +266,17 @@ function CSharpOperations{
     Write-Host "[SUCCESS] C# project setup completed." -ForegroundColor Green
 }
 
+function COperations{
+    param([string]$destinationPath, [string]$questionTitle)
+
+    $projectName = SnakeCaseConverter -input $questionTitle
+
+    # Update template placeholders in copied files
+    Write-Host "[WORKING] Updating template placeholders..." -ForegroundColor Yellow
+    Update-Template -destinationPath $destinationPath -projectName $projectName
+    Write-Host "[SUCCESS] Updated template placeholders." -ForegroundColor Green
+}
+
 #endregion
 
 function Main {
@@ -341,6 +360,7 @@ function Main {
     Write-Host "[WORKING] Performing language-specific operations for $language..." -ForegroundColor Yellow
     switch ($language.ToLower()) {
         'csharp' { CSharpOperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
+        'c' { COperations -destinationPath $destinationPath -questionTitle $problemData.stat.question__title }
         default  { Write-Host "[ERROR] No operations defined for language $language." -ForegroundColor Red }
     }
 
