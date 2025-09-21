@@ -289,12 +289,9 @@ function COperations {
         New-Item -ItemType Directory -Path $buildDir | Out-Null
     }
 
-    Push-Location $buildDir
-    cmake .. | Out-Null
+    cmake -S $destinationPath -B $buildDir | Out-Null
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] CMake configuration failed." -ForegroundColor Red
-        Write-Host "[INFO] Please run remove_problem.ps1 to clean up the created files." -ForegroundColor Blue
-        Pop-Location
         return
     } else {
         Write-Host "[SUCCESS] CMake configuration completed." -ForegroundColor Green
