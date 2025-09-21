@@ -29,7 +29,7 @@ jobs:
       run: |
         # Get changed files and extract project directories
         CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || git ls-tree --name-only -r HEAD)
-        PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/c/" | cut -d'/' -f3 | sort -u | grep -v "^$" || true)
+        PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/c/" | grep -v ".gitignore" | cut -d'/' -f3 | sort -u | grep -v "^$" || true)
         
         if [ -n "$PROJECTS" ]; then
           echo "Testing projects: $PROJECTS"
