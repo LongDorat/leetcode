@@ -289,12 +289,13 @@ function COperations {
         New-Item -ItemType Directory -Path $buildDir | Out-Null
     }
 
-    cmake -S $destinationPath -B $buildDir | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "[ERROR] CMake configuration failed." -ForegroundColor Red
-        return
-    } else {
+    try {
+        cmake -S $destinationPath -B $buildDir | Out-Null
         Write-Host "[SUCCESS] CMake configuration completed." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "[ERROR] CMake configuration failed: $($_.Exception.Message)" -ForegroundColor Red
+        return
     }
 }
 
