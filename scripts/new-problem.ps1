@@ -281,6 +281,24 @@ function COperations {
     Write-Host "[WORKING] Updating template placeholders..." -ForegroundColor Yellow
     Update-Template -destinationPath $destinationPath -projectName $projectName
     Write-Host "[SUCCESS] Updated template placeholders." -ForegroundColor Green
+
+    # Run CMake to configure the project
+    Write-Host "[WORKING] Configuring C project with CMake..." -ForegroundColor Yellow
+    $buildDir = Join-Path $destinationPath "build"
+    if (-not (Test-Path $buildDir)) {
+        New-Item -ItemType Directory -Path $buildDir | Out-Null
+    }
+
+    Push-Location $buildDir
+    cmake .. | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "[ERROR] CMake configuration failed." -ForegroundColor Red
+        Write-Host "[INFO] Please run remove_problem.ps1 to clean up the created files." -ForegroundColor Blue
+        Pop-Location
+        return
+    } else {
+        Write-Host "[SUCCESS] CMake configuration completed." -ForegroundColor Green
+    }
 }
 
 #endregion
