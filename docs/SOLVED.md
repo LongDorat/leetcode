@@ -5,14 +5,14 @@ This document tracks all LeetCode problems that have been implemented in this re
 ## 📊 Summary
 
 | Difficulty | Count | Percentage |
-|------------|-------|------------|
-| 🟢 Easy    | 0     | 0%         |
-| 🟡 Medium  | 0     | 0%         |
-| 🔴 Hard    | 0     | 0%         |
+| ---------- | ----- | ---------- |
+| 🟢 Easy     | 0     | 0%         |
+| 🟡 Medium   | 0     | 0%         |
+| 🔴 Hard     | 0     | 0%         |
 | **Total**  | **0** | **0%**     |
 
 ## 📂 Problems Table
 
-| #   | Title | Difficulty | Topics | Language(s) | Solution | Tests | Notes |
-|-----|-------|------------|--------|-------------|----------|-------|-------|
-| --- | ----- | ---------- | ------ | ----------- | -------- | ----- | ----- |
+| #   | Title | Difficulty | Topics | Language(s) | Notes    |
+| --- | ----- | ---------- | ------ | ----------- | -------- |
+| --- | ----- | ---------- | ------ | ----------- | -------- |
