@@ -72,7 +72,7 @@ Optional compilers/runtimes based on the languages you plan to contribute in, se
    ```powershell
    git checkout -b feature/your-feature-name
    ```
-
+   
 #### Step 2: Development Container (Optional but Recommended)
 
 1. **Open in VS Code** with Dev Containers extension
@@ -375,6 +375,7 @@ int* two_pointer(int* nums, int nums_size, int target, int* return_size) {
     // Implementation
 }
 ```
+</details>
 
 #### C Memory Management Guidelines
 
