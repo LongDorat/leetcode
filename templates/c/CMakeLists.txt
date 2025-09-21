@@ -27,9 +27,8 @@ target_include_directories(Template PRIVATE
 
 enable_testing()
 
-# Add test cases. If there are multiple test files, you can add them similarly.
-add_test(NAME unit_tests COMMAND Template)
+add_test(NAME Template_tests COMMAND Template)
 
-set_tests_properties(unit_tests PROPERTIES
+set_tests_properties(Template_tests PROPERTIES
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
