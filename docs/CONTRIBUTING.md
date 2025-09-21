@@ -341,10 +341,7 @@ Each problem should have a README.md file, which is included when creating a new
    ```
 
 4. **Create a Pull Request** with:
-   - Clear title: "Add solution for problem X: Problem Title"
-   - Description of the approach used
-   - Time and space complexity analysis
-   - Any special considerations or trade-offs
+   All problem related PRs should target the `develop` branch and follow the template provided in `.github/pull_request_template.md`. Other PRs types will not be accepted, but instead will need a new issue created first.
 
 ---
 

@@ -18,3 +18,9 @@
 
 - [ ] Insight 1
 - [ ] Insight 2
+
+## Check list
+
+- [ ] I have tested my solution with various test cases
+- [ ] I have added comments to explain complex parts of my code
+- [ ] I have updated the README.md and SOLVED.md files accordingly
