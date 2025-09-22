@@ -14,15 +14,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  detect-changes:
     runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.changes.outputs.projects }}
+      has-changes: ${{ steps.changes.outputs.has-changes }}
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 2
-    
-    - name: Install CMake and build tools
-      uses: lukka/get-cmake@latest
     
     - name: Get changed projects
       id: changes
@@ -32,36 +32,46 @@ jobs:
         PROJECTS=$(echo "$CHANGED_FILES" | grep "^problems/c/" | grep -v ".gitignore" | cut -d'/' -f3 | sort -u | grep -v "^$" || true)
         
         if [ -n "$PROJECTS" ]; then
-          echo "Testing projects: $PROJECTS"
-          echo "$PROJECTS" > projects.txt
+          echo "Adding projects: $PROJECTS"
+          # Convert to JSON array for output
+          PROJECTS_JSON=$(echo "$PROJECTS" | jq -R -s -c 'split("\n")[:-1]')
+          echo "projects=$PROJECTS_JSON" >> $GITHUB_OUTPUT
+          echo "has-changes=true" >> $GITHUB_OUTPUT
         else
           echo "No projects to test"
-          touch projects.txt
+          echo "projects=[]" >> $GITHUB_OUTPUT
+          echo "has-changes=false" >> $GITHUB_OUTPUT
         fi
+
+  test_changed_projects:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-changes == 'true'
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.detect-changes.outputs.projects) }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
     
-    - name: Test changed projects
+    - name: Install CMake and build tools
+      uses: lukka/get-cmake@latest
+    
+    - name: Test project
       run: |
-        if [ -s projects.txt ]; then
-          while read project; do
-            echo "Testing $project..."
-            cd problems/c/$project
-            
-            # Create build directory
-            mkdir -p build
-            cd build
-            
-            # Configure with CMake
-            cmake ..
-            
-            # Build the project
-            make
-            
-            # Run tests
-            ctest --verbose
-            
-            # Go back to root directory
-            cd ../../../..
-          done < projects.txt
-        else
-          echo "No projects changed - skipping tests"
-        fi
+        echo "Testing ${{ matrix.project }}..."
+        cd problems/c/${{ matrix.project }}
+        
+        # Create build directory
+        mkdir -p build
+        cd build
+        
+        # Configure with CMake
+        cmake ..
+        
+        # Build the project
+        make
+        
+        # Run tests
+        ctest --verbose
