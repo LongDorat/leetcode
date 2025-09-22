@@ -68,9 +68,9 @@ Optional compilers/runtimes based on the languages you plan to contribute in, se
    git branch -vv
    ```
 
-3. **Create a feature branch**:
+3. **Create a problem branch**:
    ```powershell
-   git checkout -b feature/your-feature-name
+   git checkout -b problem/[ID]-[slug]
    ```
    
 #### Step 2: Development Container (Optional but Recommended)
@@ -470,6 +470,9 @@ int main(void) {
 ```powershell
 # Go to the problem directory
 cd problems/c/[problem-folder]
+
+# Re-configure the build files after you modify them
+cmake -S . -B build
 
 # Build the project using CMake
 cmake --build build
