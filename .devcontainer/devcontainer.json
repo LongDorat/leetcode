@@ -1,7 +1,10 @@
 {
     "name": "LeetCode Dev Container",
     "image": "ubuntu:latest",
-    "runArgs": ["--name", "leetcode-devcontainer"],
+    "runArgs": [
+        "--name",
+        "leetcode-devcontainer"
+    ],
     "features": {
         // Required tools
         "ghcr.io/devcontainers/features/powershell:1": {
@@ -10,13 +13,15 @@
         "ghcr.io/devcontainers/features/git:1": {
             "version": "latest"
         },
-
         // Compilers and runtimes
-        "ghcr.io/devcontainers/features/dotnet:1": {
+        "ghcr.io/devcontainers/features/dotnet:2": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-extra/features/cmake:1": {
             "version": "latest"
         }
     },
-
+    "postCreateCommand": "apt-get update && apt-get install -y build-essential",
     "customizations": {
         "vscode": {
             "extensions": [
