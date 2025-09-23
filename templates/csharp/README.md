@@ -43,7 +43,7 @@ Explanation: {EXAMPLE_2_EXPLANATION}
 - {INSIGHT_2}
 - {INSIGHT_N}
 
-### Implementation
+#### Implementation
 
 ```csharp
 // See Solution.cs for the complete implementation
