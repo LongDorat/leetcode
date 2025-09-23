@@ -5,6 +5,9 @@
         "--name",
         "leetcode-devcontainer"
     ],
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
     "features": {
         // Required tools
         "ghcr.io/devcontainers/features/powershell:1": {
