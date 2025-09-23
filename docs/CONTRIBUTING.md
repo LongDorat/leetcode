@@ -540,13 +540,14 @@ Each problem should have a README.md file, which is included when creating a new
 
 1. **Create a feature branch**:
    ```bash
-   git checkout -b problem/[number]-[slug]
+   # git checkout -b problem/csharp-0001-two-sum
+   git checkout -b problem/[language]-[number]-[slug]
    ```
 
 2. **Add your changes**:
    ```bash
    git add .
-   git commit -m "feat: add solution for problem [number]: [title]
+   git commit -m "feat: add solution for problem [number]: [title]"
    ```
 
 3. **Push to your fork**:
