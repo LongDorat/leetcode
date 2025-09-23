@@ -11,7 +11,7 @@ public class CrossValidationTests
     [InlineData(3, 6)]
     [InlineData(-1, -2)]
     [InlineData(0, 0)]
-    public void ExampleMethod_ShouldReturnDoubledValue(int input, int expected)
+    public void ShouldReturnDoubledValue(int input, int expected)
     {
         // Act
         var result1 = _solution.ExampleMethod(input);
