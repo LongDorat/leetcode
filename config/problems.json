@@ -1,7 +1,4 @@
 {
-  "java": [],
-  "javascript": [],
-  "python": [],
   "c": [
     {
       "problemNumber": "1",
@@ -12,6 +9,7 @@
       "titleSlug": "two-sum"
     }
   ],
+  "java": [],
   "csharp": [
     {
       "createdDate": "2025-09-20T14:10:02Z",
@@ -20,6 +18,16 @@
       "questionTitle": "Two Sum",
       "problemNumber": "1",
       "projectName": "TwoSum"
+    },
+    {
+      "createdDate": "2025-09-23T00:59:20Z",
+      "problemNumber": "2",
+      "projectName": "AddTwoNumbers",
+      "questionTitle": "Add Two Numbers",
+      "titleSlug": "add-two-numbers",
+      "folderPath": "/workspaces/leetcode/scripts/../problems/csharp/0002-add-two-numbers"
     }
-  ]
+  ],
+  "javascript": [],
+  "python": []
 }

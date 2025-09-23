@@ -2,4 +2,7 @@
   <Folder Name="/0001-two-sum/">
     <Project Path="0001-two-sum/TwoSum.csproj" />
   </Folder>
+  <Folder Name="/0002-add-two-numbers/">
+    <Project Path="0002-add-two-numbers/AddTwoNumbers.csproj" />
+  </Folder>
 </Solution>
