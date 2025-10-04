@@ -79,6 +79,17 @@ function Update-csharpTemplate {
     } else {
         Write-Host "   ⚠️  .csproj file not found: $titleWithoutSpaces.csproj" -ForegroundColor Yellow
     }
+
+    # Restoring the project to ensure all dependencies are in place
+    Write-Host ""
+    Write-Host "🔄 Restoring the project to ensure all dependencies are in place..." -ForegroundColor Cyan
+    dotnet restore $csprojFile 2>&1 | Out-Null
+
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "   ✅ Successfully restored project!" -ForegroundColor Green
+    } else {
+        Write-Host "   ⚠️  Failed to restore project" -ForegroundColor Yellow
+    }
 }
 
 function Remove-CSharpProjectFromSolution {
