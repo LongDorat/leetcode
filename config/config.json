@@ -1,0 +1,9 @@
+{
+    "supportedLanguages": ["csharp"],
+    "problemPath": {
+        "csharp": "../src/csharp"
+    },
+    "templatePath": {
+        "csharp": "../templates/csharp"
+    }
+}

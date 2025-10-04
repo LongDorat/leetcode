@@ -1,10 +1,10 @@
 # An interactive script to help users setup the environment for solving LeetCode problems in PowerShell.
 # It guides the user through creating or removing a problem, and running tests.
 
-$NewProblemScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\new-problems.ps1"
-$RunTestScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\run-test.ps1"
-$RemoveProblemScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\remove-problem.ps1"
-$ListProblemScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\list-problem.ps1"
+$NewProblemScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\NewProblem.ps1"
+$RunTestScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\RunTest.ps1"
+$RemoveProblemScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\RemoveProblem.ps1"
+$ListProblemScript = Join-Path -Path $PSScriptRoot -ChildPath "scripts\ListProblems.ps1"
 
 # Set console colors and clear screen
 $Host.UI.RawUI.BackgroundColor = "Black"
