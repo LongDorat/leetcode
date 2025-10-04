@@ -120,8 +120,8 @@ function Show-ProblemsTable {
         Write-Host ""
         return
     }
-    
-    Write-Host "📊 Total Problems: " -NoNewline -ForegroundColor Cyan
+
+    Write-Host "📊 Total Implementations: " -NoNewline -ForegroundColor Cyan
     Write-Host "$($script:problemsConfig.Count)" -ForegroundColor White
     Write-Host ""
     
