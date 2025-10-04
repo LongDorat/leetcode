@@ -356,16 +356,16 @@ $language = $null
 
 # Get problem number
 while ($true) {
-    $input = Get-UserInput -Prompt "Problem Number to Remove" -Example "1, 23, 456" -Icon "🔢"
-    
-    if ([string]::IsNullOrWhiteSpace($input)) {
+    $userInput = Get-UserInput -Prompt "Problem Number to Remove" -Example "1, 23, 456" -Icon "🔢"
+
+    if ([string]::IsNullOrWhiteSpace($userInput)) {
         Write-Host "⚠️  Problem number cannot be empty" -ForegroundColor Yellow
         Write-Host ""
         continue
     }
-    
-    if ($input -match '^\d+$' -and -not ($input -match '^0\d+')) {
-        $problemNumber = [int]$input
+
+    if ($userInput -match '^\d+$' -and -not ($userInput -match '^0\d+')) {
+        $problemNumber = [int]$userInput
         Write-Host "✅ Valid problem number" -ForegroundColor Green
         Write-Host ""
         break
@@ -377,16 +377,16 @@ while ($true) {
 
 # Get language
 while ($true) {
-    $input = Get-UserInput -Prompt "Programming Language" -Example "csharp, python, java" -Icon "💻"
-    
-    if ([string]::IsNullOrWhiteSpace($input)) {
+    $userInput = Get-UserInput -Prompt "Programming Language" -Example "csharp, python, java" -Icon "💻"
+
+    if ([string]::IsNullOrWhiteSpace($userInput)) {
         Write-Host "⚠️  Language cannot be empty" -ForegroundColor Yellow
         Write-Host ""
         continue
     }
     
-    if (Test-Language -Language $input) {
-        $language = $input.ToLower()
+    if (Test-Language -Language $userInput) {
+        $language = $userInput.ToLower()
         
         # Now check if the specific problem + language combination exists
         if (Test-ProblemExists -ProblemNumber $problemNumber -Language $language) {
