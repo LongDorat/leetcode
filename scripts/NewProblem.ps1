@@ -4,6 +4,7 @@
 $ConfigFilePath = Join-Path $PSScriptRoot .. config config.json
 $FetchDataScript = Join-Path -Path $PSScriptRoot "FetchDataFromLeetCode.ps1"
 $CacheFilePath = Join-Path $PSScriptRoot .. cache problems.json
+$ProblemsFilePath = Join-Path $PSScriptRoot .. config problems.json
 
 # Load configuration and cache
 if (Test-Path $ConfigFilePath) {
@@ -18,6 +19,13 @@ if (Test-Path $CacheFilePath) {
 } else {
     Write-Error "Cache file not found at $CacheFilePath"
     exit 1
+}
+
+if (Test-Path $ProblemsFilePath) {
+    $problemsConfig = Get-Content $ProblemsFilePath | ConvertFrom-Json
+} else {
+    New-Item -ItemType File -Path $ProblemsFilePath -Force | Out-Null
+    $problemsConfig = @()
 }
 
 # Validate user input
@@ -80,7 +88,32 @@ function CreateNewProblem {
         Write-Host "❌ Failed to create problem directory or copy template." -ForegroundColor Red
         Write-Host "   Error: $($_.Exception.Message)" -ForegroundColor DarkGray
     }
+
+    return $NewProblemDir
 }
+
+# Add the created problem into the storage for tracking
+function AddProblemToStorage {
+    param(
+        [string]$ProblemNumber,
+        [string]$ProblemLanguage,
+        [string]$ProblemPath
+    )
+
+    $newEntry = @{
+        question_id = [int]$ProblemNumber
+        language = $ProblemLanguage
+        date = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+        path = $ProblemPath
+    } 
+
+    $problemsConfig += $newEntry
+    $problemsConfig | ConvertTo-Json -Depth 10 | Set-Content $ProblemsFilePath
+
+    Write-Host "✅ Added problem number $ProblemNumber to config under language $ProblemLanguage." -ForegroundColor Green
+    Write-Host "   Config updated at $ProblemsFilePath" -ForegroundColor DarkGray
+}
+
 
 # Main execution
 $Host.UI.RawUI.BackgroundColor = "Black"
@@ -119,4 +152,6 @@ while ($true) {
 
 $TemplatePath = Join-Path $PSScriptRoot .. "$($config.templatePath.$ProblemLanguage)"
 $DestinationPath = Join-Path $PSScriptRoot .. "$($config.problemPath.$ProblemLanguage)"
-CreateNewProblem -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -TemplatePath $TemplatePath -DestinationPath $DestinationPath
+$ProblemPath = CreateNewProblem -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -TemplatePath $TemplatePath -DestinationPath $DestinationPath
+
+AddProblemToStorage -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -ProblemPath $ProblemPath
