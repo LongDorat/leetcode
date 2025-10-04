@@ -84,17 +84,7 @@ function Remove-CSharpProjectFromSolution {
     $solutionPath = Join-Path $ProblemPath ".." "LeetCode.slnx"
     $csprojFile = Join-Path $ProblemPath "$TitleWithoutSpaces.csproj"
     
-    # Get the solution directory
-    $solutionDir = Split-Path $solutionPath -Parent
-    
-    # Get relative path from solution to csproj
-    $relativePath = [System.IO.Path]::GetRelativePath($solutionDir, $csprojFile)
-    
-    Write-Host "   Solution: $solutionPath" -ForegroundColor DarkGray
-    Write-Host "   Project:  $relativePath" -ForegroundColor DarkGray
-    Write-Host ""
-    
-    dotnet sln $solutionPath remove $relativePath 2>&1 | Out-Null
+    dotnet sln $solutionPath remove $csprojFile 2>&1 | Out-Null
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "   ✅ Successfully removed from solution!" -ForegroundColor Green

@@ -257,6 +257,12 @@ function Remove-ProblemFromDisk {
         Write-Host "❌ Removal cancelled." -ForegroundColor Yellow
         return $false
     }
+
+    # If C#, remove from solution
+    if ($language -eq "csharp") {
+        $titleWithoutSpaces = $details.title -replace '\s+', ''
+        Remove-CSharpProjectFromSolution -ProblemPath $problem.path -TitleWithoutSpaces $titleWithoutSpaces
+    }
     
     Write-Host ""
     Write-Host "  [1/2] Removing directory..." -ForegroundColor Cyan
@@ -393,17 +399,6 @@ while ($true) {
 
 # Remove the problem
 Remove-ProblemFromDisk -ProblemNumber $problemNumber -Language $language
-
-# If C#, remove from solution
-if ($language -eq "csharp") {
-    $details = Get-ProblemDetails -QuestionId $problemNumber
-    $titleWithoutSpaces = $details.Title -replace '\s+', ''
-    $problem = $script:problemsConfig | Where-Object { 
-        $_.question_id -eq $problemNumber -and $_.language -eq $language 
-    }
-    $problemPath = $problem.path
-    Remove-CSharpProjectFromSolution -ProblemPath $problemPath -TitleWithoutSpaces $titleWithoutSpaces
-}
 
 # Return to menu
 Show-ReturnPrompt
