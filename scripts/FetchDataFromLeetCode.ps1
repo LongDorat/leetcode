@@ -1,16 +1,17 @@
 # Script to fetch all LeetCode problems from the official API
 # Uses caching to avoid unnecessary API calls
 
-# Environment variables
+# ============================================================================
+# GLOBAL VARIABLES
+# ============================================================================
 $CacheDir = Join-Path $PSScriptRoot .. cache
 $CacheFilePath = Join-Path $CacheDir problems.json
 $CacheExpirationHours = 24  # Cache expires after 24 hours
 
-# Set console colors
-$Host.UI.RawUI.BackgroundColor = "Black"
-$Host.UI.RawUI.ForegroundColor = "White"
-
-# Function to check if cache is valid
+# ============================================================================
+# FUNCTIONS
+# ============================================================================
+# Check if cache is valid
 function Test-CacheValid {
     param([string]$CachePath)
     
@@ -28,7 +29,7 @@ function Test-CacheValid {
     return $true
 }
 
-# Function to fetch problems from LeetCode API
+# Fetch problems from LeetCode API
 function Get-LeetCodeProblems {
     $apiUrl = "https://leetcode.com/api/problems/all/"
     
@@ -53,7 +54,14 @@ function Get-LeetCodeProblems {
     }
 }
 
-# Main execution
+# ============================================================================
+# MAIN EXECUTION
+# ============================================================================
+
+# Set console colors
+$Host.UI.RawUI.BackgroundColor = "Black"
+$Host.UI.RawUI.ForegroundColor = "White"
+
 Write-Host ""
 Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
 Write-Host "  🔍 LeetCode Problem Data Fetcher" -ForegroundColor Cyan

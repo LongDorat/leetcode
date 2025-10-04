@@ -1,157 +1,336 @@
 # An interactive script to help users create a new LeetCode problem in PowerShell.
+# This script fetches problem data from cache and creates a new problem folder from templates.
 
-# Environment variables
-$ConfigFilePath = Join-Path $PSScriptRoot .. config config.json
-$FetchDataScript = Join-Path -Path $PSScriptRoot "FetchDataFromLeetCode.ps1"
-$CacheFilePath = Join-Path $PSScriptRoot .. cache problems.json
-$ProblemsFilePath = Join-Path $PSScriptRoot .. config problems.json
+#Requires -Version 5.1
 
-# Load configuration and cache
-if (Test-Path $ConfigFilePath) {
-    $config = Get-Content $ConfigFilePath | ConvertFrom-Json
-} else {
-    Write-Error "Configuration file not found at $ConfigFilePath"
-    exit 1
+# ============================================================================
+# GLOBAL VARIABLES
+# ============================================================================
+
+$script:ConfigFilePath = Join-Path $PSScriptRoot .. config config.json
+$script:FetchDataScript = Join-Path $PSScriptRoot "FetchDataFromLeetCode.ps1"
+$script:CacheFilePath = Join-Path $PSScriptRoot .. cache problems.json
+$script:ProblemsFilePath = Join-Path $PSScriptRoot .. config problems.json
+$script:MainMenuScript = Join-Path $PSScriptRoot .. "LeetCode.ps1"
+
+$script:config = $null
+$script:cache = $null
+$script:problemsConfig = $null
+
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+function Show-Banner {
+    Write-Host ""
+    Write-Host "╔══════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host "║                                                              ║" -ForegroundColor Cyan
+    Write-Host "║              " -NoNewline -ForegroundColor Cyan
+    Write-Host "✨ Create New Problem ✨" -NoNewline -ForegroundColor Yellow
+    Write-Host "                        ║" -ForegroundColor Cyan
+    Write-Host "║                                                              ║" -ForegroundColor Cyan
+    Write-Host "╚══════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host ""
 }
 
-if (Test-Path $CacheFilePath) {
-    $cache = Get-Content $CacheFilePath | ConvertFrom-Json
-} else {
-    Write-Error "Cache file not found at $CacheFilePath"
-    exit 1
+function Initialize-Configuration {
+    Write-Host "⚙️  Loading configuration..." -ForegroundColor Cyan
+    
+    # Load config
+    if (-not (Test-Path $script:ConfigFilePath)) {
+        Write-Host "❌ Configuration file not found at:" -ForegroundColor Red
+        Write-Host "   $script:ConfigFilePath" -ForegroundColor DarkGray
+        return $false
+    }
+    $script:config = Get-Content $script:ConfigFilePath | ConvertFrom-Json
+    
+    # Load cache
+    if (-not (Test-Path $script:CacheFilePath)) {
+        Write-Host "❌ Cache file not found. Please run the data fetcher first." -ForegroundColor Red
+        return $false
+    }
+    $script:cache = Get-Content $script:CacheFilePath | ConvertFrom-Json
+    
+    # Load or create problems config
+    if (Test-Path $script:ProblemsFilePath) {
+        $script:problemsConfig = Get-Content $script:ProblemsFilePath | ConvertFrom-Json
+    } else {
+        $script:problemsConfig = @()
+    }
+    
+    Write-Host "✅ Configuration loaded successfully!" -ForegroundColor Green
+    Write-Host ""
+    return $true
 }
 
-if (Test-Path $ProblemsFilePath) {
-    $problemsConfig = Get-Content $ProblemsFilePath | ConvertFrom-Json
-} else {
-    New-Item -ItemType File -Path $ProblemsFilePath -Force | Out-Null
-    $problemsConfig = @()
+function Get-UserInput {
+    param([string]$Prompt, [string]$Example, [string]$Icon = "📝")
+    
+    Write-Host "$Icon " -NoNewline -ForegroundColor Yellow
+    Write-Host "$Prompt " -NoNewline -ForegroundColor Cyan
+    Write-Host "($Example)" -NoNewline -ForegroundColor DarkGray
+    Write-Host ": " -NoNewline -ForegroundColor White
+    return Read-Host
 }
 
-# Validate user input
-function ValidateUserInput {
-    param(
-        [string]$ProblemNumber,
-        [string]$ProblemLanguage,
-        [array]$SupportedLanguages
-    )
-
+function Test-ProblemNumber {
+    param([string]$ProblemNumber)
+    
+    # Check if it's a valid number
     if (-not ($ProblemNumber -match '^\d+$')) {
         Write-Host "❌ Problem number must be a positive integer." -ForegroundColor Red
         return $false
     }
-
+    
+    # Check for leading zeros
     if ($ProblemNumber -match '^0\d+') {
-    Write-Host "❌ Problem number should not have leading zeros (use 1 instead of 001)." -ForegroundColor Red
-    return $false
-    }
-
-    if (-not ($SupportedLanguages -contains $ProblemLanguage)) {
-        Write-Host "❌ Unsupported programming language. Supported languages are: $($SupportedLanguages -join ', ')." -ForegroundColor Red
+        Write-Host "❌ Problem number should not have leading zeros (use 1 instead of 001)." -ForegroundColor Red
         return $false
     }
-
+    
+    # Check if problem exists in cache
+    $problemNum = [int]$ProblemNumber
+    $problem = $script:cache.stat_status_pairs | Where-Object { $_.stat.frontend_question_id -eq $problemNum }
+    
+    if (-not $problem) {
+        Write-Host "❌ Problem #$ProblemNumber not found in LeetCode database." -ForegroundColor Red
+        Write-Host "   Try updating the cache or verify the problem number." -ForegroundColor DarkGray
+        return $false
+    }
+    
     return $true
 }
 
-# Creating a new problem folder and copy the template
-function CreateNewProblem {
+function Test-Language {
+    param([string]$Language)
+    
+    if (-not ($script:config.supportedLanguages -contains $Language)) {
+        Write-Host "❌ Unsupported programming language: " -NoNewline -ForegroundColor Red
+        Write-Host "'$Language'" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "   Supported languages:" -ForegroundColor DarkGray
+        foreach ($lang in $script:config.supportedLanguages) {
+            Write-Host "   • " -NoNewline -ForegroundColor DarkGray
+            Write-Host "$lang" -ForegroundColor Green
+        }
+        return $false
+    }
+    
+    return $true
+}
+
+function New-ProblemDirectory {
     param(
-        [string]$ProblemNumber,
-        [string]$ProblemLanguage,
+        [int]$ProblemNumber,
+        [string]$Language,
         [string]$TemplatePath,
         [string]$DestinationPath
     )
-
-    $PaddedProblemNumber = $ProblemNumber.PadLeft(4, '0')
-
-    $problem = $cache.stat_status_pairs | Where-Object { $_.stat.frontend_question_id -eq [int]$ProblemNumber }
-
+    
+    # Find problem in cache
+    $problem = $script:cache.stat_status_pairs | Where-Object { $_.stat.frontend_question_id -eq $ProblemNumber }
+    
     if (-not $problem) {
-        Write-Host "❌ Problem number $ProblemNumber not found in LeetCode data." -ForegroundColor Red
-        return
+        Write-Host "❌ Problem #$ProblemNumber not found in cache." -ForegroundColor Red
+        return $null
     }
-
-    $NewProblemDir = Join-Path $DestinationPath "$PaddedProblemNumber-$($problem.stat.question__title_slug)"
-
-    if (Test-Path $NewProblemDir) {
-        Write-Host "❌ Problem directory already exists at $NewProblemDir" -ForegroundColor Red
-        return
+    
+    # Create problem directory name
+    $paddedNumber = $ProblemNumber.ToString().PadLeft(4, '0')
+    $titleSlug = $problem.stat.question__title_slug
+    $newProblemDir = Join-Path $DestinationPath "$paddedNumber-$titleSlug"
+    
+    # Check if already exists
+    if (Test-Path $newProblemDir) {
+        Write-Host "❌ Problem already exists:" -ForegroundColor Red
+        Write-Host "   $newProblemDir" -ForegroundColor DarkGray
+        Write-Host ""
+        Write-Host "   Use option 3 to remove it first if you want to recreate it." -ForegroundColor Yellow
+        return $null
     }
-
+    
+    # Show progress
+    Write-Host ""
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host "  📦 Creating Problem Structure" -ForegroundColor Cyan
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host ""
+    
+    Write-Host "  Problem: " -NoNewline -ForegroundColor DarkGray
+    Write-Host "#$ProblemNumber - $titleSlug" -ForegroundColor White
+    Write-Host "  Language: " -NoNewline -ForegroundColor DarkGray
+    Write-Host "$Language" -ForegroundColor Green
+    Write-Host "  Difficulty: " -NoNewline -ForegroundColor DarkGray
+    
+    $difficulty = $problem.difficulty.level
+    $diffColor = switch ($difficulty) {
+        1 { "Green" }
+        2 { "Yellow" }
+        3 { "Red" }
+        default { "White" }
+    }
+    $diffText = switch ($difficulty) {
+        1 { "Easy" }
+        2 { "Medium" }
+        3 { "Hard" }
+        default { "Unknown" }
+    }
+    Write-Host "$diffText" -ForegroundColor $diffColor
+    Write-Host ""
+    
     try {
-        New-Item -ItemType Directory -Path $NewProblemDir | Out-Null
-        Copy-Item -Path (Join-Path $TemplatePath "*") -Destination $NewProblemDir -Recurse
-        Write-Host "✅ Successfully created new problem at $NewProblemDir" -ForegroundColor Green
+        # Create directory
+        Write-Host "  [1/3] Creating directory..." -ForegroundColor Cyan
+        New-Item -ItemType Directory -Path $newProblemDir -Force | Out-Null
+        Start-Sleep -Milliseconds 200
+        Write-Host "        ✅ Directory created" -ForegroundColor Green
+        
+        # Copy template files
+        Write-Host "  [2/3] Copying template files..." -ForegroundColor Cyan
+        Copy-Item -Path (Join-Path $TemplatePath "*") -Destination $newProblemDir -Recurse -Force
+        Start-Sleep -Milliseconds 200
+        Write-Host "        ✅ Template copied" -ForegroundColor Green
+        
+        # Finalize
+        Write-Host "  [3/3] Finalizing..." -ForegroundColor Cyan
+        Start-Sleep -Milliseconds 200
+        Write-Host "        ✅ Problem ready!" -ForegroundColor Green
+        
+        Write-Host ""
+        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+        Write-Host ""
+        Write-Host "🎉 Success! Problem created at:" -ForegroundColor Green
+        Write-Host "   $newProblemDir" -ForegroundColor White
+        Write-Host ""
+        
+        return $newProblemDir
     }
     catch {
-        Write-Host "❌ Failed to create problem directory or copy template." -ForegroundColor Red
+        Write-Host ""
+        Write-Host "❌ Failed to create problem directory" -ForegroundColor Red
         Write-Host "   Error: $($_.Exception.Message)" -ForegroundColor DarkGray
+        return $null
     }
-
-    return $NewProblemDir
 }
 
-# Add the created problem into the storage for tracking
-function AddProblemToStorage {
+function Add-ProblemToConfig {
     param(
-        [string]$ProblemNumber,
-        [string]$ProblemLanguage,
+        [int]$ProblemNumber,
+        [string]$Language,
         [string]$ProblemPath
     )
-
+    
+    if (-not $ProblemPath) {
+        return
+    }
+    
     $newEntry = @{
-        question_id = [int]$ProblemNumber
-        language = $ProblemLanguage
+        question_id = $ProblemNumber
+        language = $Language
         date = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
         path = $ProblemPath
-    } 
-
-    $problemsConfig += $newEntry
-    $problemsConfig | ConvertTo-Json -Depth 10 | Set-Content $ProblemsFilePath
-
-    Write-Host "✅ Added problem number $ProblemNumber to config under language $ProblemLanguage." -ForegroundColor Green
-    Write-Host "   Config updated at $ProblemsFilePath" -ForegroundColor DarkGray
+    }
+    
+    $problemsList = [System.Collections.ArrayList]@()
+    if ($script:problemsConfig) {
+        $problemsList.AddRange($script:problemsConfig)
+    }
+    $problemsList.Add($newEntry) | Out-Null
+    
+    # Save to file
+    $problemsList | ConvertTo-Json -Depth 10 | Set-Content $script:ProblemsFilePath -Encoding UTF8
+    
+    Write-Host "💾 Problem tracked in configuration" -ForegroundColor Cyan
 }
 
+function Show-ReturnPrompt {
+    Write-Host ""
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "Press any key to return to main menu..." -ForegroundColor DarkGray
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+}
 
-# Main execution
+# ============================================================================
+# MAIN EXECUTION
+# ============================================================================
+
+# Setup console
 $Host.UI.RawUI.BackgroundColor = "Black"
 $Host.UI.RawUI.ForegroundColor = "White"
 Clear-Host
 
-# Run the fetch data script to ensure we have the latest problem data
-& $FetchDataScript
+# Run data fetcher
+& $script:FetchDataScript
 
-Write-Host ""
-Write-Host "╔══════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                                                              ║" -ForegroundColor Cyan
-Write-Host "║           " -NoNewline -ForegroundColor Cyan
-Write-Host "🚀 LeetCode Collection Terminal 🚀" -NoNewline -ForegroundColor Yellow
-Write-Host "                 ║" -ForegroundColor Cyan
-Write-Host "║                                                              ║" -ForegroundColor Cyan
-Write-Host "╚══════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
-Write-Host ""
+# Show banner
+Show-Banner
 
 Write-Host "📚 Create a new LeetCode problem with ease!" -ForegroundColor Green
 Write-Host ""
 
+# Initialize configuration
+if (-not (Initialize-Configuration)) {
+    Write-Host ""
+    Write-Host "Failed to initialize. Please check your setup." -ForegroundColor Red
+    Show-ReturnPrompt
+    exit 1
+}
+
+# Get user input with validation loop
+$problemNumber = $null
+$language = $null
+
+Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+Write-Host "  � Problem Information" -ForegroundColor Cyan
+Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+Write-Host ""
+
+# Get problem number
 while ($true) {
-    Write-Host "Problem Number (e.g., 1, 23): " -NoNewline -ForegroundColor Cyan
-    $ProblemNumber = Read-Host
-
-    Write-Host "Programming Language (e.g., csharp): " -NoNewline -ForegroundColor Cyan
-    $ProblemLanguage = Read-Host
-
-    if (ValidateUserInput -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -SupportedLanguages $config.supportedLanguages) {
-        break
+    $userInput = Get-UserInput -Prompt "Problem Number" -Example "1, 23, 456" -Icon "🔢"
+    
+    if ([string]::IsNullOrWhiteSpace($userInput)) {
+        Write-Host "⚠️  Problem number cannot be empty" -ForegroundColor Yellow
+        Write-Host ""
+        continue
     }
     
+    if (Test-ProblemNumber -ProblemNumber $userInput) {
+        $problemNumber = [int]$userInput
+        Write-Host "✅ Valid problem number" -ForegroundColor Green
+        Write-Host ""
+        break
+    }
     Write-Host ""
 }
 
-$TemplatePath = Join-Path $PSScriptRoot .. "$($config.templatePath.$ProblemLanguage)"
-$DestinationPath = Join-Path $PSScriptRoot .. "$($config.problemPath.$ProblemLanguage)"
-$ProblemPath = CreateNewProblem -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -TemplatePath $TemplatePath -DestinationPath $DestinationPath
+# Get language
+while ($true) {
+    $userInput = Get-UserInput -Prompt "Programming Language" -Example "csharp, python, java" -Icon "💻"
+    
+    if ([string]::IsNullOrWhiteSpace($userInput)) {
+        Write-Host "⚠️  Language cannot be empty" -ForegroundColor Yellow
+        Write-Host ""
+        continue
+    }
+    
+    if (Test-Language -Language $userInput.ToLower()) {
+        $language = $userInput.ToLower()
+        Write-Host "✅ Valid language" -ForegroundColor Green
+        break
+    }
+    Write-Host ""
+}
 
-AddProblemToStorage -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -ProblemPath $ProblemPath
+# Create the problem
+$templatePath = Join-Path $PSScriptRoot .. "$($script:config.templatePath.$language)"
+$destinationPath = Join-Path $PSScriptRoot .. "$($script:config.problemPath.$language)"
+
+$problemPath = New-ProblemDirectory -ProblemNumber $problemNumber -Language $language -TemplatePath $templatePath -DestinationPath $destinationPath
+
+# Add to config
+Add-ProblemToConfig -ProblemNumber $problemNumber -Language $language -ProblemPath $problemPath
+
+# Return to menu
+Show-ReturnPrompt
