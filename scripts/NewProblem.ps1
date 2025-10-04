@@ -57,8 +57,15 @@ function CreateNewProblem {
 
     $PaddedProblemNumber = $ProblemNumber.PadLeft(4, '0')
 
-    $NewProblemDir = Join-Path $DestinationPath "$PaddedProblemNumber-$($cache.stat_status_pairs[$ProblemNumber - 1].stat.question__title_slug)"
-    
+    $problem = $cache.stat_status_pairs | Where-Object { $_.stat.frontend_question_id -eq [int]$ProblemNumber }
+
+    if (-not $problem) {
+        Write-Host "❌ Problem number $ProblemNumber not found in LeetCode data." -ForegroundColor Red
+        return
+    }
+
+    $NewProblemDir = Join-Path $DestinationPath "$PaddedProblemNumber-$($problem.stat.question__title_slug)"
+
     if (Test-Path $NewProblemDir) {
         Write-Host "❌ Problem directory already exists at $NewProblemDir" -ForegroundColor Red
         return
@@ -110,4 +117,6 @@ while ($true) {
     Write-Host ""
 }
 
-CreateNewProblem -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -TemplatePath $config.templatePath.$ProblemLanguage -DestinationPath $config.problemPath.$ProblemLanguage
+$TemplatePath = Join-Path $PSScriptRoot .. "$($config.templatePath.$ProblemLanguage)"
+$DestinationPath = Join-Path $PSScriptRoot .. "$($config.problemPath.$ProblemLanguage)"
+CreateNewProblem -ProblemNumber $ProblemNumber -ProblemLanguage $ProblemLanguage -TemplatePath $TemplatePath -DestinationPath $DestinationPath
