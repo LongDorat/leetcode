@@ -7,10 +7,10 @@
 # GLOBAL VARIABLES
 # ============================================================================
 
-$script:ConfigFilePath = Join-Path $PSScriptRoot .. config config.json
-$script:ProblemsFilePath = Join-Path $PSScriptRoot .. config problems.json
-$script:CacheFilePath = Join-Path $PSScriptRoot .. cache problems.json
-$script:MainMenuScript = Join-Path $PSScriptRoot .. "LeetCode.ps1"
+$script:ConfigPath = Join-Path $PSScriptRoot .. config config.json
+$script:ProblemsConfigPath = Join-Path $PSScriptRoot .. config problems.json
+$script:CachePath = Join-Path $PSScriptRoot .. cache problems.json
+$script:MainMenuScriptPath = Join-Path $PSScriptRoot .. "LeetCode.ps1"
 
 $script:config = $null
 $script:problemsConfig = $null
@@ -33,33 +33,40 @@ function Show-Banner {
 }
 
 function Initialize-Configuration {
+    <#
+    .SYNOPSIS
+    Loads configuration files and validates they exist.
+    #>
+    [CmdletBinding()]
+    param()
+    
     Write-Host "⚙️  Loading configuration..." -ForegroundColor Cyan
     
     # Load config
-    if (-not (Test-Path $script:ConfigFilePath)) {
+    if (-not (Test-Path $script:ConfigPath)) {
         Write-Host "❌ Configuration file not found at:" -ForegroundColor Red
-        Write-Host "   $script:ConfigFilePath" -ForegroundColor DarkGray
+        Write-Host "   $script:ConfigPath" -ForegroundColor DarkGray
         return $false
     }
-    $script:config = Get-Content $script:ConfigFilePath | ConvertFrom-Json
+    $script:config = Get-Content $script:ConfigPath | ConvertFrom-Json
     
     # Load problems config
-    if (-not (Test-Path $script:ProblemsFilePath)) {
+    if (-not (Test-Path $script:ProblemsConfigPath)) {
         Write-Host "⚠️  No problems found. Create a problem first!" -ForegroundColor Yellow
         return $false
     }
     
-    $content = Get-Content $script:ProblemsFilePath -Raw
+    $content = Get-Content $script:ProblemsConfigPath -Raw
     if ([string]::IsNullOrWhiteSpace($content)) {
         Write-Host "⚠️  No problems found. Create a problem first!" -ForegroundColor Yellow
         return $false
     }
     
-    $script:problemsConfig = Get-Content $script:ProblemsFilePath | ConvertFrom-Json
+    $script:problemsConfig = Get-Content $script:ProblemsConfigPath | ConvertFrom-Json
     
     # Load cache for problem details
-    if (Test-Path $script:CacheFilePath) {
-        $script:cache = Get-Content $script:CacheFilePath | ConvertFrom-Json
+    if (Test-Path $script:CachePath) {
+        $script:cache = Get-Content $script:CachePath | ConvertFrom-Json
     }
     
     Write-Host "✅ Configuration loaded successfully!" -ForegroundColor Green
@@ -68,6 +75,11 @@ function Initialize-Configuration {
 }
 
 function Get-ProblemDetails {
+    <#
+    .SYNOPSIS
+    Retrieves problem details from the cache.
+    #>
+    [CmdletBinding()]
     param([int]$QuestionId)
     
     if ($script:cache) {
@@ -96,6 +108,13 @@ function Get-ProblemDetails {
 }
 
 function Show-ProblemsTable {
+    <#
+    .SYNOPSIS
+    Displays all problems in a formatted table grouped by language.
+    #>
+    [CmdletBinding()]
+    param()
+    
     if ($script:problemsConfig.Count -eq 0) {
         Write-Host "📭 No problems found in the collection." -ForegroundColor Yellow
         Write-Host ""
@@ -159,6 +178,13 @@ function Show-ProblemsTable {
 }
 
 function Show-Statistics {
+    <#
+    .SYNOPSIS
+    Displays statistics about problems by difficulty and language.
+    #>
+    [CmdletBinding()]
+    param()
+    
     Write-Host ""
     Write-Host "📈 Statistics" -ForegroundColor Cyan
     Write-Host ""
@@ -201,8 +227,15 @@ function Show-Statistics {
 }
 
 function Show-ReturnPrompt {
+    <#
+    .SYNOPSIS
+    Displays a prompt to return to the main menu.
+    #>
+    [CmdletBinding()]
+    param()
+    
     Write-Host ""
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
     Write-Host ""
     Write-Host "Press any key to return to main menu..." -ForegroundColor DarkGray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

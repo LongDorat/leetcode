@@ -7,8 +7,17 @@
 # ============================================================================
 
 function Update-csharpTemplate {
+    <#
+    .SYNOPSIS
+    Updates C# template files with problem-specific information.
+    
+    .DESCRIPTION
+    Renames template files and updates content to match the problem title.
+    Also adds the project to the solution file.
+    #>
+    [CmdletBinding()]
     param(
-        [string]$ProblemPath,
+        [string]$ProblemDirectory,
         [PSCustomObject]$Details
     )
 
@@ -16,7 +25,7 @@ function Update-csharpTemplate {
     
     Write-Host "  🔄 Processing C# template files..." -ForegroundColor Cyan
     
-    $problemFiles = Get-ChildItem -Path $ProblemPath -File
+    $problemFiles = Get-ChildItem -Path $ProblemDirectory -File
     $renamedFiles = @()
     
     foreach ($file in $problemFiles) {
@@ -56,8 +65,8 @@ function Update-csharpTemplate {
     Write-Host ""
     Write-Host "➕ Adding project to solution..." -ForegroundColor Cyan
     
-    $solutionPath = Join-Path $ProblemPath ".." "LeetCode.slnx"
-    $csprojFile = Join-Path $ProblemPath "$titleWithoutSpaces.csproj"
+    $solutionPath = Join-Path $ProblemDirectory ".." "LeetCode.slnx"
+    $csprojFile = Join-Path $ProblemDirectory "$titleWithoutSpaces.csproj"
     
     if (Test-Path $csprojFile) {
         dotnet sln $solutionPath add $csprojFile 2>&1 | Out-Null
@@ -73,16 +82,24 @@ function Update-csharpTemplate {
 }
 
 function Remove-CSharpProjectFromSolution {
+    <#
+    .SYNOPSIS
+    Removes a C# project from the solution file.
+    
+    .DESCRIPTION
+    Uses dotnet CLI to remove the specified project from the solution.
+    #>
+    [CmdletBinding()]
     param(
-        [string]$ProblemPath,
+        [string]$ProblemDirectory,
         [string]$TitleWithoutSpaces
     )
     
     Write-Host ""
     Write-Host "➖ Removing project from solution..." -ForegroundColor Cyan
     
-    $solutionPath = Join-Path $ProblemPath ".." "LeetCode.slnx"
-    $csprojFile = Join-Path $ProblemPath "$TitleWithoutSpaces.csproj"
+    $solutionPath = Join-Path $ProblemDirectory ".." "LeetCode.slnx"
+    $csprojFile = Join-Path $ProblemDirectory "$TitleWithoutSpaces.csproj"
     
     dotnet sln $solutionPath remove $csprojFile 2>&1 | Out-Null
     

@@ -12,10 +12,10 @@ Import-Module (Join-Path $PSScriptRoot "module" "languages" "CSharp.psm1") -Forc
 # GLOBAL VARIABLES
 # ============================================================================
 
-$script:ConfigFilePath = Join-Path $PSScriptRoot .. config config.json
-$script:ProblemsFilePath = Join-Path $PSScriptRoot .. config problems.json
-$script:CacheFilePath = Join-Path $PSScriptRoot .. cache problems.json
-$script:MainMenuScript = Join-Path $PSScriptRoot .. "LeetCode.ps1"
+$script:ConfigPath = Join-Path $PSScriptRoot .. config config.json
+$script:ProblemsConfigPath = Join-Path $PSScriptRoot .. config problems.json
+$script:CachePath = Join-Path $PSScriptRoot .. cache problems.json
+$script:MainMenuScriptPath = Join-Path $PSScriptRoot .. "LeetCode.ps1"
 
 $script:config = $null
 $script:problemsConfig = $null
@@ -38,33 +38,40 @@ function Show-Banner {
 }
 
 function Initialize-Configuration {
+    <#
+    .SYNOPSIS
+    Loads configuration files and validates they exist.
+    #>
+    [CmdletBinding()]
+    param()
+    
     Write-Host "⚙️  Loading configuration..." -ForegroundColor Cyan
     
     # Load config
-    if (-not (Test-Path $script:ConfigFilePath)) {
+    if (-not (Test-Path $script:ConfigPath)) {
         Write-Host "❌ Configuration file not found at:" -ForegroundColor Red
-        Write-Host "   $script:ConfigFilePath" -ForegroundColor DarkGray
+        Write-Host "   $script:ConfigPath" -ForegroundColor DarkGray
         return $false
     }
-    $script:config = Get-Content $script:ConfigFilePath | ConvertFrom-Json
+    $script:config = Get-Content $script:ConfigPath | ConvertFrom-Json
     
     # Load problems config
-    if (-not (Test-Path $script:ProblemsFilePath)) {
+    if (-not (Test-Path $script:ProblemsConfigPath)) {
         Write-Host "⚠️  No problems found. Nothing to remove!" -ForegroundColor Yellow
         return $false
     }
     
-    $content = Get-Content $script:ProblemsFilePath -Raw
+    $content = Get-Content $script:ProblemsConfigPath -Raw
     if ([string]::IsNullOrWhiteSpace($content)) {
         Write-Host "⚠️  No problems found. Nothing to remove!" -ForegroundColor Yellow
         return $false
     }
     
-    $script:problemsConfig = Get-Content $script:ProblemsFilePath | ConvertFrom-Json
+    $script:problemsConfig = Get-Content $script:ProblemsConfigPath | ConvertFrom-Json
     
     # Load cache for problem details
-    if (Test-Path $script:CacheFilePath) {
-        $script:cache = Get-Content $script:CacheFilePath | ConvertFrom-Json
+    if (Test-Path $script:CachePath) {
+        $script:cache = Get-Content $script:CachePath | ConvertFrom-Json
     }
     
     Write-Host "✅ Configuration loaded successfully!" -ForegroundColor Green
@@ -73,7 +80,16 @@ function Initialize-Configuration {
 }
 
 function Get-UserInput {
-    param([string]$Prompt, [string]$Example, [string]$Icon = "📝")
+    <#
+    .SYNOPSIS
+    Prompts the user for input with formatted text and example.
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$Prompt, 
+        [string]$Example, 
+        [string]$Icon = "📝"
+    )
     
     Write-Host "$Icon " -NoNewline -ForegroundColor Yellow
     Write-Host "$Prompt " -NoNewline -ForegroundColor Cyan
@@ -83,6 +99,11 @@ function Get-UserInput {
 }
 
 function Get-ProblemDetails {
+    <#
+    .SYNOPSIS
+    Retrieves problem details from the cache.
+    #>
+    [CmdletBinding()]
     param([int]$QuestionId)
     
     if ($script:cache) {
@@ -161,7 +182,15 @@ function Show-AvailableProblems {
 }
 
 function Test-ProblemExists {
-    param([string]$ProblemNumber, [string]$Language)
+    <#
+    .SYNOPSIS
+    Validates if a problem exists in the configuration with the specified language.
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$ProblemNumber, 
+        [string]$Language
+    )
     
     # Check if it's a valid number
     if (-not ($ProblemNumber -match '^\d+$')) {
@@ -191,6 +220,11 @@ function Test-ProblemExists {
 }
 
 function Test-Language {
+    <#
+    .SYNOPSIS
+    Validates if a programming language is supported.
+    #>
+    [CmdletBinding()]
     param([string]$Language)
     
     if (-not ($script:config.supportedLanguages -contains $Language)) {
@@ -209,6 +243,11 @@ function Test-Language {
 }
 
 function Get-ConfirmationPrompt {
+    <#
+    .SYNOPSIS
+    Prompts the user for yes/no confirmation.
+    #>
+    [CmdletBinding()]
     param([string]$Message)
     
     Write-Host "$Message " -NoNewline -ForegroundColor Yellow
@@ -223,7 +262,15 @@ function Get-ConfirmationPrompt {
 }
 
 function Remove-ProblemFromDisk {
-    param([int]$ProblemNumber, [string]$Language)
+    <#
+    .SYNOPSIS
+    Removes a problem directory and updates the configuration.
+    #>
+    [CmdletBinding()]
+    param(
+        [int]$ProblemNumber, 
+        [string]$Language
+    )
     
     # Find the problem with specific language
     $problem = $script:problemsConfig | Where-Object { 
@@ -260,8 +307,8 @@ function Remove-ProblemFromDisk {
 
     # If C#, remove from solution
     if ($language -eq "csharp") {
-        $titleWithoutSpaces = $details.title -replace '\s+', ''
-        Remove-CSharpProjectFromSolution -ProblemPath $problem.path -TitleWithoutSpaces $titleWithoutSpaces
+        $titleWithoutSpaces = $details.Title -replace '\s+', ''
+        Remove-CSharpProjectFromSolution -ProblemDirectory $problem.path -TitleWithoutSpaces $titleWithoutSpaces
     }
     
     Write-Host ""
@@ -286,9 +333,9 @@ function Remove-ProblemFromDisk {
         
         if ($updatedProblems.Count -eq 0) {
             # If no problems left, save empty array
-            "[]" | Set-Content $script:ProblemsFilePath -Encoding UTF8
+            "[]" | Set-Content $script:ProblemsConfigPath -Encoding UTF8
         } else {
-            $updatedProblems | ConvertTo-Json -Depth 10 | Set-Content $script:ProblemsFilePath -Encoding UTF8
+            $updatedProblems | ConvertTo-Json -Depth 10 | Set-Content $script:ProblemsConfigPath -Encoding UTF8
         }
         
         Start-Sleep -Milliseconds 200
@@ -312,8 +359,15 @@ function Remove-ProblemFromDisk {
 }
 
 function Show-ReturnPrompt {
+    <#
+    .SYNOPSIS
+    Displays a prompt to return to the main menu.
+    #>
+    [CmdletBinding()]
+    param()
+    
     Write-Host ""
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
     Write-Host ""
     Write-Host "Press any key to return to main menu..." -ForegroundColor DarkGray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

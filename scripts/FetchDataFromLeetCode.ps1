@@ -4,15 +4,19 @@
 # ============================================================================
 # GLOBAL VARIABLES
 # ============================================================================
-$CacheDir = Join-Path $PSScriptRoot .. cache
-$CacheFilePath = Join-Path $CacheDir problems.json
-$CacheExpirationHours = 24  # Cache expires after 24 hours
+$script:CacheDirectory = Join-Path $PSScriptRoot .. cache
+$script:CachePath = Join-Path $script:CacheDirectory problems.json
+$script:CacheExpirationHours = 24  # Cache expires after 24 hours
 
 # ============================================================================
 # FUNCTIONS
 # ============================================================================
-# Check if cache is valid
+
 function Test-CacheValid {
+    <#
+    .SYNOPSIS
+    Checks if the cache file is valid and not expired.
+    #>
     param([string]$CachePath)
     
     if (-not (Test-Path $CachePath)) {
@@ -22,15 +26,25 @@ function Test-CacheValid {
     $cacheFile = Get-Item $CachePath
     $cacheAge = (Get-Date) - $cacheFile.LastWriteTime
     
-    if ($cacheAge.TotalHours -gt $CacheExpirationHours) {
+    if ($cacheAge.TotalHours -gt $script:CacheExpirationHours) {
         return $false
     }
     
     return $true
 }
 
-# Fetch problems from LeetCode API
 function Get-LeetCodeProblems {
+    <#
+    .SYNOPSIS
+    Fetches all problems from the LeetCode API.
+    
+    .DESCRIPTION
+    Connects to the LeetCode API and retrieves all available problems.
+    Returns the problem data or null if the request fails.
+    #>
+    [CmdletBinding()]
+    param()
+    
     $apiUrl = "https://leetcode.com/api/problems/all/"
     
     try {
@@ -69,22 +83,22 @@ Write-Host "━━━━━━━━━━━━━━━━━━━━━━�
 Write-Host ""
 
 # Ensure cache directory exists
-if (-not (Test-Path $CacheDir)) {
+if (-not (Test-Path $script:CacheDirectory)) {
     Write-Host "📁 Creating cache directory..." -ForegroundColor Yellow
-    New-Item -ItemType Directory -Path $CacheDir -Force | Out-Null
+    New-Item -ItemType Directory -Path $script:CacheDirectory -Force | Out-Null
 }
 
 # Check if cache is valid
-if (Test-CacheValid -CachePath $CacheFilePath) {
-    $cacheFile = Get-Item $CacheFilePath
+if (Test-CacheValid -CachePath $script:CachePath) {
+    $cacheFile = Get-Item $script:CachePath
     $cacheAge = [Math]::Round(((Get-Date) - $cacheFile.LastWriteTime).TotalHours, 1)
     
     Write-Host "✨ Using cached data " -NoNewline -ForegroundColor Green
     Write-Host "($cacheAge hours old)" -ForegroundColor DarkGray
     Write-Host "   Cache expires in " -NoNewline -ForegroundColor DarkGray
-    Write-Host "$([Math]::Round($CacheExpirationHours - $cacheAge, 1)) hours" -ForegroundColor Yellow
+    Write-Host "$([Math]::Round($script:CacheExpirationHours - $cacheAge, 1)) hours" -ForegroundColor Yellow
 } else {
-    if (Test-Path $CacheFilePath) {
+    if (Test-Path $script:CachePath) {
         Write-Host "⏰ Cache expired, fetching fresh data..." -ForegroundColor Yellow
     } else {
         Write-Host "📭 No cache found, fetching data..." -ForegroundColor Yellow
@@ -98,12 +112,12 @@ if (Test-CacheValid -CachePath $CacheFilePath) {
     if ($problemData) {
         # Save to cache
         Write-Host "💾 Saving to cache..." -ForegroundColor Cyan
-        $problemData | ConvertTo-Json -Depth 10 | Set-Content -Path $CacheFilePath -Encoding UTF8
+        $problemData | ConvertTo-Json -Depth 10 | Set-Content -Path $script:CachePath -Encoding UTF8
         Write-Host "✅ Cache updated successfully!" -ForegroundColor Green
     } else {
         Write-Host "⚠️  Failed to fetch data. Using existing cache if available." -ForegroundColor Yellow
         
-        if (-not (Test-Path $CacheFilePath)) {
+        if (-not (Test-Path $script:CachePath)) {
             Write-Host "❌ No cache available. Please check your internet connection and try again." -ForegroundColor Red
             exit 1
         }
