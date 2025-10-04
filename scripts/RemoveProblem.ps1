@@ -2,6 +2,11 @@
 # This script removes a problem directory and updates the problems.json configuration.
 
 #Requires -Version 5.1
+# ============================================================================
+# MODULE IMPORTS
+# ============================================================================
+
+Import-Module (Join-Path $PSScriptRoot "module" "languages" "CSharp.psm1") -Force
 
 # ============================================================================
 # GLOBAL VARIABLES
@@ -388,6 +393,17 @@ while ($true) {
 
 # Remove the problem
 Remove-ProblemFromDisk -ProblemNumber $problemNumber -Language $language
+
+# If C#, remove from solution
+if ($language -eq "csharp") {
+    $details = Get-ProblemDetails -QuestionId $problemNumber
+    $titleWithoutSpaces = $details.Title -replace '\s+', ''
+    $problem = $script:problemsConfig | Where-Object { 
+        $_.question_id -eq $problemNumber -and $_.language -eq $language 
+    }
+    $problemPath = $problem.path
+    Remove-CSharpProjectFromSolution -ProblemPath $problemPath -TitleWithoutSpaces $titleWithoutSpaces
+}
 
 # Return to menu
 Show-ReturnPrompt

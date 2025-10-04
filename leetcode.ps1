@@ -123,6 +123,8 @@ Show-Banner
 
 # Main menu loop
 while ($true) {
+    Clear-Host
+    Show-Banner
     Show-Menu
     
     Write-Host "Enter your choice: " -NoNewline -ForegroundColor Cyan

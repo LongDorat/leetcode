@@ -4,6 +4,12 @@
 #Requires -Version 5.1
 
 # ============================================================================
+# MODULE IMPORTS
+# ============================================================================
+
+Import-Module (Join-Path $PSScriptRoot "module" "LanguageOperations.psm1") -Force
+
+# ============================================================================
 # GLOBAL VARIABLES
 # ============================================================================
 
@@ -331,6 +337,12 @@ $problemPath = New-ProblemDirectory -ProblemNumber $problemNumber -Language $lan
 
 # Add to config
 Add-ProblemToConfig -ProblemNumber $problemNumber -Language $language -ProblemPath $problemPath
+
+# Update problem template
+if ($problemPath) {
+    $problemDetails = $script:cache.stat_status_pairs | Where-Object { $_.stat.frontend_question_id -eq $problemNumber } | Select-Object -First 1
+    Update-ProblemTemplate -ProblemPath $problemPath -Language $language -ProblemDetails $problemDetails.stat
+}
 
 # Return to menu
 Show-ReturnPrompt
