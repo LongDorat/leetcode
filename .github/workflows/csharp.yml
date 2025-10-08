@@ -1,0 +1,113 @@
+name: C# Tests
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/csharp/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/csharp/**"
+  workflow_dispatch:
+
+jobs:
+  detect-changes:
+    name: Detect Changed Projects
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has-changes: ${{ steps.set-matrix.outputs.has-changes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: src/csharp/**
+          dir_names: true
+          dir_names_max_depth: 2
+          json: true
+          markdown: false
+
+      - name: Find changed projects
+        id: set-matrix
+        shell: pwsh
+        run: |
+          # Get the list of changed directories
+          $changedDirs = '${{ steps.changed-files.outputs.all_changed_files }}' | ConvertFrom-Json
+          
+          Write-Host "Changed directories:" -ForegroundColor Cyan
+          $changedDirs | ForEach-Object { Write-Host "  - $_" }
+          
+          # Find all .csproj files in changed directories
+          $csprojFiles = @()
+          
+          foreach ($dir in $changedDirs) {
+            if (Test-Path $dir) {
+              $projects = Get-ChildItem -Path $dir -Filter "*.csproj" -Recurse | Select-Object -ExpandProperty FullName
+              foreach ($project in $projects) {
+                $relativePath = $project -replace [regex]::Escape($PWD.Path + [IO.Path]::DirectorySeparatorChar), ''
+                $relativePath = $relativePath -replace '\\', '/'
+                $csprojFiles += $relativePath
+              }
+            }
+          }
+          
+          # Remove duplicates
+          $csprojFiles = $csprojFiles | Select-Object -Unique
+          
+          Write-Host ""
+          Write-Host "Found .csproj files:" -ForegroundColor Cyan
+          $csprojFiles | ForEach-Object { Write-Host "  - $_" }
+          
+          # Create matrix
+          if ($csprojFiles.Count -gt 0) {
+            $matrix = @{
+              project = $csprojFiles
+            } | ConvertTo-Json -Compress
+            
+            Write-Host ""
+            Write-Host "Matrix: $matrix" -ForegroundColor Green
+            
+            echo "matrix=$matrix" >> $env:GITHUB_OUTPUT
+            echo "has-changes=true" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host ""
+            Write-Host "No .csproj files found in changed directories" -ForegroundColor Yellow
+            
+            echo "matrix={}" >> $env:GITHUB_OUTPUT
+            echo "has-changes=false" >> $env:GITHUB_OUTPUT
+          }
+
+  test:
+    name: Test ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-changes == 'true'
+    strategy:
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore "${{ matrix.project }}"
+
+      - name: Build project
+        run: dotnet build "${{ matrix.project }}" --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test "${{ matrix.project }}" --no-build --configuration Release --verbosity normal
+
