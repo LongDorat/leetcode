@@ -1,0 +1,30 @@
+{
+    "name": "LeetCode Collection Dev Container",
+    "image": "mcr.microsoft.com/vscode/devcontainers/ubuntu:latest",
+    "features": {
+        "ghcr.io/devcontainers/features/git": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/powershell": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/common-utils": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/dotnet": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.copilot",
+                "github.copilot-chat",
+                "eamodio.gitlens",
+                "ms-vscode.powershell",
+                "ms-dotnettools.csharp",
+                "ms-dotnettools.csdevkit"
+            ]
+        }
+    }
+}
